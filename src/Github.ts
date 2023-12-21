@@ -54,13 +54,31 @@ const make = ({ token }: GithubOptions) => {
         catch: reason => new GithubError(reason),
       }).pipe(
         Effect.map(_ => [
-          Chunk.fromIterable(_.data),
+          Chunk.unsafeFromArray(_.data),
           maybeNextPage(page, _.headers.link),
         ]),
       ),
     )
 
-  return { api, token, request, wrap, stream } as const
+  const streamItems = <A>(
+    f: (
+      _: Endpoints,
+      page: number,
+    ) => Promise<OctokitResponse<{ readonly items: A[] }>>,
+  ) =>
+    Stream.paginateChunkEffect(0, page =>
+      Effect.tryPromise({
+        try: () => f(rest, page),
+        catch: reason => new GithubError(reason),
+      }).pipe(
+        Effect.map(_ => [
+          Chunk.unsafeFromArray(_.data.items),
+          maybeNextPage(page, _.headers.link),
+        ]),
+      ),
+    )
+
+  return { api, token, request, wrap, stream, streamItems } as const
 }
 
 export interface Github extends ReturnType<typeof make> {}

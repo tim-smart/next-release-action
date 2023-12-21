@@ -25,8 +25,11 @@ export const make = Effect.gen(function* (_) {
   const issue = Option.fromNullable(context.issue.number).pipe(
     Option.as(context.issue),
   )
+  const repo = context.repo.repo
+  const owner = context.repo.owner
+  const fullRepo = `${owner}/${repo}`
 
-  return { tmpDir, mkTmpDir, issue } as const
+  return { tmpDir, mkTmpDir, issue, repo, owner, fullRepo } as const
 })
 
 export interface RunnerEnv extends Effect.Effect.Success<typeof make> {}
