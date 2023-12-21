@@ -1,12 +1,8 @@
 import { runMain } from "@effect/platform-node/Runtime"
-import * as Dotenv from "dotenv"
 import { ConfigProvider, Console, Effect, Layer, Stream } from "effect"
 import { Changesets, ChangesetsLive } from "./Changesets"
 import * as Github from "./Github"
 import { inputSecret } from "./utils/config"
-
-// Dotenv for testing in development
-Dotenv.config()
 
 // // Setup the Git client layer
 // const GitLive = Git.layer({

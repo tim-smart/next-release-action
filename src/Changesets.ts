@@ -1,4 +1,4 @@
-import { Context, Effect, Layer, Stream } from "effect"
+import { Console, Context, Effect, Layer, Stream } from "effect"
 import { PullRequests, PullRequestsLive } from "./PullRequests"
 import * as FileSystem from "@effect/platform-node/FileSystem"
 import remarkParse from "remark-parse"
@@ -10,6 +10,7 @@ const make = Effect.gen(function* (_) {
   const pulls = yield* _(PullRequests)
 
   const current = pulls.currentFiles.pipe(
+    Stream.tap(Console.log),
     Stream.filter(
       _ =>
         _.status === "added" &&

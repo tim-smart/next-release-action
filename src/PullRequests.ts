@@ -1,6 +1,7 @@
 import { Context, Effect, Layer, Sink, Stream } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv } from "./Runner"
+import { context } from "@actions/github"
 
 const make = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
@@ -57,15 +58,16 @@ const make = Effect.gen(function* (_) {
 
   const get = github.wrap(_ => _.pulls.get)
 
-  const current = env.issue.pipe(
-    Effect.andThen(issue =>
-      get({
-        owner: issue.owner,
-        repo: issue.repo,
-        pull_number: issue.number,
-      }),
-    ),
-  )
+  const current = Effect.fromNullable(context.payload.pull_request)
+  //   const current = env.issue.pipe(
+  //     Effect.andThen(issue =>
+  //       get({
+  //         owner: issue.owner,
+  //         repo: issue.repo,
+  //         pull_number: issue.number,
+  //       }),
+  //     ),
+  //   )
 
   const files = (options: {
     readonly owner: string
