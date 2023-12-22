@@ -49,9 +49,10 @@ const main = Effect.gen(function* (_) {
           "checkout",
           Option.getOrThrow(env.issue).number.toString(),
         ),
-        Command.string,
+        Command.runInShell(true),
+        Command.exitCode,
       )
-      console.log(out)
+      console.log("out", out)
       yield* _(UpdateBase.run)
     }
   } else if (env.ref === `refs/heads/${baseBranch}`) {

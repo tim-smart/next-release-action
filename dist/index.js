@@ -51585,7 +51585,7 @@ var collectUint8Array = /* @__PURE__ */ foldLeftChunks2(/* @__PURE__ */ new Uint
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/internal/command.js
 var CommandTypeId = /* @__PURE__ */ Symbol.for("@effect/platform/Command");
-var isCommand = (u) => typeof u === "object" && u != null && CommandTypeId in u;
+var exitCode = (self) => flatMap11(CommandExecutor, (executor) => executor.exitCode(self));
 var flatten14 = (self) => Array.from(flattenLoop(self));
 var flattenLoop = (self) => {
   switch (self._tag) {
@@ -51597,6 +51597,19 @@ var flattenLoop = (self) => {
     }
   }
 };
+var runInShell = /* @__PURE__ */ dual(2, (self, shell) => {
+  switch (self._tag) {
+    case "StandardCommand": {
+      return {
+        ...self,
+        shell
+      };
+    }
+    case "PipedCommand": {
+      return pipeTo2(runInShell(self.left, shell), runInShell(self.right, shell));
+    }
+  }
+});
 var make54 = (command, ...args) => ({
   [CommandTypeId]: CommandTypeId,
   _tag: "StandardCommand",
@@ -51616,6 +51629,15 @@ var make54 = (command, ...args) => ({
     return pipeArguments(this, arguments);
   }
 });
+var pipeTo2 = /* @__PURE__ */ dual(2, (self, into) => ({
+  [CommandTypeId]: CommandTypeId,
+  _tag: "PipedCommand",
+  left: self,
+  right: into,
+  pipe() {
+    return pipeArguments(this, arguments);
+  }
+}));
 var stdin = /* @__PURE__ */ dual(2, (self, input2) => {
   switch (self._tag) {
     case "StandardCommand": {
@@ -51632,12 +51654,12 @@ var stdin = /* @__PURE__ */ dual(2, (self, input2) => {
     }
   }
 });
-var string7 = /* @__PURE__ */ dual((args) => isCommand(args[0]), (command, encoding) => flatMap11(CommandExecutor, (executor) => executor.string(command, encoding)));
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/Command.js
+var exitCode2 = exitCode;
 var flatten15 = flatten14;
 var make55 = make54;
-var string8 = string7;
+var runInShell2 = runInShell;
 var stdin2 = stdin;
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/CommandExecutor.js
@@ -52546,9 +52568,10 @@ var main = Effect_exports.gen(function* (_) {
           "checkout",
           Option_exports.getOrThrow(env3.issue).number.toString()
         ),
-        string8
+        runInShell2(true),
+        exitCode2
       );
-      console.log(out);
+      console.log("out", out);
       yield* _(run6);
     }
   } else if (env3.ref === `refs/heads/${baseBranch2}`) {
