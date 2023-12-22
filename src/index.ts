@@ -8,17 +8,6 @@ import * as UpdateBase from "./UpdateBase"
 import { inputSecret } from "./utils/config"
 import * as ReleasePull from "./ReleasePull"
 import * as Config from "./Config"
-import * as EnsureBranches from "./EnsureBranches"
-import { context } from "@actions/github"
-
-// // Setup the Git client layer
-// const GitLive = Git.layer({
-//   userName: nonEmptyString("github_actor"),
-//   userEmail: nonEmptyString("github_actor").pipe(
-//     Config.map(_ => `${_}@users.noreply.github.com`),
-//   ),
-//   simpleGit: Config.succeed({}),
-// })
 
 // Setup the Github API
 const GithubLive = Github.layer({
@@ -32,17 +21,13 @@ const ConfigLive = ConfigProvider.fromEnv().pipe(
 
 const main = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
-  const baseBranch = yield* _(Config.baseBranch)
   const prefix = yield* _(Config.prefix)
   const eligibleBranches = [
     `refs/heads/${prefix}-major`,
     `refs/heads/${prefix}-minor`,
   ]
 
-  console.log(context.payload)
-  if (Option.isNone(env.issue) && env.ref === `refs/heads/${baseBranch}`) {
-    yield* _(EnsureBranches.run)
-  } else if (eligibleBranches.includes(env.ref)) {
+  if (eligibleBranches.includes(env.ref)) {
     yield* _(ReleasePull.run)
   } else {
     yield* _(
