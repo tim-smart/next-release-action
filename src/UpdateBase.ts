@@ -1,4 +1,4 @@
-import { Console, Effect, Option } from "effect"
+import { Cause, Console, Effect, Option } from "effect"
 import { Changesets } from "./Changesets"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
@@ -6,9 +6,15 @@ import { Github } from "./Github"
 import { RunnerEnv } from "./Runner"
 
 export const run = Effect.gen(function* (_) {
-  const changesets = yield* _(Changesets)
   const pulls = yield* _(PullRequests)
   const pull = yield* _(pulls.current)
+  const prefix = yield* _(Config.prefix)
+
+  if (pull.head.ref.startsWith(`${prefix}-`)) {
+    return yield* _(new Cause.NoSuchElementException())
+  }
+
+  const changesets = yield* _(Changesets)
   const packages = yield* _(Config.packages)
   const changeTypeOption = yield* _(
     changesets.currentMaxType(packages),
@@ -19,7 +25,6 @@ export const run = Effect.gen(function* (_) {
   }
 
   const changeType = changeTypeOption.value
-  const prefix = yield* _(Config.prefix)
   const targetBase = `${prefix}-${changeType}`
   const currentBase = pull.base.ref as string
 
