@@ -3,10 +3,12 @@ import { ConfigProvider, Console, Effect, Layer } from "effect"
 import { ChangesetsLive } from "./Changesets"
 import * as Github from "./Github"
 import { PullRequestsLive } from "./PullRequests"
-import { RunnerEnvLive } from "./Runner"
+import { RunnerEnv, RunnerEnvLive } from "./Runner"
 import * as UpdateBase from "./UpdateBase"
 import { inputSecret } from "./utils/config"
 import * as ReleasePull from "./ReleasePull"
+import * as Config from "./Config"
+import * as EnsureBranches from "./EnsureBranches"
 
 // // Setup the Git client layer
 // const GitLive = Git.layer({
@@ -27,8 +29,28 @@ const ConfigLive = ConfigProvider.fromEnv().pipe(
   Layer.setConfigProvider,
 )
 
-const main = UpdateBase.run.pipe(
-  Effect.catchTag("NoPullRequest", () => ReleasePull.run),
+const main = Effect.gen(function* (_) {
+  const env = yield* _(RunnerEnv)
+  const baseBranch = yield* _(Config.baseBranch)
+  const prefix = yield* _(Config.prefix)
+  const eligibleBranches = [
+    `refs/heads/${prefix}-major`,
+    `refs/heads/${prefix}-minor`,
+  ]
+
+  if (env.ref === `refs/heads/${baseBranch}`) {
+    yield* _(EnsureBranches.run)
+  } else if (!eligibleBranches.includes(env.ref)) {
+    yield* _(ReleasePull.run)
+  } else {
+    yield* _(
+      UpdateBase.run,
+      Effect.catchTags({
+        NoPullRequest: () => Console.log("No pull request found"),
+      }),
+    )
+  }
+}).pipe(
   Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),
   Effect.provide(
     Layer.mergeAll(ChangesetsLive, PullRequestsLive, RunnerEnvLive).pipe(

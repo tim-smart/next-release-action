@@ -1,4 +1,4 @@
-import { Console, Effect } from "effect"
+import { Effect } from "effect"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
 import { RunnerEnv } from "./Runner"
@@ -12,7 +12,7 @@ export const run = Effect.gen(function* (_) {
   ]
 
   if (!eligibleBranches.includes(env.ref)) {
-    return yield* _(Console.log("Not a release branch"))
+    return
   }
 
   const head = env.ref.replace("refs/heads/", "")
