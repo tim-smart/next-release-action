@@ -28,12 +28,14 @@ export const make = Effect.gen(function* (_) {
     Option.as(context.issue),
   )
   const repo = context.payload.repository!
+  const comment = Option.fromNullable(context.payload.comment)
 
   return {
     tmpDir,
     mkTmpDir,
     issue,
     repo,
+    comment,
     ref: context.ref,
   } as const
 })

@@ -1,5 +1,5 @@
 import { runMain } from "@effect/platform-node/Runtime"
-import { ConfigProvider, Console, Effect, Layer } from "effect"
+import { ConfigProvider, Console, Effect, Layer, Option } from "effect"
 import { ChangesetsLive } from "./Changesets"
 import * as Github from "./Github"
 import { PullRequestsLive } from "./PullRequests"
@@ -9,6 +9,7 @@ import { inputSecret } from "./utils/config"
 import * as ReleasePull from "./ReleasePull"
 import * as Config from "./Config"
 import * as EnsureBranches from "./EnsureBranches"
+import { context } from "@actions/github"
 
 // // Setup the Git client layer
 // const GitLive = Git.layer({
@@ -38,7 +39,9 @@ const main = Effect.gen(function* (_) {
     `refs/heads/${prefix}-minor`,
   ]
 
-  if (env.ref === `refs/heads/${baseBranch}`) {
+  if (Option.isSome(env.comment)) {
+    console.log(context)
+  } else if (env.ref === `refs/heads/${baseBranch}`) {
     yield* _(EnsureBranches.run)
   } else if (eligibleBranches.includes(env.ref)) {
     yield* _(ReleasePull.run)
