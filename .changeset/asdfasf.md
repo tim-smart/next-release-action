@@ -1,5 +1,0 @@
----
-"effect": minor
----
-
-another test
