@@ -51008,7 +51008,6 @@ var make54 = Effect_exports.gen(function* (_) {
     Option_exports.as(import_github2.context.issue)
   );
   const repo = import_github2.context.payload.repository;
-  console.log(import_github2.context);
   return {
     tmpDir,
     mkTmpDir,
@@ -51246,6 +51245,7 @@ var run5 = Effect_exports.gen(function* (_) {
   const pulls = yield* _(PullRequests);
   const pull = yield* _(pulls.current);
   const prefix2 = yield* _(prefix);
+  console.log(pull.head);
   if (pull.head.ref.startsWith(`${prefix2}-`)) {
     return yield* _(new NoPullRequest());
   }

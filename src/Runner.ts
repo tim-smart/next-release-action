@@ -29,8 +29,6 @@ export const make = Effect.gen(function* (_) {
   )
   const repo = context.payload.repository!
 
-  console.log(context)
-
   return {
     tmpDir,
     mkTmpDir,

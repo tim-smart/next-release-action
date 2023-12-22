@@ -8,6 +8,7 @@ export const run = Effect.gen(function* (_) {
   const pull = yield* _(pulls.current)
   const prefix = yield* _(Config.prefix)
 
+  console.log(pull.head)
   if (pull.head.ref.startsWith(`${prefix}-`)) {
     return yield* _(new NoPullRequest())
   }
