@@ -50990,7 +50990,7 @@ var maybeNextPage = (page, linkHeader) => Option_exports.fromNullable(linkHeader
 // src/Runner.ts
 var import_github2 = __toESM(require_github());
 var make54 = Effect_exports.gen(function* (_) {
-  const github = yield* _(Github);
+  yield* _(Github);
   const fs = yield* _(FileSystem_exports2.FileSystem);
   const tmpDir = yield* _(
     Config_exports.string("RUNNER_TEMP"),
@@ -51007,8 +51007,7 @@ var make54 = Effect_exports.gen(function* (_) {
   const issue = Option_exports.fromNullable(import_github2.context.issue.number).pipe(
     Option_exports.as(import_github2.context.issue)
   );
-  const getRepo = github.wrap((_2) => _2.repos.get);
-  const repo = yield* _(getRepo(import_github2.context.repo));
+  const repo = import_github2.context.payload.repository;
   console.log(import_github2.context);
   return {
     tmpDir,
