@@ -42,15 +42,16 @@ const main = Effect.gen(function* (_) {
 
   if (Option.isSome(env.comment)) {
     if (env.comment.value.body === "/approve") {
-      yield* _(
+      const out = yield* _(
         Command.make(
           "gh",
           "pr",
           "checkout",
           Option.getOrThrow(env.issue).number.toString(),
         ),
-        Command.exitCode,
+        Command.string,
       )
+      console.log(out)
       yield* _(UpdateBase.run)
     }
   } else if (env.ref === `refs/heads/${baseBranch}`) {

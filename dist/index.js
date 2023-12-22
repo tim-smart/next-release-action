@@ -51585,7 +51585,7 @@ var collectUint8Array = /* @__PURE__ */ foldLeftChunks2(/* @__PURE__ */ new Uint
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/internal/command.js
 var CommandTypeId = /* @__PURE__ */ Symbol.for("@effect/platform/Command");
-var exitCode = (self) => flatMap11(CommandExecutor, (executor) => executor.exitCode(self));
+var isCommand = (u) => typeof u === "object" && u != null && CommandTypeId in u;
 var flatten14 = (self) => Array.from(flattenLoop(self));
 var flattenLoop = (self) => {
   switch (self._tag) {
@@ -51632,11 +51632,12 @@ var stdin = /* @__PURE__ */ dual(2, (self, input2) => {
     }
   }
 });
+var string7 = /* @__PURE__ */ dual((args) => isCommand(args[0]), (command, encoding) => flatMap11(CommandExecutor, (executor) => executor.string(command, encoding)));
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/Command.js
-var exitCode2 = exitCode;
 var flatten15 = flatten14;
 var make55 = make54;
+var string8 = string7;
 var stdin2 = stdin;
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/CommandExecutor.js
@@ -52538,15 +52539,16 @@ var main = Effect_exports.gen(function* (_) {
   ];
   if (Option_exports.isSome(env3.comment)) {
     if (env3.comment.value.body === "/approve") {
-      yield* _(
+      const out = yield* _(
         make55(
           "gh",
           "pr",
           "checkout",
           Option_exports.getOrThrow(env3.issue).number.toString()
         ),
-        exitCode2
+        string8
       );
+      console.log(out);
       yield* _(run6);
     }
   } else if (env3.ref === `refs/heads/${baseBranch2}`) {
