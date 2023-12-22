@@ -9,7 +9,8 @@ import { inputSecret } from "./utils/config"
 import * as ReleasePull from "./ReleasePull"
 import * as Config from "./Config"
 import * as EnsureBranches from "./EnsureBranches"
-import { context } from "@actions/github"
+import * as Command from "@effect/platform-node/Command"
+import * as NodeContext from "@effect/platform-node/NodeContext"
 
 // // Setup the Git client layer
 // const GitLive = Git.layer({
@@ -39,11 +40,19 @@ const main = Effect.gen(function* (_) {
     `refs/heads/${prefix}-minor`,
   ]
 
-  if (
-    Option.isSome(env.comment) &&
-    env.comment.value.body.startsWith("/approve")
-  ) {
-    yield* _(UpdateBase.run)
+  if (Option.isSome(env.comment)) {
+    if (env.comment.value.body === "/approve") {
+      yield* _(
+        Command.make(
+          "gh",
+          "pr",
+          "checkout",
+          Option.getOrThrow(env.issue).number.toString(),
+        ),
+        Command.exitCode,
+      )
+      yield* _(UpdateBase.run)
+    }
   } else if (env.ref === `refs/heads/${baseBranch}`) {
     yield* _(EnsureBranches.run)
   } else if (eligibleBranches.includes(env.ref)) {
@@ -59,10 +68,12 @@ const main = Effect.gen(function* (_) {
 }).pipe(
   Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),
   Effect.provide(
-    Layer.mergeAll(ChangesetsLive, PullRequestsLive, RunnerEnvLive).pipe(
-      Layer.provideMerge(GithubLive),
-      Layer.provide(ConfigLive),
-    ),
+    Layer.mergeAll(
+      ChangesetsLive,
+      NodeContext.layer,
+      PullRequestsLive,
+      RunnerEnvLive,
+    ).pipe(Layer.provideMerge(GithubLive), Layer.provide(ConfigLive)),
   ),
 )
 
