@@ -26,7 +26,6 @@ export const run = Effect.gen(function* (_) {
   const targetBase = `${prefix}-${changeType}`
   const currentBase = pull.base.ref as string
 
-  console.log(targetBase, currentBase)
   if (currentBase === targetBase) {
     return yield* _(Console.log("No update needed"))
   }
