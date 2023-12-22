@@ -2,4 +2,4 @@
 "effect": minor
 ---
 
-update effect
+another test

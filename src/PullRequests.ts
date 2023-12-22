@@ -1,6 +1,7 @@
 import { context } from "@actions/github"
 import {
   Context,
+  Data,
   Effect,
   Layer,
   Order,
@@ -11,6 +12,8 @@ import {
 } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv, RunnerEnvLive } from "./Runner"
+
+export class NoPullRequest extends Data.TaggedError("NoPullRequest") {}
 
 const make = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
@@ -66,7 +69,9 @@ const make = Effect.gen(function* (_) {
         }),
     })
 
-  const current = Effect.fromNullable(context.payload.pull_request)
+  const current = Effect.fromNullable(context.payload.pull_request).pipe(
+    Effect.mapError(() => new NoPullRequest()),
+  )
 
   const files = (options: {
     readonly owner: string
@@ -80,11 +85,11 @@ const make = Effect.gen(function* (_) {
       }),
     )
 
-  const currentFiles = env.issue.pipe(
+  const currentFiles = current.pipe(
     Effect.map(issue =>
       files({
-        owner: issue.owner,
-        repo: issue.repo,
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
         pull_number: issue.number,
       }),
     ),

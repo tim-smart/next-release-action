@@ -1,5 +1,5 @@
 import { runMain } from "@effect/platform-node/Runtime"
-import { Console, Effect, Layer } from "effect"
+import { ConfigProvider, Console, Effect, Layer } from "effect"
 import { ChangesetsLive } from "./Changesets"
 import * as Github from "./Github"
 import { PullRequestsLive } from "./PullRequests"
@@ -22,12 +22,18 @@ const GithubLive = Github.layer({
   token: inputSecret("github_token"),
 })
 
+const ConfigLive = ConfigProvider.fromEnv().pipe(
+  ConfigProvider.constantCase,
+  Layer.setConfigProvider,
+)
+
 const main = UpdateBase.run.pipe(
-  Effect.catchTag("NoSuchElementException", () => ReleasePull.run),
+  Effect.catchTag("NoPullRequest", () => ReleasePull.run),
   Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),
   Effect.provide(
     Layer.mergeAll(ChangesetsLive, PullRequestsLive, RunnerEnvLive).pipe(
       Layer.provideMerge(GithubLive),
+      Layer.provide(ConfigLive),
     ),
   ),
 )

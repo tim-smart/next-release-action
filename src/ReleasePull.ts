@@ -1,8 +1,7 @@
-import { Console, Effect, Stream } from "effect"
-import { RunnerEnv } from "./Runner"
+import { Console, Effect } from "effect"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
-import { Github } from "./Github"
+import { RunnerEnv } from "./Runner"
 
 export const run = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
