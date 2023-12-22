@@ -29078,8 +29078,8 @@ var gen3 = function() {
   return suspend(() => {
     const iterator2 = f(adapter4);
     const state = iterator2.next();
-    const run7 = (state2) => state2.done ? succeed(state2.value) : pipe(state2.value.value, flatMap9((val) => run7(iterator2.next(val))));
-    return run7(state);
+    const run8 = (state2) => state2.done ? succeed(state2.value) : pipe(state2.value.value, flatMap9((val) => run8(iterator2.next(val))));
+    return run8(state);
   });
 };
 var fiberRefs2 = /* @__PURE__ */ withFiberRuntime((state) => succeed(state.getFiberRefs()));
@@ -33038,8 +33038,8 @@ var MemoMapImpl = class {
 };
 var makeMemoMap = /* @__PURE__ */ suspend(() => map10(makeSynchronized(/* @__PURE__ */ new Map()), (ref) => new MemoMapImpl(ref)));
 var build = (self) => scopeWith((scope5) => buildWithScope(self, scope5));
-var buildWithScope = /* @__PURE__ */ dual(2, (self, scope5) => flatMap9(makeMemoMap, (memoMap) => flatMap9(makeBuilder(self, scope5), (run7) => run7(memoMap))));
-var buildWithMemoMap = /* @__PURE__ */ dual(3, (self, memoMap, scope5) => flatMap9(makeBuilder(self, scope5), (run7) => run7(memoMap)));
+var buildWithScope = /* @__PURE__ */ dual(2, (self, scope5) => flatMap9(makeMemoMap, (memoMap) => flatMap9(makeBuilder(self, scope5), (run8) => run8(memoMap))));
+var buildWithMemoMap = /* @__PURE__ */ dual(3, (self, memoMap, scope5) => flatMap9(makeBuilder(self, scope5), (run8) => run8(memoMap)));
 var makeBuilder = (self, scope5, inMemoMap = false) => {
   const op = self;
   switch (op._tag) {
@@ -36813,14 +36813,14 @@ var readUpstream = (r, onSuccess, onFailure) => {
 };
 var run = (self) => pipe(runScoped(self), scoped2);
 var runScoped = (self) => {
-  const run7 = (channelDeferred, scopeDeferred, scope5) => acquireUseRelease2(sync3(() => new ChannelExecutor(self, void 0, identity)), (exec) => suspend3(() => pipe(runScopedInterpret(exec.run(), exec), intoDeferred2(channelDeferred), zipRight4(_await(channelDeferred)), zipLeft3(_await(scopeDeferred)))), (exec, exit4) => {
+  const run8 = (channelDeferred, scopeDeferred, scope5) => acquireUseRelease2(sync3(() => new ChannelExecutor(self, void 0, identity)), (exec) => suspend3(() => pipe(runScopedInterpret(exec.run(), exec), intoDeferred2(channelDeferred), zipRight4(_await(channelDeferred)), zipLeft3(_await(scopeDeferred)))), (exec, exit4) => {
     const finalize = exec.close(exit4);
     if (finalize === void 0) {
       return unit5;
     }
     return tapErrorCause3(finalize, (cause3) => addFinalizer2(scope5, failCause6(cause3)));
   });
-  return uninterruptibleMask2((restore) => flatMap11(scope3, (parent) => pipe(all6([fork2(parent, sequential3), make22(), make22()]), flatMap11(([child, channelDeferred, scopeDeferred]) => pipe(forkScoped2(restore(run7(channelDeferred, scopeDeferred, child))), flatMap11((fiber) => pipe(addFinalizer3(() => succeed2(scopeDeferred, void 0)), zipRight4(restore(_await(channelDeferred))), zipLeft3(inheritAll2(fiber)))))))));
+  return uninterruptibleMask2((restore) => flatMap11(scope3, (parent) => pipe(all6([fork2(parent, sequential3), make22(), make22()]), flatMap11(([child, channelDeferred, scopeDeferred]) => pipe(forkScoped2(restore(run8(channelDeferred, scopeDeferred, child))), flatMap11((fiber) => pipe(addFinalizer3(() => succeed2(scopeDeferred, void 0)), zipRight4(restore(_await(channelDeferred))), zipLeft3(inheritAll2(fiber)))))))));
 };
 var runScopedInterpret = (channelState, exec) => {
   const op = channelState;
@@ -49607,9 +49607,9 @@ function isPlainObject(value3) {
 // node_modules/.pnpm/trough@2.1.0/node_modules/trough/index.js
 function trough() {
   const fns = [];
-  const pipeline = { run: run7, use: use2 };
+  const pipeline = { run: run8, use: use2 };
   return pipeline;
-  function run7(...values3) {
+  function run8(...values3) {
     let middlewareIndex = -1;
     const callback = values3.pop();
     if (typeof callback !== "function") {
@@ -51264,47 +51264,8 @@ var run5 = Effect_exports.gen(function* (_) {
   if (currentBase === targetBase) {
     return yield* _(Console_exports.log("No update needed"));
   }
-  if (changeType === "major") {
-    yield* _(ensureBranchFor("minor"));
-  }
-  yield* _(ensureBranchFor(changeType));
   yield* _(pulls.setCurrentBase(targetBase));
   yield* _(Console_exports.log(`Updated base to ${targetBase}`));
-});
-var getBranch = (branch) => Effect_exports.gen(function* (_) {
-  const env = yield* _(RunnerEnv);
-  const github = yield* _(Github);
-  const getBranch2 = github.wrap((_2) => _2.repos.getBranch);
-  return yield* _(
-    getBranch2({
-      owner: env.repo.owner.login,
-      repo: env.repo.name,
-      branch
-    })
-  );
-});
-var getDefaultBranch = Effect_exports.flatMap(baseBranch, getBranch);
-var ensureBranchFor = (changeType) => Effect_exports.gen(function* (_) {
-  const env = yield* _(RunnerEnv);
-  const github = yield* _(Github);
-  const prefix2 = yield* _(prefix);
-  const baseBranch2 = changeType === "minor" ? yield* _(getDefaultBranch) : yield* _(getBranch(`${prefix2}-minor`));
-  const sha = baseBranch2.commit.sha;
-  const ref = `${prefix2}-${changeType}`;
-  const createBranch = github.wrap((_2) => _2.git.createRef);
-  const create = createBranch({
-    owner: env.repo.owner.login,
-    repo: env.repo.name,
-    ref: `refs/heads/${ref}`,
-    sha
-  });
-  yield* _(
-    getBranch(ref),
-    Effect_exports.catchIf(
-      (e) => e.reason.status === 404,
-      (_2) => create
-    )
-  );
 });
 
 // src/ReleasePull.ts
@@ -51316,7 +51277,7 @@ var run6 = Effect_exports.gen(function* (_) {
     `refs/heads/${prefix2}-minor`
   ];
   if (!eligibleBranches.includes(env.ref)) {
-    return yield* _(Console_exports.log("Not a release branch"));
+    return;
   }
   const head7 = env.ref.replace("refs/heads/", "");
   const base = head7.endsWith("-major") ? `${prefix2}-minor` : yield* _(baseBranch);
@@ -51347,6 +51308,47 @@ var pullBody = (number5) => Effect_exports.gen(function* (_) {
 ${listItems}`;
 });
 
+// src/EnsureBranches.ts
+var run7 = Effect_exports.gen(function* (_) {
+  yield* _(ensureBranch("minor"));
+  yield* _(ensureBranch("major"));
+});
+var ensureBranch = (changeType) => Effect_exports.gen(function* (_) {
+  const env = yield* _(RunnerEnv);
+  const github = yield* _(Github);
+  const prefix2 = yield* _(prefix);
+  const baseBranch2 = yield* _(getDefaultBranch);
+  const sha = baseBranch2.commit.sha;
+  const ref = `${prefix2}-${changeType}`;
+  const createBranch = github.wrap((_2) => _2.git.createRef);
+  const create = createBranch({
+    owner: env.repo.owner.login,
+    repo: env.repo.name,
+    ref: `refs/heads/${ref}`,
+    sha
+  });
+  yield* _(
+    getBranch(ref),
+    Effect_exports.catchIf(
+      (e) => e.reason.status === 404,
+      (_2) => create
+    )
+  );
+});
+var getBranch = (branch) => Effect_exports.gen(function* (_) {
+  const env = yield* _(RunnerEnv);
+  const github = yield* _(Github);
+  const getBranch2 = github.wrap((_2) => _2.repos.getBranch);
+  return yield* _(
+    getBranch2({
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
+      branch
+    })
+  );
+});
+var getDefaultBranch = Effect_exports.flatMap(baseBranch, getBranch);
+
 // src/index.ts
 var GithubLive = layer3({
   token: inputSecret("github_token")
@@ -51355,8 +51357,27 @@ var ConfigLive = ConfigProvider_exports.fromEnv().pipe(
   ConfigProvider_exports.constantCase,
   Layer_exports.setConfigProvider
 );
-var main = run5.pipe(
-  Effect_exports.catchTag("NoPullRequest", () => run6),
+var main = Effect_exports.gen(function* (_) {
+  const env = yield* _(RunnerEnv);
+  const baseBranch2 = yield* _(baseBranch);
+  const prefix2 = yield* _(prefix);
+  const eligibleBranches = [
+    `refs/heads/${prefix2}-major`,
+    `refs/heads/${prefix2}-minor`
+  ];
+  if (env.ref === `refs/heads/${baseBranch2}`) {
+    yield* _(run7);
+  } else if (!eligibleBranches.includes(env.ref)) {
+    yield* _(run6);
+  } else {
+    yield* _(
+      run5,
+      Effect_exports.catchTags({
+        NoPullRequest: () => Console_exports.log("No pull request found")
+      })
+    );
+  }
+}).pipe(
   Effect_exports.tapErrorTag("GithubError", (error3) => Console_exports.error(error3.reason)),
   Effect_exports.provide(
     Layer_exports.mergeAll(ChangesetsLive, PullRequestsLive, RunnerEnvLive).pipe(
