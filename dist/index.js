@@ -3451,18 +3451,18 @@ var require_webidl = __commonJS({
     webidl.errors.exception = function(message) {
       return new TypeError(`${message.header}: ${message.message}`);
     };
-    webidl.errors.conversionFailed = function(context12) {
-      const plural = context12.types.length === 1 ? "" : " one of";
-      const message = `${context12.argument} could not be converted to${plural}: ${context12.types.join(", ")}.`;
+    webidl.errors.conversionFailed = function(context11) {
+      const plural = context11.types.length === 1 ? "" : " one of";
+      const message = `${context11.argument} could not be converted to${plural}: ${context11.types.join(", ")}.`;
       return webidl.errors.exception({
-        header: context12.prefix,
+        header: context11.prefix,
         message
       });
     };
-    webidl.errors.invalidArgument = function(context12) {
+    webidl.errors.invalidArgument = function(context11) {
       return webidl.errors.exception({
-        header: context12.prefix,
-        message: `"${context12.value}" is an invalid ${context12.type}.`
+        header: context11.prefix,
+        message: `"${context11.value}" is an invalid ${context11.type}.`
       });
     };
     webidl.brandCheck = function(V, I, opts = void 0) {
@@ -8747,15 +8747,15 @@ var require_api_request = __commonJS({
         }
         addSignal(this, signal);
       }
-      onConnect(abort, context12) {
+      onConnect(abort, context11) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context12;
+        this.context = context11;
       }
       onHeaders(statusCode, rawHeaders, resume2, statusMessage) {
-        const { callback, opaque, abort, context: context12, responseHeaders, highWaterMark } = this;
+        const { callback, opaque, abort, context: context11, responseHeaders, highWaterMark } = this;
         const headers = responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
         if (statusCode < 200) {
           if (this.onInfo) {
@@ -8782,7 +8782,7 @@ var require_api_request = __commonJS({
               trailers: this.trailers,
               opaque,
               body,
-              context: context12
+              context: context11
             });
           }
         }
@@ -8900,15 +8900,15 @@ var require_api_stream = __commonJS({
         }
         addSignal(this, signal);
       }
-      onConnect(abort, context12) {
+      onConnect(abort, context11) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context12;
+        this.context = context11;
       }
       onHeaders(statusCode, rawHeaders, resume2, statusMessage) {
-        const { factory, opaque, context: context12, callback, responseHeaders } = this;
+        const { factory, opaque, context: context11, callback, responseHeaders } = this;
         const headers = responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
         if (statusCode < 200) {
           if (this.onInfo) {
@@ -8936,7 +8936,7 @@ var require_api_stream = __commonJS({
             statusCode,
             headers,
             opaque,
-            context: context12
+            context: context11
           });
           if (!res || typeof res.write !== "function" || typeof res.end !== "function" || typeof res.on !== "function") {
             throw new InvalidReturnValueError("expected Writable");
@@ -9127,17 +9127,17 @@ var require_api_pipeline = __commonJS({
         this.res = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context12) {
+      onConnect(abort, context11) {
         const { ret, res } = this;
         assert3(!res, "pipeline cannot be retried");
         if (ret.destroyed) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context12;
+        this.context = context11;
       }
       onHeaders(statusCode, rawHeaders, resume2) {
-        const { opaque, handler: handler2, context: context12 } = this;
+        const { opaque, handler: handler2, context: context11 } = this;
         if (statusCode < 200) {
           if (this.onInfo) {
             const headers = this.responseHeaders === "raw" ? util.parseRawHeaders(rawHeaders) : util.parseHeaders(rawHeaders);
@@ -9155,7 +9155,7 @@ var require_api_pipeline = __commonJS({
             headers,
             opaque,
             body: this.res,
-            context: context12
+            context: context11
           });
         } catch (err) {
           this.res.on("error", util.nop);
@@ -9238,7 +9238,7 @@ var require_api_upgrade = __commonJS({
         this.context = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context12) {
+      onConnect(abort, context11) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
@@ -9249,7 +9249,7 @@ var require_api_upgrade = __commonJS({
         throw new SocketError("bad upgrade", null);
       }
       onUpgrade(statusCode, rawHeaders, socket) {
-        const { callback, opaque, context: context12 } = this;
+        const { callback, opaque, context: context11 } = this;
         assert3.strictEqual(statusCode, 101);
         removeSignal(this);
         this.callback = null;
@@ -9258,7 +9258,7 @@ var require_api_upgrade = __commonJS({
           headers,
           socket,
           opaque,
-          context: context12
+          context: context11
         });
       }
       onError(err) {
@@ -9325,18 +9325,18 @@ var require_api_connect = __commonJS({
         this.abort = null;
         addSignal(this, signal);
       }
-      onConnect(abort, context12) {
+      onConnect(abort, context11) {
         if (!this.callback) {
           throw new RequestAbortedError();
         }
         this.abort = abort;
-        this.context = context12;
+        this.context = context11;
       }
       onHeaders() {
         throw new SocketError("bad connect", null);
       }
       onUpgrade(statusCode, rawHeaders, socket) {
-        const { callback, opaque, context: context12 } = this;
+        const { callback, opaque, context: context11 } = this;
         removeSignal(this);
         this.callback = null;
         let headers = rawHeaders;
@@ -9348,7 +9348,7 @@ var require_api_connect = __commonJS({
           headers,
           socket,
           opaque,
-          context: context12
+          context: context11
         });
       }
       onError(err) {
@@ -17159,8 +17159,8 @@ function isDefined(value3) {
 function isKeyOperator(operator) {
   return operator === ";" || operator === "&" || operator === "?";
 }
-function getValues(context12, operator, key, modifier) {
-  var value3 = context12[key], result = [];
+function getValues(context11, operator, key, modifier) {
+  var value3 = context11[key], result = [];
   if (isDefined(value3) && value3 !== "") {
     if (typeof value3 === "string" || typeof value3 === "number" || typeof value3 === "boolean") {
       value3 = value3.toString();
@@ -17224,7 +17224,7 @@ function parseUrl(template) {
     expand: expand2.bind(null, template)
   };
 }
-function expand2(template, context12) {
+function expand2(template, context11) {
   var operators = ["+", "#", ".", "/", ";", "?", "&"];
   template = template.replace(
     /\{([^\{\}]+)\}|([^\{\}]+)/g,
@@ -17238,7 +17238,7 @@ function expand2(template, context12) {
         }
         expression.split(/,/g).forEach(function(variable) {
           var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
-          values3.push(getValues(context12, operator, tmp[1], tmp[2] || tmp[3]));
+          values3.push(getValues(context11, operator, tmp[1], tmp[2] || tmp[3]));
         });
         if (operator && operator !== "+") {
           var separator = ",";
@@ -24202,26 +24202,26 @@ var reduce6 = /* @__PURE__ */ dual(3, (self, zero2, pf) => {
   }
   return accumulator;
 });
-var reduceWithContext = /* @__PURE__ */ dual(3, (self, context12, reducer) => {
+var reduceWithContext = /* @__PURE__ */ dual(3, (self, context11, reducer) => {
   const input2 = [self];
   const output = [];
   while (input2.length > 0) {
     const cause3 = input2.pop();
     switch (cause3._tag) {
       case OP_EMPTY: {
-        output.push(right2(reducer.emptyCase(context12)));
+        output.push(right2(reducer.emptyCase(context11)));
         break;
       }
       case OP_FAIL: {
-        output.push(right2(reducer.failCase(context12, cause3.error)));
+        output.push(right2(reducer.failCase(context11, cause3.error)));
         break;
       }
       case OP_DIE: {
-        output.push(right2(reducer.dieCase(context12, cause3.defect)));
+        output.push(right2(reducer.dieCase(context11, cause3.defect)));
         break;
       }
       case OP_INTERRUPT: {
-        output.push(right2(reducer.interruptCase(context12, cause3.fiberId)));
+        output.push(right2(reducer.interruptCase(context11, cause3.fiberId)));
         break;
       }
       case OP_SEQUENTIAL: {
@@ -24251,14 +24251,14 @@ var reduceWithContext = /* @__PURE__ */ dual(3, (self, context12, reducer) => {
           case OP_SEQUENTIAL_CASE: {
             const left3 = accumulator.pop();
             const right3 = accumulator.pop();
-            const value3 = reducer.sequentialCase(context12, left3, right3);
+            const value3 = reducer.sequentialCase(context11, left3, right3);
             accumulator.push(value3);
             break;
           }
           case OP_PARALLEL_CASE: {
             const left3 = accumulator.pop();
             const right3 = accumulator.pop();
-            const value3 = reducer.parallelCase(context12, left3, right3);
+            const value3 = reducer.parallelCase(context11, left3, right3);
             accumulator.push(value3);
             break;
           }
@@ -24473,9 +24473,9 @@ var ContextProto = {
   }
 };
 var makeContext = (unsafeMap) => {
-  const context12 = Object.create(ContextProto);
-  context12.unsafeMap = unsafeMap;
-  return context12;
+  const context11 = Object.create(ContextProto);
+  context11.unsafeMap = unsafeMap;
+  return context11;
 };
 var serviceNotFoundError = (tag2) => {
   const error3 = new Error(`Service not found${tag2.identifier ? `: ${String(tag2.identifier)}` : ""}`);
@@ -24993,13 +24993,13 @@ var diff = (oldValue, newValue) => {
   return patch9;
 };
 var combine5 = /* @__PURE__ */ dual(2, (self, that) => makeAndThen(self, that));
-var patch = /* @__PURE__ */ dual(2, (self, context12) => {
+var patch = /* @__PURE__ */ dual(2, (self, context11) => {
   if (self._tag === "Empty") {
-    return context12;
+    return context11;
   }
   let wasServiceUpdated = false;
   let patches = of2(self);
-  const updatedContext = new Map(context12.unsafeMap);
+  const updatedContext = new Map(context11.unsafeMap);
   while (isNonEmpty(patches)) {
     const head7 = headNonEmpty2(patches);
     const tail3 = tailNonEmpty2(patches);
@@ -25034,7 +25034,7 @@ var patch = /* @__PURE__ */ dual(2, (self, context12) => {
     return makeContext(updatedContext);
   }
   const map25 = /* @__PURE__ */ new Map();
-  for (const [tag2] of context12.unsafeMap) {
+  for (const [tag2] of context11.unsafeMap) {
     if (updatedContext.has(tag2)) {
       map25.set(tag2, updatedContext.get(tag2));
       updatedContext.delete(tag2);
@@ -25574,10 +25574,10 @@ var NativeSpan = class {
   status;
   attributes;
   events = [];
-  constructor(name, parent, context12, links, startTime) {
+  constructor(name, parent, context11, links, startTime) {
     this.name = name;
     this.parent = parent;
-    this.context = context12;
+    this.context = context11;
     this.links = links;
     this.startTime = startTime;
     this.status = {
@@ -25603,7 +25603,7 @@ var NativeSpan = class {
   };
 };
 var nativeTracer = /* @__PURE__ */ make17({
-  span: (name, parent, context12, links, startTime) => new NativeSpan(name, parent, context12, links, startTime),
+  span: (name, parent, context11, links, startTime) => new NativeSpan(name, parent, context11, links, startTime),
   context: (f) => f()
 });
 
@@ -26654,9 +26654,9 @@ var deferredInterruptJoiner = (self, joiner) => sync(() => {
 var constContext = /* @__PURE__ */ fiberRefGet(currentContext);
 var context = () => constContext;
 var contextWithEffect = (f) => flatMap9(context(), f);
-var provideContext = /* @__PURE__ */ dual(2, (self, context12) => fiberRefLocally(currentContext, context12)(self));
-var provideSomeContext = /* @__PURE__ */ dual(2, (self, context12) => fiberRefLocallyWith(currentContext, (parent) => merge3(parent, context12))(self));
-var mapInputContext = /* @__PURE__ */ dual(2, (self, f) => contextWithEffect((context12) => provideContext(self, f(context12))));
+var provideContext = /* @__PURE__ */ dual(2, (self, context11) => fiberRefLocally(currentContext, context11)(self));
+var provideSomeContext = /* @__PURE__ */ dual(2, (self, context11) => fiberRefLocallyWith(currentContext, (parent) => merge3(parent, context11))(self));
+var mapInputContext = /* @__PURE__ */ dual(2, (self, f) => contextWithEffect((context11) => provideContext(self, f(context11))));
 var currentSpanFromFiber = (fiber) => {
   const span4 = fiber.getFiberRef(currentContext).unsafeMap.get(spanTag);
   return span4 !== void 0 && span4._tag === "Span" ? some2(span4) : none2();
@@ -27433,7 +27433,7 @@ var IsMissingDataOnlyReducer = {
   sourceUnavailableCase: constFalse,
   unsupportedCase: constFalse
 };
-var reduceWithContext2 = /* @__PURE__ */ dual(3, (self, context12, reducer) => {
+var reduceWithContext2 = /* @__PURE__ */ dual(3, (self, context11, reducer) => {
   const input2 = [self];
   const output = [];
   while (input2.length > 0) {
@@ -27456,19 +27456,19 @@ var reduceWithContext2 = /* @__PURE__ */ dual(3, (self, context12, reducer) => {
         break;
       }
       case OP_INVALID_DATA: {
-        output.push(right2(reducer.invalidDataCase(context12, error3.path, error3.message)));
+        output.push(right2(reducer.invalidDataCase(context11, error3.path, error3.message)));
         break;
       }
       case OP_MISSING_DATA: {
-        output.push(right2(reducer.missingDataCase(context12, error3.path, error3.message)));
+        output.push(right2(reducer.missingDataCase(context11, error3.path, error3.message)));
         break;
       }
       case OP_SOURCE_UNAVAILABLE: {
-        output.push(right2(reducer.sourceUnavailableCase(context12, error3.path, error3.message, error3.cause)));
+        output.push(right2(reducer.sourceUnavailableCase(context11, error3.path, error3.message, error3.cause)));
         break;
       }
       case OP_UNSUPPORTED: {
-        output.push(right2(reducer.unsupportedCase(context12, error3.path, error3.message)));
+        output.push(right2(reducer.unsupportedCase(context11, error3.path, error3.message)));
         break;
       }
     }
@@ -27482,14 +27482,14 @@ var reduceWithContext2 = /* @__PURE__ */ dual(3, (self, context12, reducer) => {
           case "AndCase": {
             const left3 = accumulator.pop();
             const right3 = accumulator.pop();
-            const value3 = reducer.andCase(context12, left3, right3);
+            const value3 = reducer.andCase(context11, left3, right3);
             accumulator.push(value3);
             break;
           }
           case "OrCase": {
             const left3 = accumulator.pop();
             const right3 = accumulator.pop();
-            const value3 = reducer.orCase(context12, left3, right3);
+            const value3 = reducer.orCase(context11, left3, right3);
             accumulator.push(value3);
             break;
           }
@@ -29352,7 +29352,7 @@ var updateFiberRefs = (f) => withFiberRuntime((state) => {
   state.setFiberRefs(f(state.id(), state.getFiberRefs()));
   return unit2;
 });
-var updateService = /* @__PURE__ */ dual(3, (self, tag2, f) => mapInputContext(self, (context12) => add4(context12, tag2, f(unsafeGet5(context12, tag2)))));
+var updateService = /* @__PURE__ */ dual(3, (self, tag2, f) => mapInputContext(self, (context11) => add4(context11, tag2, f(unsafeGet5(context11, tag2)))));
 var when = /* @__PURE__ */ dual(2, (self, predicate) => suspend(() => predicate() ? map10(self, some2) : succeed(none2())));
 var whenFiberRef = /* @__PURE__ */ dual(3, (self, fiberRef, predicate) => flatMap9(fiberRefGet(fiberRef), (s) => predicate(s) ? map10(self, (a) => [s, some2(a)]) : succeed([s, none2()])));
 var whenRef = /* @__PURE__ */ dual(3, (self, ref, predicate) => flatMap9(get11(ref), (s) => predicate(s) ? map10(self, (a) => [s, some2(a)]) : succeed([s, none2()])));
@@ -29392,8 +29392,8 @@ var annotateSpans = /* @__PURE__ */ dual((args) => isEffect(args[0]), function()
   return fiberRefLocallyWith(args[0], currentTracerSpanAnnotations, typeof args[1] === "string" ? set3(args[1], args[2]) : (annotations) => Object.entries(args[1]).reduce((acc, [key, value3]) => set3(acc, key, value3), annotations));
 });
 var currentParentSpan = /* @__PURE__ */ serviceOptional(spanTag);
-var currentSpan = /* @__PURE__ */ flatMap9(/* @__PURE__ */ context(), (context12) => {
-  const span4 = context12.unsafeMap.get(spanTag);
+var currentSpan = /* @__PURE__ */ flatMap9(/* @__PURE__ */ context(), (context11) => {
+  const span4 = context11.unsafeMap.get(spanTag);
   return span4 !== void 0 && span4._tag === "Span" ? succeed(span4) : fail2(new NoSuchElementException());
 });
 var bigint0 = /* @__PURE__ */ BigInt(0);
@@ -29404,14 +29404,14 @@ var linkSpans = /* @__PURE__ */ dual((args) => isEffect(args[0]), (self, span4, 
   attributes: attributes ?? {}
 })));
 var makeSpan = (name, options) => flatMap9(fiberRefs2, (fiberRefs3) => sync(() => {
-  const context12 = getOrDefault2(fiberRefs3, currentContext);
+  const context11 = getOrDefault2(fiberRefs3, currentContext);
   const services = getOrDefault2(fiberRefs3, currentServices);
   const tracer3 = get5(services, tracerTag);
   const clock3 = get5(services, Clock);
   const timingEnabled = getOrDefault2(fiberRefs3, currentTracerTimingEnabled);
   const annotationsFromEnv = get9(fiberRefs3, currentTracerSpanAnnotations);
   const linksFromEnv = get9(fiberRefs3, currentTracerSpanLinks);
-  const parent = options?.parent ? some2(options.parent) : options?.root ? none2() : getOption2(context12, spanTag);
+  const parent = options?.parent ? some2(options.parent) : options?.root ? none2() : getOption2(context11, spanTag);
   const links = linksFromEnv._tag === "Some" ? [...toReadonlyArray(linksFromEnv.value), ...options?.links ?? []] : options?.links ?? [];
   const span4 = tracer3.span(name, parent, options?.context ?? empty9(), links, timingEnabled ? clock3.unsafeCurrentTimeNanos() : bigint0);
   if (annotationsFromEnv._tag === "Some") {
@@ -30525,8 +30525,8 @@ var ProxySupervisor = class _ProxySupervisor {
   get value() {
     return this.value0;
   }
-  onStart(context12, effect3, parent, fiber) {
-    this.underlying.onStart(context12, effect3, parent, fiber);
+  onStart(context11, effect3, parent, fiber) {
+    this.underlying.onStart(context11, effect3, parent, fiber);
   }
   onEnd(value3, fiber) {
     this.underlying.onEnd(value3, fiber);
@@ -30559,9 +30559,9 @@ var Zip = class _Zip {
   get value() {
     return zip3(this.left.value, this.right.value);
   }
-  onStart(context12, effect3, parent, fiber) {
-    this.left.onStart(context12, effect3, parent, fiber);
-    this.right.onStart(context12, effect3, parent, fiber);
+  onStart(context11, effect3, parent, fiber) {
+    this.left.onStart(context11, effect3, parent, fiber);
+    this.right.onStart(context11, effect3, parent, fiber);
   }
   onEnd(value3, fiber) {
     this.left.onEnd(value3, fiber);
@@ -31503,7 +31503,7 @@ var FiberRuntime = class {
     }
   }
   [OP_TAG](op) {
-    return map10(fiberRefGet(currentContext), (context12) => unsafeGet5(context12, op));
+    return map10(fiberRefGet(currentContext), (context11) => unsafeGet5(context11, op));
   }
   ["Left"](op) {
     return fail2(op.left);
@@ -31742,13 +31742,13 @@ var defaultLogger = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effe
 var tracerLogger = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/Logger/tracerLogger"), () => makeLogger(({
   annotations,
   cause: cause3,
-  context: context12,
+  context: context11,
   fiberId: fiberId3,
   logLevel: logLevel3,
   message
 }) => {
-  const span4 = flatMap(get8(context12, currentContext), getOption2(spanTag));
-  const clockService = map(get8(context12, currentServices), (_) => get5(_, clockTag));
+  const span4 = flatMap(get8(context11, currentContext), getOption2(spanTag));
+  const clockService = map(get8(context11, currentServices), (_) => get5(_, clockTag));
   if (span4._tag === "None" || span4.value._tag === "ExternalSpan" || clockService._tag === "None") {
     return;
   }
@@ -32099,7 +32099,7 @@ var reduceEffect = /* @__PURE__ */ dual((args) => isIterable(args[0]), (elements
     }
   }
 })))));
-var parallelFinalizers = (self) => contextWithEffect((context12) => match(getOption2(context12, scopeTag), {
+var parallelFinalizers = (self) => contextWithEffect((context11) => match(getOption2(context11, scopeTag), {
   onNone: () => self,
   onSome: (scope5) => {
     switch (scope5.strategy._tag) {
@@ -32111,7 +32111,7 @@ var parallelFinalizers = (self) => contextWithEffect((context12) => match(getOpt
     }
   }
 }));
-var parallelNFinalizers = (parallelism) => (self) => contextWithEffect((context12) => match(getOption2(context12, scopeTag), {
+var parallelNFinalizers = (parallelism) => (self) => contextWithEffect((context11) => match(getOption2(context11, scopeTag), {
   onNone: () => self,
   onSome: (scope5) => {
     if (scope5.strategy._tag === "ParallelN" && scope5.strategy.parallelism === parallelism) {
@@ -32120,7 +32120,7 @@ var parallelNFinalizers = (parallelism) => (self) => contextWithEffect((context1
     return flatMap9(scopeFork(scope5, parallelN2(parallelism)), (inner) => scopeExtend(self, inner));
   }
 }));
-var finalizersMask = (strategy) => (self) => contextWithEffect((context12) => match(getOption2(context12, scopeTag), {
+var finalizersMask = (strategy) => (self) => contextWithEffect((context11) => match(getOption2(context11, scopeTag), {
   onNone: () => self(identity),
   onSome: (scope5) => {
     const patch9 = strategy._tag === "Parallel" ? parallelFinalizers : strategy._tag === "Sequential" ? sequentialFinalizers : parallelNFinalizers(strategy.parallelism);
@@ -32136,7 +32136,7 @@ var finalizersMask = (strategy) => (self) => contextWithEffect((context12) => ma
 }));
 var scopeWith = (f) => flatMap9(scopeTag, f);
 var scopedEffect = (effect3) => flatMap9(scopeMake(), (scope5) => scopeUse(scope5)(effect3));
-var sequentialFinalizers = (self) => contextWithEffect((context12) => match(getOption2(context12, scopeTag), {
+var sequentialFinalizers = (self) => contextWithEffect((context11) => match(getOption2(context11, scopeTag), {
   onNone: () => self,
   onSome: (scope5) => {
     switch (scope5.strategy._tag) {
@@ -32942,8 +32942,8 @@ var RuntimeImpl = class {
   context;
   runtimeFlags;
   fiberRefs;
-  constructor(context12, runtimeFlags2, fiberRefs3) {
-    this.context = context12;
+  constructor(context11, runtimeFlags2, fiberRefs3) {
+    this.context = context11;
     this.runtimeFlags = runtimeFlags2;
     this.fiberRefs = fiberRefs3;
   }
@@ -33139,7 +33139,7 @@ var fiberRefLocallyScoped2 = (self, value3) => scopedDiscard(fiberRefLocallyScop
 var fiberRefLocallyScopedWith2 = (self, value3) => scopedDiscard(fiberRefLocallyScopedWith(self, value3));
 var fromFunction = (tagA, tagB, f) => fromEffectContext(map10(tagA, (a) => make10(tagB, f(a))));
 var launch = (self) => scopedEffect(zipRight2(scopeWith((scope5) => pipe(self, buildWithScope(scope5))), never));
-var map14 = /* @__PURE__ */ dual(2, (self, f) => flatMap10(self, (context12) => succeedContext(f(context12))));
+var map14 = /* @__PURE__ */ dual(2, (self, f) => flatMap10(self, (context11) => succeedContext(f(context11))));
 var mapError2 = /* @__PURE__ */ dual(2, (self, f) => catchAll2(self, (error3) => failSync2(() => f(error3))));
 var matchCause2 = /* @__PURE__ */ dual(2, (self, {
   onFailure,
@@ -33181,7 +33181,7 @@ var mergeAll2 = (...layers) => {
 var orDie2 = (self) => catchAll2(self, (defect) => die5(defect));
 var orElse6 = /* @__PURE__ */ dual(2, (self, that) => catchAll2(self, that));
 var passthrough = (self) => merge6(context2(), self);
-var project = /* @__PURE__ */ dual(4, (self, tagA, tagB, f) => map14(self, (context12) => make10(tagB, f(unsafeGet5(context12, tagA)))));
+var project = /* @__PURE__ */ dual(4, (self, tagA, tagB, f) => map14(self, (context11) => make10(tagB, f(unsafeGet5(context11, tagA)))));
 var retry = /* @__PURE__ */ dual(2, (self, schedule4) => suspend2(() => {
   const stateTag = Tag();
   return pipe(succeed5(stateTag, {
@@ -33217,8 +33217,8 @@ var succeed5 = /* @__PURE__ */ dual(2, (a, b) => {
   const resource = tagFirst ? b : a;
   return fromEffectContext(succeed(make10(tag2, resource)));
 });
-var succeedContext = (context12) => {
-  return fromEffectContext(succeed(context12));
+var succeedContext = (context11) => {
+  return fromEffectContext(succeed(context11));
 };
 var empty29 = /* @__PURE__ */ succeedContext(/* @__PURE__ */ empty9());
 var suspend2 = (evaluate2) => {
@@ -33236,11 +33236,11 @@ var sync2 = /* @__PURE__ */ dual(2, (a, b) => {
 var syncContext = (evaluate2) => {
   return fromEffectContext(sync(evaluate2));
 };
-var tap3 = /* @__PURE__ */ dual(2, (self, f) => flatMap10(self, (context12) => fromEffectContext(as2(f(context12), context12))));
+var tap3 = /* @__PURE__ */ dual(2, (self, f) => flatMap10(self, (context11) => fromEffectContext(as2(f(context11), context11))));
 var tapError2 = /* @__PURE__ */ dual(2, (self, f) => catchAll2(self, (e) => fromEffectContext(flatMap9(f(e), () => fail2(e)))));
 var tapErrorCause2 = /* @__PURE__ */ dual(2, (self, f) => catchAllCause2(self, (cause3) => fromEffectContext(flatMap9(f(cause3), () => failCause(cause3)))));
 var toRuntime = (self) => {
-  return pipe(scopeWith((scope5) => pipe(self, buildWithScope(scope5))), flatMap9((context12) => pipe(runtime2(), provideContext(context12))));
+  return pipe(scopeWith((scope5) => pipe(self, buildWithScope(scope5))), flatMap9((context11) => pipe(runtime2(), provideContext(context11))));
 };
 var provide = /* @__PURE__ */ dual(2, (that, self) => suspend2(() => {
   const provideTo = Object.create(proto3);
@@ -33284,15 +33284,15 @@ var zipWith6 = /* @__PURE__ */ dual(3, (self, that, f) => suspend2(() => {
 }));
 var unwrapEffect = (self) => {
   const tag2 = Tag();
-  return flatMap10(fromEffect3(tag2, self), (context12) => get5(context12, tag2));
+  return flatMap10(fromEffect3(tag2, self), (context11) => get5(context11, tag2));
 };
 var unwrapScoped = (self) => {
   const tag2 = Tag();
-  return flatMap10(scoped(tag2, self), (context12) => get5(context12, tag2));
+  return flatMap10(scoped(tag2, self), (context11) => get5(context11, tag2));
 };
 var withSpan2 = /* @__PURE__ */ dual((args) => isLayer(args[0]), (self, name, options) => unwrapScoped(map10(options?.onEnd ? tap2(makeSpanScoped(name, options), (span4) => addFinalizer((exit4) => options.onEnd(span4, exit4))) : makeSpanScoped(name, options), (span4) => withParentSpan2(self, span4))));
 var withParentSpan2 = /* @__PURE__ */ dual(2, (self, span4) => provide(self, succeedContext(make10(spanTag, span4))));
-var provideSomeLayer = /* @__PURE__ */ dual(2, (self, layer4) => acquireUseRelease(scopeMake(), (scope5) => flatMap9(buildWithScope(layer4, scope5), (context12) => provideSomeContext(self, context12)), (scope5, exit4) => scopeClose(scope5, exit4)));
+var provideSomeLayer = /* @__PURE__ */ dual(2, (self, layer4) => acquireUseRelease(scopeMake(), (scope5) => flatMap9(buildWithScope(layer4, scope5), (context11) => provideSomeContext(self, context11)), (scope5, exit4) => scopeClose(scope5, exit4)));
 var provideSomeRuntime = /* @__PURE__ */ dual(2, (self, rt) => {
   const patchRefs = diff6(defaultRuntime.fiberRefs, rt.fiberRefs);
   const patchFlags = diff4(defaultRuntime.runtimeFlags, rt.runtimeFlags);
@@ -33644,9 +33644,9 @@ var CacheImpl = class {
   timeToLive;
   [CacheTypeId] = cacheVariance;
   cacheState;
-  constructor(capacity5, context12, fiberId3, lookup, timeToLive) {
+  constructor(capacity5, context11, fiberId3, lookup, timeToLive) {
     this.capacity = capacity5;
-    this.context = context12;
+    this.context = context11;
     this.fiberId = fiberId3;
     this.lookup = lookup;
     this.timeToLive = timeToLive;
@@ -37387,7 +37387,7 @@ var toQueueInternal = (queue) => {
 };
 var unwrap = (channel) => flatten11(fromEffect4(channel));
 var unwrapScoped3 = (self) => concatAllWith(scoped4(self), (d, _) => d, (d, _) => d);
-var withSpan5 = /* @__PURE__ */ dual(3, (self, name, options) => unwrapScoped3(flatMap11(context3(), (context12) => map15(makeSpanScoped2(name, options), (span4) => provideContext2(self, add4(context12, spanTag, span4))))));
+var withSpan5 = /* @__PURE__ */ dual(3, (self, name, options) => unwrapScoped3(flatMap11(context3(), (context11) => map15(makeSpanScoped2(name, options), (span4) => provideContext2(self, add4(context11, spanTag, span4))))));
 var writeAll = (...outs) => writeChunk(fromIterable3(outs));
 var writeChunk = (outs) => writeChunkWriter(0, outs.length, outs);
 var writeChunkWriter = (idx, len, chunk5) => {
@@ -37616,7 +37616,7 @@ var ensuringWith2 = /* @__PURE__ */ dual(2, (self, finalizer3) => new SinkImpl(p
 var context5 = () => fromEffect5(context3());
 var contextWith3 = (f) => pipe(context5(), map18(f));
 var contextWithEffect3 = (f) => pipe(context5(), mapEffect3(f));
-var contextWithSink = (f) => new SinkImpl(unwrap(pipe(contextWith2((context12) => toChannel(f(context12))))));
+var contextWithSink = (f) => new SinkImpl(unwrap(pipe(contextWith2((context11) => toChannel(f(context11))))));
 var every7 = (predicate) => fold(true, identity, (acc, input2) => acc && predicate(input2));
 var fail11 = (e) => new SinkImpl(fail10(e));
 var failSync6 = (evaluate2) => new SinkImpl(failSync5(evaluate2));
@@ -37907,7 +37907,7 @@ var mapError6 = /* @__PURE__ */ dual(2, (self, f) => new SinkImpl(pipe(toChannel
 var mapLeftover = /* @__PURE__ */ dual(2, (self, f) => new SinkImpl(pipe(toChannel(self), mapOut(map4(f)))));
 var never4 = /* @__PURE__ */ fromEffect5(never3);
 var orElse10 = /* @__PURE__ */ dual(2, (self, that) => new SinkImpl(pipe(toChannel(self), orElse9(() => toChannel(that())))));
-var provideContext3 = /* @__PURE__ */ dual(2, (self, context12) => new SinkImpl(pipe(toChannel(self), provideContext2(context12))));
+var provideContext3 = /* @__PURE__ */ dual(2, (self, context11) => new SinkImpl(pipe(toChannel(self), provideContext2(context11))));
 var race3 = /* @__PURE__ */ dual(2, (self, that) => pipe(self, raceBoth(that), map18(merge)));
 var raceBoth = /* @__PURE__ */ dual((args) => isSink(args[1]), (self, that, options) => raceWith3(self, {
   other: that,
@@ -39557,7 +39557,7 @@ var pipeThrough = /* @__PURE__ */ dual(2, (self, sink) => new StreamImpl(pipe(to
 var pipeThroughChannel = /* @__PURE__ */ dual(2, (self, channel) => new StreamImpl(pipe(toChannel2(self), pipeTo(channel))));
 var pipeThroughChannelOrFail = /* @__PURE__ */ dual(2, (self, chan) => new StreamImpl(pipe(toChannel2(self), pipeToOrFail(chan))));
 var prepend4 = /* @__PURE__ */ dual(2, (self, values3) => new StreamImpl(zipRight5(write(values3), toChannel2(self))));
-var provideContext5 = /* @__PURE__ */ dual(2, (self, context12) => new StreamImpl(pipe(toChannel2(self), provideContext2(context12))));
+var provideContext5 = /* @__PURE__ */ dual(2, (self, context11) => new StreamImpl(pipe(toChannel2(self), provideContext2(context11))));
 var provideLayer = /* @__PURE__ */ dual(2, (self, layer4) => new StreamImpl(unwrapScoped3(pipe(build2(layer4), map15((env) => pipe(toChannel2(self), provideContext2(env)))))));
 var provideService4 = /* @__PURE__ */ dual(3, (self, tag2, resource) => provideServiceEffect3(self, tag2, succeed6(resource)));
 var provideServiceEffect3 = /* @__PURE__ */ dual(3, (self, tag2, effect3) => provideServiceStream(self, tag2, fromEffect6(effect3)));
@@ -40230,7 +40230,7 @@ var unfoldEffect = (s, f) => unfoldChunkEffect(s, (s2) => pipe(f(s2), map15(map(
 var unit7 = /* @__PURE__ */ succeed11(void 0);
 var unwrap3 = (effect3) => flatten12(fromEffect6(effect3));
 var unwrapScoped5 = (effect3) => flatten12(scoped5(effect3));
-var updateService3 = /* @__PURE__ */ dual(3, (self, tag2, f) => pipe(self, mapInputContext4((context12) => pipe(context12, add4(tag2, f(pipe(context12, unsafeGet5(tag2))))))));
+var updateService3 = /* @__PURE__ */ dual(3, (self, tag2, f) => pipe(self, mapInputContext4((context11) => pipe(context11, add4(tag2, f(pipe(context11, unsafeGet5(tag2))))))));
 var when3 = /* @__PURE__ */ dual(2, (self, test) => pipe(self, whenEffect3(sync3(test))));
 var whenCase = (evaluate2, pf) => whenCaseEffect(pf)(sync3(evaluate2));
 var whenCaseEffect = /* @__PURE__ */ dual(2, (self, pf) => pipe(fromEffect6(self), flatMap15((a) => pipe(pf(a), getOrElse(() => empty32)))));
@@ -45262,13 +45262,13 @@ function classifyCharacter(code) {
 }
 
 // node_modules/.pnpm/micromark-util-resolve-all@2.0.0/node_modules/micromark-util-resolve-all/index.js
-function resolveAll(constructs2, events, context12) {
+function resolveAll(constructs2, events, context11) {
   const called = [];
   let index2 = -1;
   while (++index2 < constructs2.length) {
     const resolve = constructs2[index2].resolveAll;
     if (resolve && !called.includes(resolve)) {
-      events = resolve(events, context12);
+      events = resolve(events, context11);
       called.push(resolve);
     }
   }
@@ -45281,7 +45281,7 @@ var attention = {
   tokenize: tokenizeAttention,
   resolveAll: resolveAllAttention
 };
-function resolveAllAttention(events, context12) {
+function resolveAllAttention(events, context11) {
   let index2 = -1;
   let open3;
   let group4;
@@ -45296,7 +45296,7 @@ function resolveAllAttention(events, context12) {
       open3 = index2;
       while (open3--) {
         if (events[open3][0] === "exit" && events[open3][1].type === "attentionSequence" && events[open3][1]._open && // If the markers are the same:
-        context12.sliceSerialize(events[open3][1]).charCodeAt(0) === context12.sliceSerialize(events[index2][1]).charCodeAt(0)) {
+        context11.sliceSerialize(events[open3][1]).charCodeAt(0) === context11.sliceSerialize(events[index2][1]).charCodeAt(0)) {
           if ((events[open3][1]._close || events[index2][1]._open) && (events[index2][1].end.offset - events[index2][1].start.offset) % 3 && !((events[open3][1].end.offset - events[open3][1].start.offset + events[index2][1].end.offset - events[index2][1].start.offset) % 3)) {
             continue;
           }
@@ -45330,35 +45330,35 @@ function resolveAllAttention(events, context12) {
           nextEvents = [];
           if (events[open3][1].end.offset - events[open3][1].start.offset) {
             nextEvents = push(nextEvents, [
-              ["enter", events[open3][1], context12],
-              ["exit", events[open3][1], context12]
+              ["enter", events[open3][1], context11],
+              ["exit", events[open3][1], context11]
             ]);
           }
           nextEvents = push(nextEvents, [
-            ["enter", group4, context12],
-            ["enter", openingSequence, context12],
-            ["exit", openingSequence, context12],
-            ["enter", text3, context12]
+            ["enter", group4, context11],
+            ["enter", openingSequence, context11],
+            ["exit", openingSequence, context11],
+            ["enter", text3, context11]
           ]);
           nextEvents = push(
             nextEvents,
             resolveAll(
-              context12.parser.constructs.insideSpan.null,
+              context11.parser.constructs.insideSpan.null,
               events.slice(open3 + 1, index2),
-              context12
+              context11
             )
           );
           nextEvents = push(nextEvents, [
-            ["exit", text3, context12],
-            ["enter", closingSequence, context12],
-            ["exit", closingSequence, context12],
-            ["exit", group4, context12]
+            ["exit", text3, context11],
+            ["enter", closingSequence, context11],
+            ["exit", closingSequence, context11],
+            ["exit", group4, context11]
           ]);
           if (events[index2][1].end.offset - events[index2][1].start.offset) {
             offset = 2;
             nextEvents = push(nextEvents, [
-              ["enter", events[index2][1], context12],
-              ["exit", events[index2][1], context12]
+              ["enter", events[index2][1], context11],
+              ["exit", events[index2][1], context11]
             ]);
           } else {
             offset = 0;
@@ -46116,10 +46116,10 @@ function subtokenize(events) {
 }
 function subcontent(events, eventIndex) {
   const token = events[eventIndex][1];
-  const context12 = events[eventIndex][2];
+  const context11 = events[eventIndex][2];
   let startPosition = eventIndex - 1;
   const startPositions = [];
-  const tokenizer = token._tokenizer || context12.parser[token.contentType](token.start);
+  const tokenizer = token._tokenizer || context11.parser[token.contentType](token.start);
   const childEvents = tokenizer.events;
   const jumps = [];
   const gaps = {};
@@ -46135,7 +46135,7 @@ function subcontent(events, eventIndex) {
     }
     startPositions.push(startPosition);
     if (!current2._tokenizer) {
-      stream2 = context12.sliceStream(current2);
+      stream2 = context11.sliceStream(current2);
       if (!current2.next) {
         stream2.push(null);
       }
@@ -46624,7 +46624,7 @@ var headingAtx = {
   tokenize: tokenizeHeadingAtx,
   resolve: resolveHeadingAtx
 };
-function resolveHeadingAtx(events, context12) {
+function resolveHeadingAtx(events, context11) {
   let contentEnd = events.length - 2;
   let contentStart = 3;
   let content3;
@@ -46651,10 +46651,10 @@ function resolveHeadingAtx(events, context12) {
       contentType: "text"
     };
     splice(events, contentStart, contentEnd - contentStart + 1, [
-      ["enter", content3, context12],
-      ["enter", text3, context12],
-      ["exit", text3, context12],
-      ["exit", content3, context12]
+      ["enter", content3, context11],
+      ["enter", text3, context11],
+      ["exit", text3, context11],
+      ["exit", content3, context11]
     ]);
   }
   return events;
@@ -47507,7 +47507,7 @@ function resolveAllLabelEnd(events) {
   }
   return events;
 }
-function resolveToLabelEnd(events, context12) {
+function resolveToLabelEnd(events, context11) {
   let index2 = events.length;
   let offset = 0;
   let token;
@@ -47551,27 +47551,27 @@ function resolveToLabelEnd(events, context12) {
     end: Object.assign({}, events[close3 - 2][1].start)
   };
   media = [
-    ["enter", group4, context12],
-    ["enter", label, context12]
+    ["enter", group4, context11],
+    ["enter", label, context11]
   ];
   media = push(media, events.slice(open3 + 1, open3 + offset + 3));
-  media = push(media, [["enter", text3, context12]]);
+  media = push(media, [["enter", text3, context11]]);
   media = push(
     media,
     resolveAll(
-      context12.parser.constructs.insideSpan.null,
+      context11.parser.constructs.insideSpan.null,
       events.slice(open3 + offset + 4, close3 - 3),
-      context12
+      context11
     )
   );
   media = push(media, [
-    ["exit", text3, context12],
+    ["exit", text3, context11],
     events[close3 - 2],
     events[close3 - 1],
-    ["exit", label, context12]
+    ["exit", label, context11]
   ]);
   media = push(media, events.slice(close3 + 1));
-  media = push(media, [["exit", group4, context12]]);
+  media = push(media, [["exit", group4, context11]]);
   splice(events, open3, events.length, media);
   return events;
 }
@@ -48015,7 +48015,7 @@ var setextUnderline = {
   tokenize: tokenizeSetextUnderline,
   resolveTo: resolveToSetextUnderline
 };
-function resolveToSetextUnderline(events, context12) {
+function resolveToSetextUnderline(events, context11) {
   let index2 = events.length;
   let content3;
   let text3;
@@ -48045,13 +48045,13 @@ function resolveToSetextUnderline(events, context12) {
   };
   events[text3][1].type = "setextHeadingText";
   if (definition2) {
-    events.splice(text3, 0, ["enter", heading, context12]);
-    events.splice(definition2 + 1, 0, ["exit", events[content3][1], context12]);
+    events.splice(text3, 0, ["enter", heading, context11]);
+    events.splice(definition2 + 1, 0, ["exit", events[content3][1], context11]);
     events[content3][1].end = Object.assign({}, events[definition2][1].end);
   } else {
     events[content3][1] = heading;
   }
-  events.push(["exit", heading, context12]);
+  events.push(["exit", heading, context11]);
   return events;
 }
 function tokenizeSetextUnderline(effects, ok2, nok) {
@@ -48203,7 +48203,7 @@ function initializeFactory(field) {
 }
 function createResolver(extraResolver) {
   return resolveAllText;
-  function resolveAllText(events, context12) {
+  function resolveAllText(events, context11) {
     let index2 = -1;
     let enter;
     while (++index2 <= events.length) {
@@ -48221,15 +48221,15 @@ function createResolver(extraResolver) {
         enter = void 0;
       }
     }
-    return extraResolver ? extraResolver(events, context12) : events;
+    return extraResolver ? extraResolver(events, context11) : events;
   }
 }
-function resolveAllLineSuffixes(events, context12) {
+function resolveAllLineSuffixes(events, context11) {
   let eventIndex = 0;
   while (++eventIndex <= events.length) {
     if ((eventIndex === events.length || events[eventIndex][1].type === "lineEnding") && events[eventIndex - 1][1].type === "data") {
       const data = events[eventIndex - 1][1];
-      const chunks3 = context12.sliceStream(data);
+      const chunks3 = context11.sliceStream(data);
       let index2 = chunks3.length;
       let bufferIndex = -1;
       let size15 = 0;
@@ -48272,8 +48272,8 @@ function resolveAllLineSuffixes(events, context12) {
           events.splice(
             eventIndex,
             0,
-            ["enter", token, context12],
-            ["exit", token, context12]
+            ["enter", token, context11],
+            ["exit", token, context11]
           );
           eventIndex += 2;
         }
@@ -48311,7 +48311,7 @@ function createTokenizer(parser, initialize, from) {
       interrupt: true
     })
   };
-  const context12 = {
+  const context11 = {
     previous: null,
     code: null,
     containerState: {},
@@ -48323,11 +48323,11 @@ function createTokenizer(parser, initialize, from) {
     defineSkip,
     write: write4
   };
-  let state = initialize.tokenize.call(context12, effects);
+  let state = initialize.tokenize.call(context11, effects);
   if (initialize.resolveAll) {
     resolveAllConstructs.push(initialize);
   }
-  return context12;
+  return context11;
   function write4(slice) {
     chunks3 = push(chunks3, slice);
     main2();
@@ -48335,8 +48335,8 @@ function createTokenizer(parser, initialize, from) {
       return [];
     }
     addResult(initialize, 0);
-    context12.events = resolveAll(resolveAllConstructs, context12.events, context12);
-    return context12.events;
+    context11.events = resolveAll(resolveAllConstructs, context11.events, context11);
+    return context11.events;
   }
   function sliceSerialize(token, expandTabs) {
     return serializeChunks(sliceStream(token), expandTabs);
@@ -48397,20 +48397,20 @@ function createTokenizer(parser, initialize, from) {
         point3._index++;
       }
     }
-    context12.previous = code;
+    context11.previous = code;
   }
   function enter(type, fields) {
     const token = fields || {};
     token.type = type;
     token.start = now();
-    context12.events.push(["enter", token, context12]);
+    context11.events.push(["enter", token, context11]);
     stack.push(token);
     return token;
   }
   function exit4(type) {
     const token = stack.pop();
     token.end = now();
-    context12.events.push(["exit", token, context12]);
+    context11.events.push(["exit", token, context11]);
     return token;
   }
   function onsuccessfulconstruct(construct, info3) {
@@ -48458,16 +48458,16 @@ function createTokenizer(parser, initialize, from) {
           info3 = store();
           currentConstruct = construct;
           if (!construct.partial) {
-            context12.currentConstruct = construct;
+            context11.currentConstruct = construct;
           }
-          if (construct.name && context12.parser.constructs.disable.null.includes(construct.name)) {
+          if (construct.name && context11.parser.constructs.disable.null.includes(construct.name)) {
             return nok();
           }
           return construct.tokenize.call(
             // If we do have fields, create an object w/ `context` as its
             // prototype.
             // This allows a “live binding”, which is needed for `interrupt`.
-            fields ? Object.assign(Object.create(context12), fields) : context12,
+            fields ? Object.assign(Object.create(context11), fields) : context11,
             effects,
             ok2,
             nok
@@ -48493,21 +48493,21 @@ function createTokenizer(parser, initialize, from) {
     }
     if (construct.resolve) {
       splice(
-        context12.events,
+        context11.events,
         from2,
-        context12.events.length - from2,
-        construct.resolve(context12.events.slice(from2), context12)
+        context11.events.length - from2,
+        construct.resolve(context11.events.slice(from2), context11)
       );
     }
     if (construct.resolveTo) {
-      context12.events = construct.resolveTo(context12.events, context12);
+      context11.events = construct.resolveTo(context11.events, context11);
     }
   }
   function store() {
     const startPoint = now();
-    const startPrevious = context12.previous;
-    const startCurrentConstruct = context12.currentConstruct;
-    const startEventsIndex = context12.events.length;
+    const startPrevious = context11.previous;
+    const startCurrentConstruct = context11.currentConstruct;
+    const startEventsIndex = context11.events.length;
     const startStack = Array.from(stack);
     return {
       restore,
@@ -48515,9 +48515,9 @@ function createTokenizer(parser, initialize, from) {
     };
     function restore() {
       point3 = startPoint;
-      context12.previous = startPrevious;
-      context12.currentConstruct = startCurrentConstruct;
-      context12.events.length = startEventsIndex;
+      context11.previous = startPrevious;
+      context11.currentConstruct = startCurrentConstruct;
+      context11.events.length = startEventsIndex;
       stack = startStack;
       accountForPotentialSkip();
     }
@@ -48949,7 +48949,7 @@ function compiler(options) {
       type: "root",
       children: []
     };
-    const context12 = {
+    const context11 = {
       stack: [tree],
       tokenStack: [],
       config: config2,
@@ -48980,16 +48980,16 @@ function compiler(options) {
             {
               sliceSerialize: events[index2][2].sliceSerialize
             },
-            context12
+            context11
           ),
           events[index2][1]
         );
       }
     }
-    if (context12.tokenStack.length > 0) {
-      const tail3 = context12.tokenStack[context12.tokenStack.length - 1];
+    if (context11.tokenStack.length > 0) {
+      const tail3 = context11.tokenStack[context11.tokenStack.length - 1];
       const handler2 = tail3[1] || defaultOnError;
-      handler2.call(context12, void 0, tail3[0]);
+      handler2.call(context11, void 0, tail3[0]);
     }
     tree.position = {
       start: point2(
@@ -49255,14 +49255,14 @@ function compiler(options) {
     tail3.position.end = point2(token.end);
   }
   function onexitlineending(token) {
-    const context12 = this.stack[this.stack.length - 1];
+    const context11 = this.stack[this.stack.length - 1];
     if (this.data.atHardBreak) {
-      const tail3 = context12.children[context12.children.length - 1];
+      const tail3 = context11.children[context11.children.length - 1];
       tail3.position.end = point2(token.end);
       this.data.atHardBreak = void 0;
       return;
     }
-    if (!this.data.setextHeadingSlurpLineEnding && config2.canContainEols.includes(context12.type)) {
+    if (!this.data.setextHeadingSlurpLineEnding && config2.canContainEols.includes(context11.type)) {
       onenterdata.call(this, token);
       onexitdata.call(this, token);
     }
@@ -51061,7 +51061,18 @@ var make55 = Effect_exports.gen(function* (_) {
       base: options.base
     })
   });
+  const getPull = github.wrap((_2) => _2.pulls.get);
+  const currentFromIssue = env.issue.pipe(
+    Effect_exports.flatMap(
+      (issue) => getPull({
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
+        pull_number: issue.number
+      })
+    )
+  );
   const current2 = Effect_exports.fromNullable(import_github3.context.payload.pull_request).pipe(
+    Effect_exports.orElse(() => currentFromIssue),
     Effect_exports.mapError(() => new NoPullRequest())
   );
   const files = (options) => github.stream(
@@ -51092,8 +51103,8 @@ var make55 = Effect_exports.gen(function* (_) {
   const currentComment = (body) => Effect_exports.flatMap(
     current2,
     (pull) => comment({
-      owner: pull.owner,
-      repo: pull.repo,
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
       issue_number: pull.number,
       body
     })
@@ -51370,7 +51381,6 @@ var getBranch = (branch) => Effect_exports.gen(function* (_) {
 var getDefaultBranch = Effect_exports.flatMap(baseBranch, getBranch);
 
 // src/index.ts
-var import_github4 = __toESM(require_github());
 var GithubLive = layer3({
   token: inputSecret("github_token")
 });
@@ -51386,8 +51396,8 @@ var main = Effect_exports.gen(function* (_) {
     `refs/heads/${prefix2}-major`,
     `refs/heads/${prefix2}-minor`
   ];
-  if (Option_exports.isSome(env.comment)) {
-    console.log(import_github4.context);
+  if (Option_exports.isSome(env.comment) && env.comment.value.body.startsWith("/approve")) {
+    yield* _(run5);
   } else if (env.ref === `refs/heads/${baseBranch2}`) {
     yield* _(run7);
   } else if (eligibleBranches.includes(env.ref)) {

@@ -69,7 +69,18 @@ const make = Effect.gen(function* (_) {
         }),
     })
 
+  const getPull = github.wrap(_ => _.pulls.get)
+  const currentFromIssue = env.issue.pipe(
+    Effect.flatMap(issue =>
+      getPull({
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
+        pull_number: issue.number,
+      }),
+    ),
+  )
   const current = Effect.fromNullable(context.payload.pull_request).pipe(
+    Effect.orElse(() => currentFromIssue),
     Effect.mapError(() => new NoPullRequest()),
   )
 
@@ -110,8 +121,8 @@ const make = Effect.gen(function* (_) {
   const currentComment = (body: string) =>
     Effect.flatMap(current, pull =>
       comment({
-        owner: pull.owner,
-        repo: pull.repo,
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
         issue_number: pull.number,
         body,
       }),

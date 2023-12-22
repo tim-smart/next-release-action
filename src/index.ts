@@ -39,8 +39,11 @@ const main = Effect.gen(function* (_) {
     `refs/heads/${prefix}-minor`,
   ]
 
-  if (Option.isSome(env.comment)) {
-    console.log(context)
+  if (
+    Option.isSome(env.comment) &&
+    env.comment.value.body.startsWith("/approve")
+  ) {
+    yield* _(UpdateBase.run)
   } else if (env.ref === `refs/heads/${baseBranch}`) {
     yield* _(EnsureBranches.run)
   } else if (eligibleBranches.includes(env.ref)) {
