@@ -1,5 +1,5 @@
 ---
-"effect2": major
+"effect": minor
 ---
 
 another test
