@@ -3,7 +3,11 @@ import { Changesets } from "./Changesets"
 import * as Config from "./Config"
 import { NoPullRequest, PullRequests } from "./PullRequests"
 
-export class ApprovalNeeded extends Data.TaggedError("ApprovalNeeded") {}
+export class ApprovalNeeded extends Data.TaggedError("ApprovalNeeded") {
+  toString(): string {
+    return "A maintainer needs to comment with `/approve`"
+  }
+}
 
 export const run = Effect.gen(function* (_) {
   const pulls = yield* _(PullRequests)

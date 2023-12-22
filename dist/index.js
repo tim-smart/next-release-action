@@ -52430,6 +52430,9 @@ var packages = Config_exports.array(
 
 // src/UpdateBase.ts
 var ApprovalNeeded = class extends Data_exports.TaggedError("ApprovalNeeded") {
+  toString() {
+    return "A maintainer needs to comment with `/approve`";
+  }
 };
 var run6 = Effect_exports.gen(function* (_) {
   const pulls = yield* _(PullRequests);
