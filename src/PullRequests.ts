@@ -70,7 +70,7 @@ const make = Effect.gen(function* (_) {
     })
 
   const getPull = github.wrap(_ => _.pulls.get)
-  const currentFromIssue = env.issue.pipe(
+  const current = env.issue.pipe(
     Effect.flatMap(issue =>
       getPull({
         owner: env.repo.owner.login,
@@ -78,9 +78,6 @@ const make = Effect.gen(function* (_) {
         pull_number: issue.number,
       }),
     ),
-  )
-  const current = Effect.fromNullable(context.payload.pull_request).pipe(
-    Effect.orElse(() => currentFromIssue),
     Effect.mapError(() => new NoPullRequest()),
   )
 
