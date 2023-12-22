@@ -28,7 +28,7 @@ const ConfigLive = ConfigProvider.fromEnv().pipe(
 )
 
 const main = UpdateBase.run.pipe(
-  Effect.catchTag("NoSuchElementException", () => ReleasePull.run),
+  Effect.catchTag("NoPullRequest", () => ReleasePull.run),
   Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),
   Effect.provide(
     Layer.mergeAll(ChangesetsLive, PullRequestsLive, RunnerEnvLive).pipe(

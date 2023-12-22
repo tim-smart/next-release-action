@@ -1,7 +1,7 @@
 import { Cause, Console, Effect, Option } from "effect"
 import { Changesets } from "./Changesets"
 import * as Config from "./Config"
-import { PullRequests } from "./PullRequests"
+import { NoPullRequest, PullRequests } from "./PullRequests"
 import { Github } from "./Github"
 import { RunnerEnv } from "./Runner"
 
@@ -11,7 +11,7 @@ export const run = Effect.gen(function* (_) {
   const prefix = yield* _(Config.prefix)
 
   if (pull.head.ref.startsWith(`${prefix}-`)) {
-    return yield* _(new Cause.NoSuchElementException())
+    return yield* _(new NoPullRequest())
   }
 
   const changesets = yield* _(Changesets)
