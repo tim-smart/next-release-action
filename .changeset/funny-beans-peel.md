@@ -1,5 +1,5 @@
 ---
-"@effect/platform-node": minor
+"@effect/platform-node": major
 "@effect/platform-bun": minor
 "@effect/platform": minor
 ---

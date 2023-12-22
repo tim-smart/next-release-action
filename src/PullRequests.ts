@@ -1,6 +1,6 @@
 import { Context, Effect, Layer, Sink, Stream } from "effect"
 import { Github } from "./Github"
-import { RunnerEnv } from "./Runner"
+import { RunnerEnv, RunnerEnvLive } from "./Runner"
 import { context } from "@actions/github"
 
 const make = Effect.gen(function* (_) {
@@ -56,18 +56,7 @@ const make = Effect.gen(function* (_) {
         }),
     })
 
-  const get = github.wrap(_ => _.pulls.get)
-
   const current = Effect.fromNullable(context.payload.pull_request)
-  //   const current = env.issue.pipe(
-  //     Effect.andThen(issue =>
-  //       get({
-  //         owner: issue.owner,
-  //         repo: issue.repo,
-  //         pull_number: issue.number,
-  //       }),
-  //     ),
-  //   )
 
   const files = (options: {
     readonly owner: string
@@ -92,7 +81,39 @@ const make = Effect.gen(function* (_) {
     Stream.unwrap,
   )
 
-  return { find, findFirst, upsert, current, files, currentFiles } as const
+  const setCurrentBase = (base: string) =>
+    current.pipe(
+      Effect.andThen(pull =>
+        update({
+          owner: pull.owner,
+          repo: pull.repo,
+          pull_number: pull.number,
+          base,
+        }),
+      ),
+    )
+
+  const comment = github.wrap(_ => _.issues.createComment)
+  const currentComment = (body: string) =>
+    Effect.flatMap(current, pull =>
+      comment({
+        owner: pull.owner,
+        repo: pull.repo,
+        issue_number: pull.number,
+        body,
+      }),
+    )
+
+  return {
+    find,
+    findFirst,
+    upsert,
+    current,
+    files,
+    currentFiles,
+    setCurrentBase,
+    currentComment,
+  } as const
 })
 
 export interface PullRequests {
@@ -102,4 +123,6 @@ export const PullRequests = Context.Tag<
   PullRequests,
   Effect.Effect.Success<typeof make>
 >("app/PullRequests")
-export const PullRequestsLive = Layer.effect(PullRequests, make)
+export const PullRequestsLive = Layer.effect(PullRequests, make).pipe(
+  Layer.provide(RunnerEnvLive),
+)

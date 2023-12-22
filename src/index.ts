@@ -1,7 +1,10 @@
 import { runMain } from "@effect/platform-node/Runtime"
-import { ConfigProvider, Console, Effect, Layer, Stream } from "effect"
-import { Changesets, ChangesetsLive } from "./Changesets"
+import { ConfigProvider, Console, Effect, Layer } from "effect"
+import { ChangesetsLive } from "./Changesets"
 import * as Github from "./Github"
+import { PullRequestsLive } from "./PullRequests"
+import { RunnerEnvLive } from "./Runner"
+import * as UpdateBase from "./UpdateBase"
 import { inputSecret } from "./utils/config"
 
 // // Setup the Git client layer
@@ -18,19 +21,13 @@ const GithubLive = Github.layer({
   token: inputSecret("github_token"),
 })
 
-const main = Effect.gen(function* (_) {
-  const changesets = yield* _(Changesets)
-
-  yield* _(changesets.current, Stream.runForEach(Console.log))
-}).pipe(
+const main = UpdateBase.run.pipe(
+  Effect.catchTags({
+    NoSuchElementException: () => Console.log("Pull request not found"),
+  }),
   Effect.provide(
-    ChangesetsLive.pipe(
-      Layer.provide(GithubLive),
-      Layer.provide(
-        Layer.setConfigProvider(
-          ConfigProvider.fromEnv().pipe(ConfigProvider.constantCase),
-        ),
-      ),
+    Layer.mergeAll(ChangesetsLive, PullRequestsLive, RunnerEnvLive).pipe(
+      Layer.provideMerge(GithubLive),
     ),
   ),
 )

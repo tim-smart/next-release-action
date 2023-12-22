@@ -1,5 +1,13 @@
 {
   "pull_request": {
-    "number": 1
+    "owner": "tim-smart",
+    "repo": "next-release-action",
+    "number": 1,
+    "head": {
+      "ref": "wip"
+    },
+    "base": {
+      "ref": "next-minor"
+    }
   }
 }

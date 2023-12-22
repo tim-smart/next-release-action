@@ -1,9 +1,9 @@
 'use strict';
 
-var OS = require('os');
-var default2 = require('path');
 var Crypto = require('crypto');
 var NFS = require('fs');
+var OS = require('os');
+var default2 = require('path');
 var default3 = require('process');
 var url = require('url');
 
@@ -27,10 +27,10 @@ function _interopNamespace(e) {
   return Object.freeze(n);
 }
 
-var OS__namespace = /*#__PURE__*/_interopNamespace(OS);
-var default2__namespace = /*#__PURE__*/_interopNamespace(default2);
 var Crypto__namespace = /*#__PURE__*/_interopNamespace(Crypto);
 var NFS__namespace = /*#__PURE__*/_interopNamespace(NFS);
+var OS__namespace = /*#__PURE__*/_interopNamespace(OS);
+var default2__namespace = /*#__PURE__*/_interopNamespace(default2);
 var default3__default = /*#__PURE__*/_interopDefault(default3);
 
 var __create = Object.create;
@@ -73,6 +73,96 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// node_modules/.pnpm/extend@3.0.2/node_modules/extend/index.js
+var require_extend = __commonJS({
+  "node_modules/.pnpm/extend@3.0.2/node_modules/extend/index.js"(exports, module) {
+    var hasOwn = Object.prototype.hasOwnProperty;
+    var toStr = Object.prototype.toString;
+    var defineProperty = Object.defineProperty;
+    var gOPD = Object.getOwnPropertyDescriptor;
+    var isArray = function isArray2(arr) {
+      if (typeof Array.isArray === "function") {
+        return Array.isArray(arr);
+      }
+      return toStr.call(arr) === "[object Array]";
+    };
+    var isPlainObject3 = function isPlainObject4(obj) {
+      if (!obj || toStr.call(obj) !== "[object Object]") {
+        return false;
+      }
+      var hasOwnConstructor = hasOwn.call(obj, "constructor");
+      var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, "isPrototypeOf");
+      if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
+        return false;
+      }
+      var key;
+      for (key in obj) {
+      }
+      return typeof key === "undefined" || hasOwn.call(obj, key);
+    };
+    var setProperty = function setProperty2(target, options) {
+      if (defineProperty && options.name === "__proto__") {
+        defineProperty(target, options.name, {
+          enumerable: true,
+          configurable: true,
+          value: options.newValue,
+          writable: true
+        });
+      } else {
+        target[options.name] = options.newValue;
+      }
+    };
+    var getProperty = function getProperty2(obj, name) {
+      if (name === "__proto__") {
+        if (!hasOwn.call(obj, name)) {
+          return void 0;
+        } else if (gOPD) {
+          return gOPD(obj, name).value;
+        }
+      }
+      return obj[name];
+    };
+    module.exports = function extend5() {
+      var options, name, src, copy4, copyIsArray, clone2;
+      var target = arguments[0];
+      var i = 1;
+      var length4 = arguments.length;
+      var deep = false;
+      if (typeof target === "boolean") {
+        deep = target;
+        target = arguments[1] || {};
+        i = 2;
+      }
+      if (target == null || typeof target !== "object" && typeof target !== "function") {
+        target = {};
+      }
+      for (; i < length4; ++i) {
+        options = arguments[i];
+        if (options != null) {
+          for (name in options) {
+            src = getProperty(target, name);
+            copy4 = getProperty(options, name);
+            if (target !== copy4) {
+              if (deep && copy4 && (isPlainObject3(copy4) || (copyIsArray = isArray(copy4)))) {
+                if (copyIsArray) {
+                  copyIsArray = false;
+                  clone2 = src && isArray(src) ? src : [];
+                } else {
+                  clone2 = src && isPlainObject3(src) ? src : {};
+                }
+                setProperty(target, { name, newValue: extend5(deep, clone2, copy4) });
+              } else if (typeof copy4 !== "undefined") {
+                setProperty(target, { name, newValue: copy4 });
+              }
+            }
+          }
+        }
+      }
+      return target;
+    };
+  }
+});
 
 // node_modules/.pnpm/@actions+github@6.0.0/node_modules/@actions/github/lib/context.js
 var require_context = __commonJS({
@@ -2823,8 +2913,8 @@ var require_util2 = __commonJS({
     }
     function responseURL(response) {
       const urlList = response.urlList;
-      const length3 = urlList.length;
-      return length3 === 0 ? null : urlList[length3 - 1].toString();
+      const length4 = urlList.length;
+      return length4 === 0 ? null : urlList[length4 - 1].toString();
     }
     function responseLocationURL(response, requestFragment) {
       if (!redirectStatusSet.has(response.status)) {
@@ -3105,10 +3195,10 @@ var require_util2 = __commonJS({
     var parseHashWithOptions = /((?<algo>sha256|sha384|sha512)-(?<hash>[A-z0-9+/]{1}.*={0,2}))( +[\x21-\x7e]?)?/i;
     function parseMetadata(metadata) {
       const result = [];
-      let empty33 = true;
+      let empty34 = true;
       const supportedHashes = crypto.getHashes();
       for (const token of metadata.split(" ")) {
-        empty33 = false;
+        empty34 = false;
         const parsedToken = parseHashWithOptions.exec(token);
         if (parsedToken === null || parsedToken.groups === void 0) {
           continue;
@@ -3118,7 +3208,7 @@ var require_util2 = __commonJS({
           result.push(parsedToken.groups);
         }
       }
-      if (empty33 === true) {
+      if (empty34 === true) {
         return "no metadata";
       }
       return result;
@@ -3234,11 +3324,11 @@ var require_util2 = __commonJS({
       return stream2 instanceof ReadableStream2 || stream2[Symbol.toStringTag] === "ReadableStream" && typeof stream2.tee === "function";
     }
     var MAXIMUM_ARGUMENT_LENGTH = 65535;
-    function isomorphicDecode(input) {
-      if (input.length < MAXIMUM_ARGUMENT_LENGTH) {
-        return String.fromCharCode(...input);
+    function isomorphicDecode(input2) {
+      if (input2.length < MAXIMUM_ARGUMENT_LENGTH) {
+        return String.fromCharCode(...input2);
       }
-      return input.reduce((previous3, current2) => previous3 + String.fromCharCode(current2), "");
+      return input2.reduce((previous3, current2) => previous3 + String.fromCharCode(current2), "");
     }
     function readableStreamClose(controller) {
       try {
@@ -3249,11 +3339,11 @@ var require_util2 = __commonJS({
         }
       }
     }
-    function isomorphicEncode(input) {
-      for (let i = 0; i < input.length; i++) {
-        assert3(input.charCodeAt(i) <= 255);
+    function isomorphicEncode(input2) {
+      for (let i = 0; i < input2.length; i++) {
+        assert3(input2.charCodeAt(i) <= 255);
       }
-      return input;
+      return input2;
     }
     async function readAllBytes(reader) {
       const bytes = [];
@@ -3382,10 +3472,10 @@ var require_webidl = __commonJS({
         return V?.[Symbol.toStringTag] === I.prototype[Symbol.toStringTag];
       }
     };
-    webidl.argumentLengthCheck = function({ length: length3 }, min3, ctx) {
-      if (length3 < min3) {
+    webidl.argumentLengthCheck = function({ length: length4 }, min4, ctx) {
+      if (length4 < min4) {
         throw webidl.errors.exception({
-          message: `${min3} argument${min3 !== 1 ? "s" : ""} required, but${length3 ? " only" : ""} ${length3} found.`,
+          message: `${min4} argument${min4 !== 1 ? "s" : ""} required, but${length4 ? " only" : ""} ${length4} found.`,
           ...ctx
         });
       }
@@ -3730,21 +3820,21 @@ var require_dataURL = __commonJS({
     var HTTP_QUOTED_STRING_TOKENS = /[\u0009|\u0020-\u007E|\u0080-\u00FF]/;
     function dataURLProcessor(dataURL) {
       assert3(dataURL.protocol === "data:");
-      let input = URLSerializer(dataURL, true);
-      input = input.slice(5);
+      let input2 = URLSerializer(dataURL, true);
+      input2 = input2.slice(5);
       const position2 = { position: 0 };
       let mimeType = collectASequenceOfCodePointsFast(
         ",",
-        input,
+        input2,
         position2
       );
       const mimeTypeLength = mimeType.length;
       mimeType = removeASCIIWhitespace(mimeType, true, true);
-      if (position2.position >= input.length) {
+      if (position2.position >= input2.length) {
         return "failure";
       }
       position2.position++;
-      const encodedBody = input.slice(mimeTypeLength + 1);
+      const encodedBody = input2.slice(mimeTypeLength + 1);
       let body = stringPercentDecode(encodedBody);
       if (/;(\u0020){0,}base64$/i.test(mimeType)) {
         const stringBody = isomorphicDecode(body);
@@ -3776,38 +3866,38 @@ var require_dataURL = __commonJS({
       }
       return href.slice(0, hash2);
     }
-    function collectASequenceOfCodePoints(condition, input, position2) {
+    function collectASequenceOfCodePoints(condition, input2, position2) {
       let result = "";
-      while (position2.position < input.length && condition(input[position2.position])) {
-        result += input[position2.position];
+      while (position2.position < input2.length && condition(input2[position2.position])) {
+        result += input2[position2.position];
         position2.position++;
       }
       return result;
     }
-    function collectASequenceOfCodePointsFast(char, input, position2) {
-      const idx = input.indexOf(char, position2.position);
+    function collectASequenceOfCodePointsFast(char, input2, position2) {
+      const idx = input2.indexOf(char, position2.position);
       const start3 = position2.position;
       if (idx === -1) {
-        position2.position = input.length;
-        return input.slice(start3);
+        position2.position = input2.length;
+        return input2.slice(start3);
       }
       position2.position = idx;
-      return input.slice(start3, position2.position);
+      return input2.slice(start3, position2.position);
     }
-    function stringPercentDecode(input) {
-      const bytes = encoder.encode(input);
+    function stringPercentDecode(input2) {
+      const bytes = encoder.encode(input2);
       return percentDecode(bytes);
     }
-    function percentDecode(input) {
+    function percentDecode(input2) {
       const output = [];
-      for (let i = 0; i < input.length; i++) {
-        const byte = input[i];
+      for (let i = 0; i < input2.length; i++) {
+        const byte = input2[i];
         if (byte !== 37) {
           output.push(byte);
-        } else if (byte === 37 && !/^[0-9A-Fa-f]{2}$/i.test(String.fromCharCode(input[i + 1], input[i + 2]))) {
+        } else if (byte === 37 && !/^[0-9A-Fa-f]{2}$/i.test(String.fromCharCode(input2[i + 1], input2[i + 2]))) {
           output.push(37);
         } else {
-          const nextTwoBytes = String.fromCharCode(input[i + 1], input[i + 2]);
+          const nextTwoBytes = String.fromCharCode(input2[i + 1], input2[i + 2]);
           const bytePoint = Number.parseInt(nextTwoBytes, 16);
           output.push(bytePoint);
           i += 2;
@@ -3815,24 +3905,24 @@ var require_dataURL = __commonJS({
       }
       return Uint8Array.from(output);
     }
-    function parseMIMEType(input) {
-      input = removeHTTPWhitespace(input, true, true);
+    function parseMIMEType(input2) {
+      input2 = removeHTTPWhitespace(input2, true, true);
       const position2 = { position: 0 };
       const type = collectASequenceOfCodePointsFast(
         "/",
-        input,
+        input2,
         position2
       );
       if (type.length === 0 || !HTTP_TOKEN_CODEPOINTS.test(type)) {
         return "failure";
       }
-      if (position2.position > input.length) {
+      if (position2.position > input2.length) {
         return "failure";
       }
       position2.position++;
       let subtype = collectASequenceOfCodePointsFast(
         ";",
-        input,
+        input2,
         position2
       );
       subtype = removeHTTPWhitespace(subtype, false, true);
@@ -3849,41 +3939,41 @@ var require_dataURL = __commonJS({
         // https://mimesniff.spec.whatwg.org/#mime-type-essence
         essence: `${typeLowercase}/${subtypeLowercase}`
       };
-      while (position2.position < input.length) {
+      while (position2.position < input2.length) {
         position2.position++;
         collectASequenceOfCodePoints(
           // https://fetch.spec.whatwg.org/#http-whitespace
           (char) => HTTP_WHITESPACE_REGEX.test(char),
-          input,
+          input2,
           position2
         );
         let parameterName = collectASequenceOfCodePoints(
           (char) => char !== ";" && char !== "=",
-          input,
+          input2,
           position2
         );
         parameterName = parameterName.toLowerCase();
-        if (position2.position < input.length) {
-          if (input[position2.position] === ";") {
+        if (position2.position < input2.length) {
+          if (input2[position2.position] === ";") {
             continue;
           }
           position2.position++;
         }
-        if (position2.position > input.length) {
+        if (position2.position > input2.length) {
           break;
         }
         let parameterValue = null;
-        if (input[position2.position] === '"') {
-          parameterValue = collectAnHTTPQuotedString(input, position2, true);
+        if (input2[position2.position] === '"') {
+          parameterValue = collectAnHTTPQuotedString(input2, position2, true);
           collectASequenceOfCodePointsFast(
             ";",
-            input,
+            input2,
             position2
           );
         } else {
           parameterValue = collectASequenceOfCodePointsFast(
             ";",
-            input,
+            input2,
             position2
           );
           parameterValue = removeHTTPWhitespace(parameterValue, false, true);
@@ -3915,28 +4005,28 @@ var require_dataURL = __commonJS({
       }
       return bytes;
     }
-    function collectAnHTTPQuotedString(input, position2, extractValue) {
+    function collectAnHTTPQuotedString(input2, position2, extractValue) {
       const positionStart = position2.position;
       let value3 = "";
-      assert3(input[position2.position] === '"');
+      assert3(input2[position2.position] === '"');
       position2.position++;
       while (true) {
         value3 += collectASequenceOfCodePoints(
           (char) => char !== '"' && char !== "\\",
-          input,
+          input2,
           position2
         );
-        if (position2.position >= input.length) {
+        if (position2.position >= input2.length) {
           break;
         }
-        const quoteOrBackslash = input[position2.position];
+        const quoteOrBackslash = input2[position2.position];
         position2.position++;
         if (quoteOrBackslash === "\\") {
-          if (position2.position >= input.length) {
+          if (position2.position >= input2.length) {
             value3 += "\\";
             break;
           }
-          value3 += input[position2.position];
+          value3 += input2[position2.position];
           position2.position++;
         } else {
           assert3(quoteOrBackslash === '"');
@@ -3946,7 +4036,7 @@ var require_dataURL = __commonJS({
       if (extractValue) {
         return value3;
       }
-      return input.slice(positionStart, position2.position);
+      return input2.slice(positionStart, position2.position);
     }
     function serializeAMimeType(mimeType) {
       assert3(mimeType !== "failure");
@@ -4403,7 +4493,7 @@ var require_body = __commonJS({
       assert3(isReadableStreamLike(stream2));
       let action = null;
       let source = null;
-      let length3 = null;
+      let length4 = null;
       let type = null;
       if (typeof object === "string") {
         source = object;
@@ -4417,30 +4507,30 @@ var require_body = __commonJS({
         source = new Uint8Array(object.buffer.slice(object.byteOffset, object.byteOffset + object.byteLength));
       } else if (util.isFormDataLike(object)) {
         const boundary = `----formdata-undici-0${`${Math.floor(Math.random() * 1e11)}`.padStart(11, "0")}`;
-        const prefix = `--${boundary}\r
+        const prefix2 = `--${boundary}\r
 Content-Disposition: form-data`;
         const escape = (str) => str.replace(/\n/g, "%0A").replace(/\r/g, "%0D").replace(/"/g, "%22");
         const normalizeLinefeeds = (value3) => value3.replace(/\r?\n|\r/g, "\r\n");
         const blobParts = [];
         const rn = new Uint8Array([13, 10]);
-        length3 = 0;
+        length4 = 0;
         let hasUnknownSizeValue = false;
         for (const [name, value3] of object) {
           if (typeof value3 === "string") {
-            const chunk6 = textEncoder.encode(prefix + `; name="${escape(normalizeLinefeeds(name))}"\r
+            const chunk6 = textEncoder.encode(prefix2 + `; name="${escape(normalizeLinefeeds(name))}"\r
 \r
 ${normalizeLinefeeds(value3)}\r
 `);
             blobParts.push(chunk6);
-            length3 += chunk6.byteLength;
+            length4 += chunk6.byteLength;
           } else {
-            const chunk6 = textEncoder.encode(`${prefix}; name="${escape(normalizeLinefeeds(name))}"` + (value3.name ? `; filename="${escape(value3.name)}"` : "") + `\r
+            const chunk6 = textEncoder.encode(`${prefix2}; name="${escape(normalizeLinefeeds(name))}"` + (value3.name ? `; filename="${escape(value3.name)}"` : "") + `\r
 Content-Type: ${value3.type || "application/octet-stream"}\r
 \r
 `);
             blobParts.push(chunk6, value3, rn);
             if (typeof value3.size === "number") {
-              length3 += chunk6.byteLength + value3.size + rn.byteLength;
+              length4 += chunk6.byteLength + value3.size + rn.byteLength;
             } else {
               hasUnknownSizeValue = true;
             }
@@ -4448,9 +4538,9 @@ Content-Type: ${value3.type || "application/octet-stream"}\r
         }
         const chunk5 = textEncoder.encode(`--${boundary}--`);
         blobParts.push(chunk5);
-        length3 += chunk5.byteLength;
+        length4 += chunk5.byteLength;
         if (hasUnknownSizeValue) {
-          length3 = null;
+          length4 = null;
         }
         source = object;
         action = async function* () {
@@ -4465,7 +4555,7 @@ Content-Type: ${value3.type || "application/octet-stream"}\r
         type = "multipart/form-data; boundary=" + boundary;
       } else if (isBlobLike(object)) {
         source = object;
-        length3 = object.size;
+        length4 = object.size;
         if (object.type) {
           type = object.type;
         }
@@ -4481,7 +4571,7 @@ Content-Type: ${value3.type || "application/octet-stream"}\r
         stream2 = object instanceof ReadableStream2 ? object : ReadableStreamFrom(object);
       }
       if (typeof source === "string" || util.isBuffer(source)) {
-        length3 = Buffer.byteLength(source);
+        length4 = Buffer.byteLength(source);
       }
       if (action != null) {
         let iterator2;
@@ -4508,7 +4598,7 @@ Content-Type: ${value3.type || "application/octet-stream"}\r
           type: void 0
         });
       }
-      const body = { stream: stream2, source, length: length3 };
+      const body = { stream: stream2, source, length: length4 };
       return [body, type];
     }
     function safelyExtractBody(object, keepalive = false) {
@@ -7689,10 +7779,10 @@ var require_fixed_queue = __commonJS({
         this.head.push(data);
       }
       shift() {
-        const tail2 = this.tail;
-        const next = tail2.shift();
-        if (tail2.isEmpty() && tail2.next !== null) {
-          this.tail = tail2.next;
+        const tail3 = this.tail;
+        const next = tail3.shift();
+        if (tail3.isEmpty() && tail3.next !== null) {
+          this.tail = tail3.next;
         }
         return next;
       }
@@ -8458,14 +8548,14 @@ var require_readable = __commonJS({
       }
     }
     function consumeEnd(consume2) {
-      const { type, body, resolve, stream: stream2, length: length3 } = consume2;
+      const { type, body, resolve, stream: stream2, length: length4 } = consume2;
       try {
         if (type === "text") {
           resolve(toUSVString(Buffer.concat(body)));
         } else if (type === "json") {
           resolve(JSON.parse(Buffer.concat(body)));
         } else if (type === "arrayBuffer") {
-          const dst = new Uint8Array(length3);
+          const dst = new Uint8Array(length4);
           let pos = 0;
           for (const buf of body) {
             dst.set(buf, pos);
@@ -10359,13 +10449,13 @@ var require_headers = __commonJS({
     var HeadersList = class _HeadersList {
       /** @type {[string, string][]|null} */
       cookies = null;
-      constructor(init) {
-        if (init instanceof _HeadersList) {
-          this[kHeadersMap] = new Map(init[kHeadersMap]);
-          this[kHeadersSortedMap] = init[kHeadersSortedMap];
-          this.cookies = init.cookies;
+      constructor(init2) {
+        if (init2 instanceof _HeadersList) {
+          this[kHeadersMap] = new Map(init2[kHeadersMap]);
+          this[kHeadersSortedMap] = init2[kHeadersSortedMap];
+          this.cookies = init2.cookies;
         } else {
-          this[kHeadersMap] = new Map(init);
+          this[kHeadersMap] = new Map(init2);
           this[kHeadersSortedMap] = null;
         }
       }
@@ -10439,12 +10529,12 @@ var require_headers = __commonJS({
       }
     };
     var Headers = class _Headers {
-      constructor(init = void 0) {
+      constructor(init2 = void 0) {
         this[kHeadersList] = new HeadersList();
         this[kGuard] = "none";
-        if (init !== void 0) {
-          init = webidl.converters.HeadersInit(init);
-          fill(this, init);
+        if (init2 !== void 0) {
+          init2 = webidl.converters.HeadersInit(init2);
+          fill(this, init2);
         }
       }
       // https://fetch.spec.whatwg.org/#dom-headers-append
@@ -10703,10 +10793,10 @@ var require_response = __commonJS({
         return responseObject;
       }
       // https://fetch.spec.whatwg.org/#dom-response-json
-      static json(data, init = {}) {
+      static json(data, init2 = {}) {
         webidl.argumentLengthCheck(arguments, 1, { header: "Response.json" });
-        if (init !== null) {
-          init = webidl.converters.ResponseInit(init);
+        if (init2 !== null) {
+          init2 = webidl.converters.ResponseInit(init2);
         }
         const bytes = textEncoder.encode(
           serializeJavascriptValueToJSONString(data)
@@ -10717,7 +10807,7 @@ var require_response = __commonJS({
         responseObject[kRealm] = relevantRealm;
         responseObject[kHeaders][kGuard] = "response";
         responseObject[kHeaders][kRealm] = relevantRealm;
-        initializeResponse(responseObject, init, { body: body[0], type: "application/json" });
+        initializeResponse(responseObject, init2, { body: body[0], type: "application/json" });
         return responseObject;
       }
       // Creates a redirect Response that redirects to url with status status.
@@ -10747,11 +10837,11 @@ var require_response = __commonJS({
         return responseObject;
       }
       // https://fetch.spec.whatwg.org/#dom-response
-      constructor(body = null, init = {}) {
+      constructor(body = null, init2 = {}) {
         if (body !== null) {
           body = webidl.converters.BodyInit(body);
         }
-        init = webidl.converters.ResponseInit(init);
+        init2 = webidl.converters.ResponseInit(init2);
         this[kRealm] = { settingsObject: {} };
         this[kState] = makeResponse({});
         this[kHeaders] = new Headers();
@@ -10763,7 +10853,7 @@ var require_response = __commonJS({
           const [extractedBody, type] = extractBody(body);
           bodyWithType = { body: extractedBody, type };
         }
-        initializeResponse(this, init, bodyWithType);
+        initializeResponse(this, init2, bodyWithType);
       }
       // Returns response’s type, e.g., "cors".
       get type() {
@@ -10867,7 +10957,7 @@ var require_response = __commonJS({
       }
       return newResponse;
     }
-    function makeResponse(init) {
+    function makeResponse(init2) {
       return {
         aborted: false,
         rangeRequested: false,
@@ -10878,9 +10968,9 @@ var require_response = __commonJS({
         timingInfo: null,
         cacheState: "",
         statusText: "",
-        ...init,
-        headersList: init.headersList ? new HeadersList(init.headersList) : new HeadersList(),
-        urlList: init.urlList ? [...init.urlList] : []
+        ...init2,
+        headersList: init2.headersList ? new HeadersList(init2.headersList) : new HeadersList(),
+        urlList: init2.urlList ? [...init2.urlList] : []
       };
     }
     function makeNetworkError(reason) {
@@ -10943,23 +11033,23 @@ var require_response = __commonJS({
       assert3(isCancelled(fetchParams));
       return isAborted(fetchParams) ? makeNetworkError(Object.assign(new DOMException2("The operation was aborted.", "AbortError"), { cause: err })) : makeNetworkError(Object.assign(new DOMException2("Request was cancelled."), { cause: err }));
     }
-    function initializeResponse(response, init, body) {
-      if (init.status !== null && (init.status < 200 || init.status > 599)) {
+    function initializeResponse(response, init2, body) {
+      if (init2.status !== null && (init2.status < 200 || init2.status > 599)) {
         throw new RangeError('init["status"] must be in the range of 200 to 599, inclusive.');
       }
-      if ("statusText" in init && init.statusText != null) {
-        if (!isValidReasonPhrase(String(init.statusText))) {
+      if ("statusText" in init2 && init2.statusText != null) {
+        if (!isValidReasonPhrase(String(init2.statusText))) {
           throw new TypeError("Invalid statusText");
         }
       }
-      if ("status" in init && init.status != null) {
-        response[kState].status = init.status;
+      if ("status" in init2 && init2.status != null) {
+        response[kState].status = init2.status;
       }
-      if ("statusText" in init && init.statusText != null) {
-        response[kState].statusText = init.statusText;
+      if ("statusText" in init2 && init2.statusText != null) {
+        response[kState].statusText = init2.statusText;
       }
-      if ("headers" in init && init.headers != null) {
-        fill(response[kHeaders], init.headers);
+      if ("headers" in init2 && init2.headers != null) {
+        fill(response[kHeaders], init2.headers);
       }
       if (body) {
         if (nullBodyStatus.includes(response.status)) {
@@ -11076,13 +11166,13 @@ var require_request2 = __commonJS({
     });
     var Request = class _Request {
       // https://fetch.spec.whatwg.org/#dom-request
-      constructor(input, init = {}) {
-        if (input === kInit) {
+      constructor(input2, init2 = {}) {
+        if (input2 === kInit) {
           return;
         }
         webidl.argumentLengthCheck(arguments, 1, { header: "Request constructor" });
-        input = webidl.converters.RequestInfo(input);
-        init = webidl.converters.RequestInit(init);
+        input2 = webidl.converters.RequestInfo(input2);
+        init2 = webidl.converters.RequestInit(init2);
         this[kRealm] = {
           settingsObject: {
             baseUrl: getGlobalOrigin(),
@@ -11096,34 +11186,34 @@ var require_request2 = __commonJS({
         let fallbackMode = null;
         const baseUrl = this[kRealm].settingsObject.baseUrl;
         let signal = null;
-        if (typeof input === "string") {
+        if (typeof input2 === "string") {
           let parsedURL;
           try {
-            parsedURL = new URL(input, baseUrl);
+            parsedURL = new URL(input2, baseUrl);
           } catch (err) {
-            throw new TypeError("Failed to parse URL from " + input, { cause: err });
+            throw new TypeError("Failed to parse URL from " + input2, { cause: err });
           }
           if (parsedURL.username || parsedURL.password) {
             throw new TypeError(
-              "Request cannot be constructed from a URL that includes credentials: " + input
+              "Request cannot be constructed from a URL that includes credentials: " + input2
             );
           }
           request3 = makeRequest({ urlList: [parsedURL] });
           fallbackMode = "cors";
         } else {
-          assert3(input instanceof _Request);
-          request3 = input[kState];
-          signal = input[kSignal];
+          assert3(input2 instanceof _Request);
+          request3 = input2[kState];
+          signal = input2[kSignal];
         }
         const origin = this[kRealm].settingsObject.origin;
         let window = "client";
         if (request3.window?.constructor?.name === "EnvironmentSettingsObject" && sameOrigin(request3.window, origin)) {
           window = request3.window;
         }
-        if (init.window != null) {
+        if (init2.window != null) {
           throw new TypeError(`'window' option '${window}' must be null`);
         }
-        if ("window" in init) {
+        if ("window" in init2) {
           window = "no-window";
         }
         request3 = makeRequest({
@@ -11169,7 +11259,7 @@ var require_request2 = __commonJS({
           // URL list A clone of request’s URL list.
           urlList: [...request3.urlList]
         });
-        if (Object.keys(init).length > 0) {
+        if (Object.keys(init2).length > 0) {
           if (request3.mode === "navigate") {
             request3.mode = "same-origin";
           }
@@ -11181,8 +11271,8 @@ var require_request2 = __commonJS({
           request3.url = request3.urlList[request3.urlList.length - 1];
           request3.urlList = [request3.url];
         }
-        if (init.referrer !== void 0) {
-          const referrer = init.referrer;
+        if (init2.referrer !== void 0) {
+          const referrer = init2.referrer;
           if (referrer === "") {
             request3.referrer = "no-referrer";
           } else {
@@ -11199,12 +11289,12 @@ var require_request2 = __commonJS({
             }
           }
         }
-        if (init.referrerPolicy !== void 0) {
-          request3.referrerPolicy = init.referrerPolicy;
+        if (init2.referrerPolicy !== void 0) {
+          request3.referrerPolicy = init2.referrerPolicy;
         }
         let mode;
-        if (init.mode !== void 0) {
-          mode = init.mode;
+        if (init2.mode !== void 0) {
+          mode = init2.mode;
         } else {
           mode = fallbackMode;
         }
@@ -11217,39 +11307,39 @@ var require_request2 = __commonJS({
         if (mode != null) {
           request3.mode = mode;
         }
-        if (init.credentials !== void 0) {
-          request3.credentials = init.credentials;
+        if (init2.credentials !== void 0) {
+          request3.credentials = init2.credentials;
         }
-        if (init.cache !== void 0) {
-          request3.cache = init.cache;
+        if (init2.cache !== void 0) {
+          request3.cache = init2.cache;
         }
         if (request3.cache === "only-if-cached" && request3.mode !== "same-origin") {
           throw new TypeError(
             "'only-if-cached' can be set only with 'same-origin' mode"
           );
         }
-        if (init.redirect !== void 0) {
-          request3.redirect = init.redirect;
+        if (init2.redirect !== void 0) {
+          request3.redirect = init2.redirect;
         }
-        if (init.integrity !== void 0 && init.integrity != null) {
-          request3.integrity = String(init.integrity);
+        if (init2.integrity !== void 0 && init2.integrity != null) {
+          request3.integrity = String(init2.integrity);
         }
-        if (init.keepalive !== void 0) {
-          request3.keepalive = Boolean(init.keepalive);
+        if (init2.keepalive !== void 0) {
+          request3.keepalive = Boolean(init2.keepalive);
         }
-        if (init.method !== void 0) {
-          let method = init.method;
-          if (!isValidHTTPToken(init.method)) {
-            throw TypeError(`'${init.method}' is not a valid HTTP method.`);
+        if (init2.method !== void 0) {
+          let method = init2.method;
+          if (!isValidHTTPToken(init2.method)) {
+            throw TypeError(`'${init2.method}' is not a valid HTTP method.`);
           }
           if (forbiddenMethodsSet.has(method.toUpperCase())) {
-            throw TypeError(`'${init.method}' HTTP method is unsupported.`);
+            throw TypeError(`'${init2.method}' HTTP method is unsupported.`);
           }
-          method = normalizeMethod(init.method);
+          method = normalizeMethod(init2.method);
           request3.method = method;
         }
-        if (init.signal !== void 0) {
-          signal = init.signal;
+        if (init2.signal !== void 0) {
+          signal = init2.signal;
         }
         this[kState] = request3;
         const ac = new AbortController();
@@ -11296,10 +11386,10 @@ var require_request2 = __commonJS({
           }
           this[kHeaders][kGuard] = "request-no-cors";
         }
-        if (Object.keys(init).length !== 0) {
+        if (Object.keys(init2).length !== 0) {
           let headers = new Headers(this[kHeaders]);
-          if (init.headers !== void 0) {
-            headers = init.headers;
+          if (init2.headers !== void 0) {
+            headers = init2.headers;
           }
           this[kHeaders][kHeadersList].clear();
           if (headers.constructor.name === "Headers") {
@@ -11310,14 +11400,14 @@ var require_request2 = __commonJS({
             fillHeaders(this[kHeaders], headers);
           }
         }
-        const inputBody = input instanceof _Request ? input[kState].body : null;
-        if ((init.body != null || inputBody != null) && (request3.method === "GET" || request3.method === "HEAD")) {
+        const inputBody = input2 instanceof _Request ? input2[kState].body : null;
+        if ((init2.body != null || inputBody != null) && (request3.method === "GET" || request3.method === "HEAD")) {
           throw new TypeError("Request with GET/HEAD method cannot have body.");
         }
         let initBody = null;
-        if (init.body != null) {
+        if (init2.body != null) {
           const [extractedBody, contentType] = extractBody(
-            init.body,
+            init2.body,
             request3.keepalive
           );
           initBody = extractedBody;
@@ -11327,7 +11417,7 @@ var require_request2 = __commonJS({
         }
         const inputOrInitBody = initBody ?? inputBody;
         if (inputOrInitBody != null && inputOrInitBody.source == null) {
-          if (initBody != null && init.duplex == null) {
+          if (initBody != null && init2.duplex == null) {
             throw new TypeError("RequestInit: duplex option is required when sending a body.");
           }
           if (request3.mode !== "same-origin" && request3.mode !== "cors") {
@@ -11504,7 +11594,7 @@ var require_request2 = __commonJS({
       }
     };
     mixinBody(Request);
-    function makeRequest(init) {
+    function makeRequest(init2) {
       const request3 = {
         method: "GET",
         localURLsOnly: false,
@@ -11541,8 +11631,8 @@ var require_request2 = __commonJS({
         preventNoCacheCacheControlHeaderModification: false,
         done: false,
         timingAllowFailed: false,
-        ...init,
-        headersList: init.headersList ? new HeadersList(init.headersList) : new HeadersList()
+        ...init2,
+        headersList: init2.headersList ? new HeadersList(init2.headersList) : new HeadersList()
       };
       request3.url = request3.urlList[0];
       return request3;
@@ -11772,12 +11862,12 @@ var require_fetch = __commonJS({
         this.emit("terminated", error3);
       }
     };
-    function fetch(input, init = {}) {
+    function fetch(input2, init2 = {}) {
       webidl.argumentLengthCheck(arguments, 1, { header: "globalThis.fetch" });
       const p = createDeferredPromise();
       let requestObject;
       try {
-        requestObject = new Request(input, init);
+        requestObject = new Request(input2, init2);
       } catch (e) {
         p.reject(e);
         return p.promise;
@@ -11831,7 +11921,7 @@ var require_fetch = __commonJS({
         request: request3,
         processResponseEndOfBody: handleFetchDone,
         processResponse,
-        dispatcher: init.dispatcher ?? getGlobalDispatcher()
+        dispatcher: init2.dispatcher ?? getGlobalDispatcher()
         // undici
       });
       return p.promise;
@@ -12080,12 +12170,12 @@ var require_fetch = __commonJS({
           }
           const bodyWithType = safelyExtractBody(blobURLEntryObject);
           const body = bodyWithType[0];
-          const length3 = isomorphicEncode(`${body.length}`);
+          const length4 = isomorphicEncode(`${body.length}`);
           const type = bodyWithType[1] ?? "";
           const response = makeResponse({
             statusText: "OK",
             headersList: [
-              ["content-length", { name: "Content-Length", value: length3 }],
+              ["content-length", { name: "Content-Length", value: length4 }],
               ["content-type", { name: "Content-Type", value: type }]
             ]
           });
@@ -15385,11 +15475,11 @@ var require_receiver = __commonJS({
         let offset = 0;
         while (offset !== n) {
           const next = this.#buffers[0];
-          const { length: length3 } = next;
-          if (length3 + offset === n) {
+          const { length: length4 } = next;
+          if (length4 + offset === n) {
             buffer4.set(this.#buffers.shift(), offset);
             break;
-          } else if (length3 + offset > n) {
+          } else if (length4 + offset > n) {
             buffer4.set(next.subarray(0, n - offset), offset);
             this.#buffers[0] = next.subarray(n - offset);
             break;
@@ -16907,7 +16997,7 @@ var init_lowercase_keys = __esm({
 function isObject2(o) {
   return Object.prototype.toString.call(o) === "[object Object]";
 }
-function isPlainObject(o) {
+function isPlainObject2(o) {
   var ctor, prot;
   if (isObject2(o) === false)
     return false;
@@ -16931,7 +17021,7 @@ var init_is_plain_object = __esm({
 function mergeDeep(defaults, options) {
   const result = Object.assign({}, defaults);
   Object.keys(options).forEach((key) => {
-    if (isPlainObject(options[key])) {
+    if (isPlainObject2(options[key])) {
       if (!(key in defaults))
         Object.assign(result, { [key]: options[key] });
       else
@@ -17178,7 +17268,7 @@ var init_url_template = __esm({
 });
 
 // node_modules/.pnpm/@octokit+endpoint@9.0.2/node_modules/@octokit/endpoint/dist-src/parse.js
-function parse(options) {
+function parse2(options) {
   let method = options.method.toUpperCase();
   let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
   let headers = Object.assign({}, options.headers);
@@ -17252,7 +17342,7 @@ var init_parse = __esm({
 
 // node_modules/.pnpm/@octokit+endpoint@9.0.2/node_modules/@octokit/endpoint/dist-src/endpoint-with-defaults.js
 function endpointWithDefaults(defaults, route, options) {
-  return parse(merge11(defaults, route, options));
+  return parse2(merge11(defaults, route, options));
 }
 var init_endpoint_with_defaults = __esm({
   "node_modules/.pnpm/@octokit+endpoint@9.0.2/node_modules/@octokit/endpoint/dist-src/endpoint-with-defaults.js"() {
@@ -17269,7 +17359,7 @@ function withDefaults(oldDefaults, newDefaults) {
     DEFAULTS: DEFAULTS2,
     defaults: withDefaults.bind(null, DEFAULTS2),
     merge: merge11.bind(null, DEFAULTS2),
-    parse
+    parse: parse2
   });
 }
 var init_with_defaults = __esm({
@@ -17463,7 +17553,7 @@ var init_get_buffer_response = __esm({
 function fetchWrapper(requestOptions) {
   const log5 = requestOptions.request && requestOptions.request.log ? requestOptions.request.log : console;
   const parseSuccessResponseBody = requestOptions.request?.parseSuccessResponseBody !== false;
-  if (isPlainObject(requestOptions.body) || Array.isArray(requestOptions.body)) {
+  if (isPlainObject2(requestOptions.body) || Array.isArray(requestOptions.body)) {
     requestOptions.body = JSON.stringify(requestOptions.body);
   }
   let headers = {};
@@ -20538,113 +20628,23 @@ var require_github = __commonJS({
   }
 });
 
-// node_modules/.pnpm/extend@3.0.2/node_modules/extend/index.js
-var require_extend = __commonJS({
-  "node_modules/.pnpm/extend@3.0.2/node_modules/extend/index.js"(exports, module) {
-    var hasOwn = Object.prototype.hasOwnProperty;
-    var toStr = Object.prototype.toString;
-    var defineProperty = Object.defineProperty;
-    var gOPD = Object.getOwnPropertyDescriptor;
-    var isArray = function isArray2(arr) {
-      if (typeof Array.isArray === "function") {
-        return Array.isArray(arr);
-      }
-      return toStr.call(arr) === "[object Array]";
-    };
-    var isPlainObject3 = function isPlainObject4(obj) {
-      if (!obj || toStr.call(obj) !== "[object Object]") {
-        return false;
-      }
-      var hasOwnConstructor = hasOwn.call(obj, "constructor");
-      var hasIsPrototypeOf = obj.constructor && obj.constructor.prototype && hasOwn.call(obj.constructor.prototype, "isPrototypeOf");
-      if (obj.constructor && !hasOwnConstructor && !hasIsPrototypeOf) {
-        return false;
-      }
-      var key;
-      for (key in obj) {
-      }
-      return typeof key === "undefined" || hasOwn.call(obj, key);
-    };
-    var setProperty = function setProperty2(target, options) {
-      if (defineProperty && options.name === "__proto__") {
-        defineProperty(target, options.name, {
-          enumerable: true,
-          configurable: true,
-          value: options.newValue,
-          writable: true
-        });
-      } else {
-        target[options.name] = options.newValue;
-      }
-    };
-    var getProperty = function getProperty2(obj, name) {
-      if (name === "__proto__") {
-        if (!hasOwn.call(obj, name)) {
-          return void 0;
-        } else if (gOPD) {
-          return gOPD(obj, name).value;
-        }
-      }
-      return obj[name];
-    };
-    module.exports = function extend4() {
-      var options, name, src, copy4, copyIsArray, clone2;
-      var target = arguments[0];
-      var i = 1;
-      var length3 = arguments.length;
-      var deep = false;
-      if (typeof target === "boolean") {
-        deep = target;
-        target = arguments[1] || {};
-        i = 2;
-      }
-      if (target == null || typeof target !== "object" && typeof target !== "function") {
-        target = {};
-      }
-      for (; i < length3; ++i) {
-        options = arguments[i];
-        if (options != null) {
-          for (name in options) {
-            src = getProperty(target, name);
-            copy4 = getProperty(options, name);
-            if (target !== copy4) {
-              if (deep && copy4 && (isPlainObject3(copy4) || (copyIsArray = isArray(copy4)))) {
-                if (copyIsArray) {
-                  copyIsArray = false;
-                  clone2 = src && isArray(src) ? src : [];
-                } else {
-                  clone2 = src && isPlainObject3(src) ? src : {};
-                }
-                setProperty(target, { name, newValue: extend4(deep, clone2, copy4) });
-              } else if (typeof copy4 !== "undefined") {
-                setProperty(target, { name, newValue: copy4 });
-              }
-            }
-          }
-        }
-      }
-      return target;
-    };
-  }
-});
-
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Chunk.js
 var Chunk_exports = {};
 __export(Chunk_exports, {
   append: () => append2,
   appendAll: () => appendAll2,
-  chunksOf: () => chunksOf,
+  chunksOf: () => chunksOf2,
   compact: () => compact,
   contains: () => contains3,
   containsWith: () => containsWith3,
   dedupe: () => dedupe2,
   dedupeAdjacent: () => dedupeAdjacent2,
   drop: () => drop2,
-  dropRight: () => dropRight,
-  dropWhile: () => dropWhile,
-  empty: () => empty2,
-  every: () => every,
-  filter: () => filter2,
+  dropRight: () => dropRight2,
+  dropWhile: () => dropWhile2,
+  empty: () => empty3,
+  every: () => every2,
+  filter: () => filter3,
   filterMap: () => filterMap3,
   filterMapWhile: () => filterMapWhile2,
   findFirst: () => findFirst2,
@@ -20653,7 +20653,7 @@ __export(Chunk_exports, {
   findLastIndex: () => findLastIndex2,
   flatMap: () => flatMap4,
   flatten: () => flatten3,
-  forEach: () => forEach,
+  forEach: () => forEach2,
   fromIterable: () => fromIterable3,
   get: () => get2,
   getEquivalence: () => getEquivalence4,
@@ -20669,34 +20669,34 @@ __export(Chunk_exports, {
   makeBy: () => makeBy2,
   map: () => map4,
   mapAccum: () => mapAccum2,
-  modify: () => modify,
+  modify: () => modify2,
   modifyOption: () => modifyOption2,
   of: () => of2,
   partition: () => partition2,
   partitionMap: () => partitionMap3,
   prepend: () => prepend2,
-  prependAll: () => prependAll,
-  range: () => range,
+  prependAll: () => prependAll2,
+  range: () => range2,
   reduce: () => reduce2,
   reduceRight: () => reduceRight2,
   remove: () => remove2,
-  replace: () => replace,
-  replaceOption: () => replaceOption,
+  replace: () => replace2,
+  replaceOption: () => replaceOption2,
   reverse: () => reverse2,
   separate: () => separate2,
   size: () => size,
-  some: () => some3,
+  some: () => some4,
   sort: () => sort2,
-  sortWith: () => sortWith,
-  split: () => split,
+  sortWith: () => sortWith2,
+  split: () => split2,
   splitAt: () => splitAt2,
   splitNonEmptyAt: () => splitNonEmptyAt2,
-  splitWhere: () => splitWhere,
-  tail: () => tail,
+  splitWhere: () => splitWhere2,
+  tail: () => tail2,
   tailNonEmpty: () => tailNonEmpty2,
-  take: () => take,
-  takeRight: () => takeRight,
-  takeWhile: () => takeWhile,
+  take: () => take2,
+  takeRight: () => takeRight2,
+  takeWhile: () => takeWhile2,
   toArray: () => toArray2,
   toReadonlyArray: () => toReadonlyArray,
   union: () => union2,
@@ -20711,7 +20711,7 @@ __export(Chunk_exports, {
 });
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Function.js
-var isFunction = (input) => typeof input === "function";
+var isFunction = (input2) => typeof input2 === "function";
 var dual = function(arity, body) {
   if (typeof arity === "function") {
     return function() {
@@ -20827,17 +20827,18 @@ var globalValue = (id2, compute) => {
 };
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Predicate.js
-var isString = (input) => typeof input === "string";
-var isNumber = (input) => typeof input === "number";
-var isBigInt = (input) => typeof input === "bigint";
+var isString = (input2) => typeof input2 === "string";
+var isNumber = (input2) => typeof input2 === "number";
+var isBigInt = (input2) => typeof input2 === "bigint";
 var isFunction2 = isFunction;
-var isRecordOrArray = (input) => typeof input === "object" && input !== null;
-var isObject = (input) => isRecordOrArray(input) || isFunction2(input);
+var isRecordOrArray = (input2) => typeof input2 === "object" && input2 !== null;
+var isObject = (input2) => isRecordOrArray(input2) || isFunction2(input2);
 var hasProperty = /* @__PURE__ */ dual(2, (self, property) => isObject(self) && property in self);
 var isTagged = /* @__PURE__ */ dual(2, (self, tag2) => hasProperty(self, "_tag") && self["_tag"] === tag2);
-var isNullable = (input) => input === null || input === void 0;
-var isIterable = (input) => hasProperty(input, Symbol.iterator);
-var isPromise = (input) => hasProperty(input, "then") && "catch" in input && isFunction2(input.then) && isFunction2(input.catch);
+var isNullable = (input2) => input2 === null || input2 === void 0;
+var isIterable = (input2) => hasProperty(input2, Symbol.iterator);
+var isPromise = (input2) => hasProperty(input2, "then") && "catch" in input2 && isFunction2(input2.then) && isFunction2(input2.catch);
+var not = (self) => (a) => !self(a);
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Utils.js
 var GenKindTypeId = /* @__PURE__ */ Symbol.for("effect/Gen/GenKind");
@@ -20987,19 +20988,19 @@ var PCGRandom = class {
    * @category getter
    * @since 2.0.0
    */
-  integer(max5) {
-    if (!max5) {
+  integer(max6) {
+    if (!max6) {
       return this._next();
     }
-    max5 = max5 >>> 0;
-    if ((max5 & max5 - 1) === 0) {
-      return this._next() & max5 - 1;
+    max6 = max6 >>> 0;
+    if ((max6 & max6 - 1) === 0) {
+      return this._next() & max6 - 1;
     }
     let num = 0;
-    const skew = (-max5 >>> 0) % max5 >>> 0;
+    const skew = (-max6 >>> 0) % max6 >>> 0;
     for (num = this._next(); num < skew; num = this._next()) {
     }
-    return num % max5;
+    return num % max6;
   }
   /**
    * Get a uniformly distributed IEEE-754 double between 0.0 and 1.0, with
@@ -21430,7 +21431,7 @@ var NoneProto = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(Comm
     };
   }
 });
-var isOption = (input) => hasProperty(input, TypeId);
+var isOption = (input2) => hasProperty(input2, TypeId);
 var isNone = (fa) => fa._tag === "None";
 var isSome = (fa) => fa._tag === "Some";
 var none = /* @__PURE__ */ Object.create(NoneProto);
@@ -21488,7 +21489,7 @@ var LeftProto = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(Comm
     };
   }
 });
-var isEither = (input) => hasProperty(input, TypeId2);
+var isEither = (input2) => hasProperty(input2, TypeId2);
 var isLeft = (ma) => ma._tag === "Left";
 var isRight = (ma) => ma._tag === "Right";
 var left = (left3) => {
@@ -21508,8 +21509,37 @@ var fromOption = /* @__PURE__ */ dual(2, (self, onNone) => isNone(self) ? left(o
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Order.js
 var make2 = (compare) => (self, that) => self === that ? 0 : compare(self, that);
 var number2 = /* @__PURE__ */ make2((self, that) => self < that ? -1 : 1);
+var combineMany = /* @__PURE__ */ dual(2, (self, collection) => make2((a1, a2) => {
+  let out = self(a1, a2);
+  if (out !== 0) {
+    return out;
+  }
+  for (const O of collection) {
+    out = O(a1, a2);
+    if (out !== 0) {
+      return out;
+    }
+  }
+  return out;
+}));
+var empty = () => make2(() => 0);
+var combineAll = (collection) => combineMany(empty(), collection);
 var mapInput2 = /* @__PURE__ */ dual(2, (self, f) => make2((b1, b2) => self(f(b1), f(b2))));
+var array3 = (O) => make2((self, that) => {
+  const aLen = self.length;
+  const bLen = that.length;
+  const len = Math.min(aLen, bLen);
+  for (let i = 0; i < len; i++) {
+    const o = O(self[i], that[i]);
+    if (o !== 0) {
+      return o;
+    }
+  }
+  return number2(aLen, bLen);
+});
 var greaterThan = (O) => dual(2, (self, that) => O(self, that) === 1);
+var min = (O) => dual(2, (self, that) => self === that || O(self, that) < 1 ? self : that);
+var max = (O) => dual(2, (self, that) => self === that || O(self, that) > -1 ? self : that);
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Option.js
 var TypeId3 = /* @__PURE__ */ Symbol.for("effect/Option");
@@ -21587,10 +21617,10 @@ var productMany = (self, collection) => {
   }
   return some2(out);
 };
-var all = (input) => {
-  if (Symbol.iterator in input) {
+var all = (input2) => {
+  if (Symbol.iterator in input2) {
     const out2 = [];
-    for (const o of input) {
+    for (const o of input2) {
       if (isNone2(o)) {
         return none2();
       }
@@ -21599,8 +21629,8 @@ var all = (input) => {
     return some2(out2);
   }
   const out = {};
-  for (const key of Object.keys(input)) {
-    const o = input[key];
+  for (const key of Object.keys(input2)) {
+    const o = input2[key];
     if (isNone2(o)) {
       return none2();
     }
@@ -21670,6 +21700,131 @@ var gen = (f) => {
     return some2(state.value);
   }
 };
+
+// node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/ReadonlyArray.js
+var ReadonlyArray_exports = {};
+__export(ReadonlyArray_exports, {
+  append: () => append,
+  appendAll: () => appendAll,
+  cartesian: () => cartesian,
+  cartesianWith: () => cartesianWith,
+  chop: () => chop,
+  chunksOf: () => chunksOf,
+  contains: () => contains2,
+  containsWith: () => containsWith2,
+  copy: () => copy,
+  dedupe: () => dedupe,
+  dedupeAdjacent: () => dedupeAdjacent,
+  dedupeAdjacentWith: () => dedupeAdjacentWith,
+  dedupeWith: () => dedupeWith,
+  difference: () => difference,
+  differenceWith: () => differenceWith,
+  drop: () => drop,
+  dropRight: () => dropRight,
+  dropWhile: () => dropWhile,
+  empty: () => empty2,
+  every: () => every,
+  extend: () => extend,
+  filter: () => filter2,
+  filterMap: () => filterMap2,
+  filterMapWhile: () => filterMapWhile,
+  findFirst: () => findFirst,
+  findFirstIndex: () => findFirstIndex,
+  findLast: () => findLast,
+  findLastIndex: () => findLastIndex,
+  flatMap: () => flatMap3,
+  flatMapNullable: () => flatMapNullable2,
+  flatten: () => flatten2,
+  forEach: () => forEach,
+  fromIterable: () => fromIterable2,
+  fromNullable: () => fromNullable3,
+  fromOption: () => fromOption3,
+  fromRecord: () => fromRecord,
+  get: () => get,
+  getEquivalence: () => getEquivalence3,
+  getLefts: () => getLefts,
+  getOrder: () => getOrder2,
+  getRights: () => getRights,
+  getSomes: () => getSomes,
+  group: () => group,
+  groupBy: () => groupBy,
+  groupWith: () => groupWith,
+  head: () => head,
+  headNonEmpty: () => headNonEmpty,
+  init: () => init,
+  initNonEmpty: () => initNonEmpty,
+  insertAt: () => insertAt,
+  intersection: () => intersection,
+  intersectionWith: () => intersectionWith,
+  intersperse: () => intersperse,
+  isEmptyArray: () => isEmptyArray,
+  isEmptyReadonlyArray: () => isEmptyReadonlyArray,
+  isNonEmptyArray: () => isNonEmptyArray2,
+  isNonEmptyReadonlyArray: () => isNonEmptyReadonlyArray,
+  join: () => join,
+  last: () => last,
+  lastNonEmpty: () => lastNonEmpty,
+  length: () => length,
+  liftEither: () => liftEither,
+  liftNullable: () => liftNullable2,
+  liftOption: () => liftOption,
+  liftPredicate: () => liftPredicate2,
+  make: () => make4,
+  makeBy: () => makeBy,
+  map: () => map3,
+  mapAccum: () => mapAccum,
+  match: () => match3,
+  matchLeft: () => matchLeft,
+  matchRight: () => matchRight,
+  max: () => max2,
+  min: () => min2,
+  modify: () => modify,
+  modifyNonEmptyHead: () => modifyNonEmptyHead,
+  modifyNonEmptyLast: () => modifyNonEmptyLast,
+  modifyOption: () => modifyOption,
+  of: () => of,
+  partition: () => partition,
+  partitionMap: () => partitionMap2,
+  prepend: () => prepend,
+  prependAll: () => prependAll,
+  range: () => range,
+  reduce: () => reduce,
+  reduceRight: () => reduceRight,
+  remove: () => remove,
+  replace: () => replace,
+  replaceOption: () => replaceOption,
+  replicate: () => replicate,
+  reverse: () => reverse,
+  rotate: () => rotate,
+  scan: () => scan,
+  scanRight: () => scanRight,
+  separate: () => separate,
+  setNonEmptyHead: () => setNonEmptyHead,
+  setNonEmptyLast: () => setNonEmptyLast,
+  some: () => some3,
+  sort: () => sort,
+  sortBy: () => sortBy,
+  sortWith: () => sortWith,
+  span: () => span,
+  split: () => split,
+  splitAt: () => splitAt,
+  splitNonEmptyAt: () => splitNonEmptyAt,
+  splitWhere: () => splitWhere,
+  tail: () => tail,
+  tailNonEmpty: () => tailNonEmpty,
+  take: () => take,
+  takeRight: () => takeRight,
+  takeWhile: () => takeWhile,
+  unappend: () => unappend,
+  unfold: () => unfold,
+  union: () => union,
+  unionWith: () => unionWith,
+  unprepend: () => unprepend,
+  unsafeGet: () => unsafeGet,
+  unzip: () => unzip,
+  zip: () => zip,
+  zipWith: () => zipWith3
+});
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Either.js
 var Either_exports = {};
@@ -21742,7 +21897,7 @@ var match2 = /* @__PURE__ */ dual(2, (self, {
   onLeft,
   onRight
 }) => isLeft2(self) ? onLeft(self.left) : onRight(self.right));
-var filterOrLeft = /* @__PURE__ */ dual(3, (self, filter10, orLeftWith) => flatMap2(self, (a) => filter10(a) ? right2(a) : left2(orLeftWith(a))));
+var filterOrLeft = /* @__PURE__ */ dual(3, (self, filter11, orLeftWith) => flatMap2(self, (a) => filter11(a) ? right2(a) : left2(orLeftWith(a))));
 var merge = /* @__PURE__ */ match2({
   onLeft: identity,
   onRight: identity
@@ -21762,10 +21917,10 @@ var flatMap2 = /* @__PURE__ */ dual(2, (self, f) => isLeft2(self) ? left2(self.l
 var andThen2 = /* @__PURE__ */ dual(2, (self, f) => isFunction2(f) ? flatMap2(self, f) : flatMap2(self, () => f));
 var zipWith2 = /* @__PURE__ */ dual(3, (self, that, f) => flatMap2(self, (a) => map2(that, (b) => f(a, b))));
 var ap2 = /* @__PURE__ */ dual(2, (self, that) => zipWith2(self, that, (f, a) => f(a)));
-var all2 = (input) => {
-  if (Symbol.iterator in input) {
+var all2 = (input2) => {
+  if (Symbol.iterator in input2) {
     const out2 = [];
-    for (const e of input) {
+    for (const e of input2) {
       if (isLeft2(e)) {
         return e;
       }
@@ -21774,8 +21929,8 @@ var all2 = (input) => {
     return right2(out2);
   }
   const out = {};
-  for (const key of Object.keys(input)) {
-    const e = input[key];
+  for (const key of Object.keys(input2)) {
+    const e = input2[key];
     if (isLeft2(e)) {
       return e;
     }
@@ -21811,31 +21966,73 @@ var gen2 = (f) => {
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/readonlyArray.js
 var isNonEmptyArray = (self) => self.length > 0;
 
+// node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/ReadonlyRecord.js
+var collect = /* @__PURE__ */ dual(2, (self, f) => {
+  const out = [];
+  for (const key of Object.keys(self)) {
+    out.push(f(key, self[key]));
+  }
+  return out;
+});
+var toEntries = /* @__PURE__ */ collect((key, value3) => [key, value3]);
+
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Tuple.js
 var make3 = (...elements) => elements;
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/ReadonlyArray.js
 var make4 = (...elements) => elements;
 var makeBy = (n, f) => {
-  const max5 = Math.max(1, Math.floor(n));
+  const max6 = Math.max(1, Math.floor(n));
   const out = [f(0)];
-  for (let i = 1; i < max5; i++) {
+  for (let i = 1; i < max6; i++) {
     out.push(f(i));
   }
   return out;
 };
+var range = (start3, end6) => start3 <= end6 ? makeBy(end6 - start3 + 1, (i) => start3 + i) : [start3];
+var replicate = /* @__PURE__ */ dual(2, (a, n) => makeBy(n, () => a));
 var fromIterable2 = (collection) => Array.isArray(collection) ? collection : Array.from(collection);
+var fromRecord = toEntries;
+var fromOption3 = toArray;
 var match3 = /* @__PURE__ */ dual(2, (self, {
   onEmpty,
   onNonEmpty
 }) => isNonEmptyReadonlyArray(self) ? onNonEmpty(self) : onEmpty());
+var matchLeft = /* @__PURE__ */ dual(2, (self, {
+  onEmpty,
+  onNonEmpty
+}) => isNonEmptyReadonlyArray(self) ? onNonEmpty(headNonEmpty(self), tailNonEmpty(self)) : onEmpty());
+var matchRight = /* @__PURE__ */ dual(2, (self, {
+  onEmpty,
+  onNonEmpty
+}) => isNonEmptyReadonlyArray(self) ? onNonEmpty(initNonEmpty(self), lastNonEmpty(self)) : onEmpty());
 var prepend = /* @__PURE__ */ dual(2, (self, head7) => [head7, ...self]);
+var prependAll = /* @__PURE__ */ dual(2, (self, that) => fromIterable2(that).concat(fromIterable2(self)));
 var append = /* @__PURE__ */ dual(2, (self, last6) => [...self, last6]);
 var appendAll = /* @__PURE__ */ dual(2, (self, that) => fromIterable2(self).concat(fromIterable2(that)));
+var scan = /* @__PURE__ */ dual(3, (self, b, f) => {
+  const out = [b];
+  let i = 0;
+  for (const a of self) {
+    out[i + 1] = f(out[i], a);
+    i++;
+  }
+  return out;
+});
+var scanRight = /* @__PURE__ */ dual(3, (self, b, f) => {
+  const input2 = fromIterable2(self);
+  const out = new Array(input2.length + 1);
+  out[input2.length] = b;
+  for (let i = input2.length - 1; i >= 0; i--) {
+    out[i] = f(out[i + 1], input2[i]);
+  }
+  return out;
+});
 var isEmptyArray = (self) => self.length === 0;
 var isEmptyReadonlyArray = isEmptyArray;
 var isNonEmptyArray2 = isNonEmptyArray;
 var isNonEmptyReadonlyArray = isNonEmptyArray;
+var length = (self) => self.length;
 var isOutOfBound = (i, as11) => i < 0 || i >= as11.length;
 var clamp = (i, as11) => Math.floor(Math.min(Math.max(0, i), as11.length));
 var get = /* @__PURE__ */ dual(2, (self, index2) => {
@@ -21849,11 +22046,41 @@ var unsafeGet = /* @__PURE__ */ dual(2, (self, index2) => {
   }
   return self[i];
 });
+var unprepend = (self) => [headNonEmpty(self), tailNonEmpty(self)];
+var unappend = (self) => [initNonEmpty(self), lastNonEmpty(self)];
 var head = /* @__PURE__ */ get(0);
 var headNonEmpty = /* @__PURE__ */ unsafeGet(0);
 var last = (self) => isNonEmptyReadonlyArray(self) ? some2(lastNonEmpty(self)) : none2();
 var lastNonEmpty = (self) => self[self.length - 1];
+var tail = (self) => {
+  const input2 = fromIterable2(self);
+  return isNonEmptyReadonlyArray(input2) ? some2(tailNonEmpty(input2)) : none2();
+};
 var tailNonEmpty = (self) => self.slice(1);
+var init = (self) => {
+  const input2 = fromIterable2(self);
+  return isNonEmptyReadonlyArray(input2) ? some2(initNonEmpty(input2)) : none2();
+};
+var initNonEmpty = (self) => self.slice(0, -1);
+var take = /* @__PURE__ */ dual(2, (self, n) => {
+  const input2 = fromIterable2(self);
+  return input2.slice(0, clamp(n, input2));
+});
+var takeRight = /* @__PURE__ */ dual(2, (self, n) => {
+  const input2 = fromIterable2(self);
+  const i = clamp(n, input2);
+  return i === 0 ? [] : input2.slice(-i);
+});
+var takeWhile = /* @__PURE__ */ dual(2, (self, predicate) => {
+  const out = [];
+  for (const a of self) {
+    if (!predicate(a)) {
+      break;
+    }
+    out.push(a);
+  }
+  return out;
+});
 var spanIndex = (self, predicate) => {
   let i = 0;
   for (const a of self) {
@@ -21866,9 +22093,14 @@ var spanIndex = (self, predicate) => {
 };
 var span = /* @__PURE__ */ dual(2, (self, predicate) => splitAt(self, spanIndex(self, predicate)));
 var drop = /* @__PURE__ */ dual(2, (self, n) => {
-  const input = fromIterable2(self);
-  return input.slice(clamp(n, input), input.length);
+  const input2 = fromIterable2(self);
+  return input2.slice(clamp(n, input2), input2.length);
 });
+var dropRight = /* @__PURE__ */ dual(2, (self, n) => {
+  const input2 = fromIterable2(self);
+  return input2.slice(0, input2.length - clamp(n, input2));
+});
+var dropWhile = /* @__PURE__ */ dual(2, (self, predicate) => fromIterable2(self).slice(spanIndex(self, predicate)));
 var findFirstIndex = /* @__PURE__ */ dual(2, (self, predicate) => {
   let i = 0;
   for (const a of self) {
@@ -21880,32 +22112,43 @@ var findFirstIndex = /* @__PURE__ */ dual(2, (self, predicate) => {
   return none2();
 });
 var findLastIndex = /* @__PURE__ */ dual(2, (self, predicate) => {
-  const input = fromIterable2(self);
-  for (let i = input.length - 1; i >= 0; i--) {
-    if (predicate(input[i])) {
+  const input2 = fromIterable2(self);
+  for (let i = input2.length - 1; i >= 0; i--) {
+    if (predicate(input2[i])) {
       return some2(i);
     }
   }
   return none2();
 });
 var findFirst = /* @__PURE__ */ dual(2, (self, predicate) => {
-  const input = fromIterable2(self);
-  for (let i = 0; i < input.length; i++) {
-    if (predicate(input[i])) {
-      return some2(input[i]);
+  const input2 = fromIterable2(self);
+  for (let i = 0; i < input2.length; i++) {
+    if (predicate(input2[i])) {
+      return some2(input2[i]);
     }
   }
   return none2();
 });
 var findLast = /* @__PURE__ */ dual(2, (self, predicate) => {
-  const input = fromIterable2(self);
-  for (let i = input.length - 1; i >= 0; i--) {
-    if (predicate(input[i])) {
-      return some2(input[i]);
+  const input2 = fromIterable2(self);
+  for (let i = input2.length - 1; i >= 0; i--) {
+    if (predicate(input2[i])) {
+      return some2(input2[i]);
     }
   }
   return none2();
 });
+var insertAt = /* @__PURE__ */ dual(3, (self, i, b) => {
+  const out = Array.from(self);
+  if (i < 0 || i > out.length) {
+    return none2();
+  }
+  out.splice(i, 0, b);
+  return some2(out);
+});
+var replace = /* @__PURE__ */ dual(3, (self, i, b) => modify(self, i, () => b));
+var replaceOption = /* @__PURE__ */ dual(3, (self, i, b) => modifyOption(self, i, () => b));
+var modify = /* @__PURE__ */ dual(3, (self, i, f) => getOrElse(modifyOption(self, i, f), () => Array.from(self)));
 var modifyOption = /* @__PURE__ */ dual(3, (self, i, f) => {
   const out = Array.from(self);
   if (isOutOfBound(i, out)) {
@@ -21929,6 +22172,17 @@ var sort = /* @__PURE__ */ dual(2, (self, O) => {
   out.sort(O);
   return out;
 });
+var sortWith = /* @__PURE__ */ dual(3, (self, f, order2) => sort(self, mapInput2(order2, f)));
+var sortBy = (...orders) => {
+  const sortByAll = sort(combineAll(orders));
+  return (self) => {
+    const input2 = fromIterable2(self);
+    if (isNonEmptyReadonlyArray(input2)) {
+      return sortByAll(input2);
+    }
+    return [];
+  };
+};
 var zip = /* @__PURE__ */ dual(2, (self, that) => zipWith3(self, that, make3));
 var zipWith3 = /* @__PURE__ */ dual(3, (self, that, f) => {
   const as11 = fromIterable2(self);
@@ -21944,18 +22198,54 @@ var zipWith3 = /* @__PURE__ */ dual(3, (self, that, f) => {
   return [];
 });
 var unzip = (self) => {
-  const input = fromIterable2(self);
-  if (isNonEmptyReadonlyArray(input)) {
-    const fa = [input[0][0]];
-    const fb = [input[0][1]];
-    for (let i = 1; i < input.length; i++) {
-      fa[i] = input[i][0];
-      fb[i] = input[i][1];
+  const input2 = fromIterable2(self);
+  if (isNonEmptyReadonlyArray(input2)) {
+    const fa = [input2[0][0]];
+    const fb = [input2[0][1]];
+    for (let i = 1; i < input2.length; i++) {
+      fa[i] = input2[i][0];
+      fb[i] = input2[i][1];
     }
     return [fa, fb];
   }
   return [[], []];
 };
+var intersperse = /* @__PURE__ */ dual(2, (self, middle) => {
+  const input2 = fromIterable2(self);
+  if (isNonEmptyReadonlyArray(input2)) {
+    const out = [headNonEmpty(input2)];
+    const tail3 = tailNonEmpty(input2);
+    for (let i = 0; i < tail3.length; i++) {
+      if (i < tail3.length) {
+        out.push(middle);
+      }
+      out.push(tail3[i]);
+    }
+    return out;
+  }
+  return [];
+});
+var modifyNonEmptyHead = /* @__PURE__ */ dual(2, (self, f) => [f(headNonEmpty(self)), ...tailNonEmpty(self)]);
+var setNonEmptyHead = /* @__PURE__ */ dual(2, (self, b) => modifyNonEmptyHead(self, () => b));
+var modifyNonEmptyLast = /* @__PURE__ */ dual(2, (self, f) => append(initNonEmpty(self), f(lastNonEmpty(self))));
+var setNonEmptyLast = /* @__PURE__ */ dual(2, (self, b) => modifyNonEmptyLast(self, () => b));
+var rotate = /* @__PURE__ */ dual(2, (self, n) => {
+  const input2 = fromIterable2(self);
+  if (isNonEmptyReadonlyArray(input2)) {
+    const len = input2.length;
+    const m = Math.round(n) % len;
+    if (isOutOfBound(Math.abs(m), input2) || m === 0) {
+      return copy(input2);
+    }
+    if (m < 0) {
+      const [f, s] = splitNonEmptyAt(input2, -m);
+      return appendAll(s, f);
+    } else {
+      return rotate(self, m - len);
+    }
+  }
+  return [];
+});
 var containsWith2 = (isEquivalent) => dual(2, (self, a) => {
   for (const i of self) {
     if (isEquivalent(a, i)) {
@@ -21966,22 +22256,76 @@ var containsWith2 = (isEquivalent) => dual(2, (self, a) => {
 });
 var _equivalence2 = /* @__PURE__ */ equivalence();
 var contains2 = /* @__PURE__ */ containsWith2(_equivalence2);
-var splitAt = /* @__PURE__ */ dual(2, (self, n) => {
-  const input = Array.from(self);
-  const _n = Math.floor(n);
-  if (isNonEmptyReadonlyArray(input)) {
-    if (_n >= 1) {
-      return splitNonEmptyAt(input, _n);
+var chop = /* @__PURE__ */ dual(2, (self, f) => {
+  const input2 = fromIterable2(self);
+  if (isNonEmptyReadonlyArray(input2)) {
+    const [b, rest] = f(input2);
+    const out = [b];
+    let next = rest;
+    while (isNonEmptyArray(next)) {
+      const [b2, rest2] = f(next);
+      out.push(b2);
+      next = rest2;
     }
-    return [[], input];
+    return out;
   }
-  return [input, []];
+  return [];
+});
+var splitAt = /* @__PURE__ */ dual(2, (self, n) => {
+  const input2 = Array.from(self);
+  const _n = Math.floor(n);
+  if (isNonEmptyReadonlyArray(input2)) {
+    if (_n >= 1) {
+      return splitNonEmptyAt(input2, _n);
+    }
+    return [[], input2];
+  }
+  return [input2, []];
 });
 var splitNonEmptyAt = /* @__PURE__ */ dual(2, (self, n) => {
   const _n = Math.max(1, Math.floor(n));
   return _n >= self.length ? [copy(self), []] : [prepend(self.slice(1, _n), headNonEmpty(self)), self.slice(_n)];
 });
+var split = /* @__PURE__ */ dual(2, (self, n) => {
+  const input2 = fromIterable2(self);
+  return chunksOf(input2, Math.ceil(input2.length / Math.floor(n)));
+});
+var splitWhere = /* @__PURE__ */ dual(2, (self, predicate) => span(self, not(predicate)));
 var copy = (self) => self.slice();
+var chunksOf = /* @__PURE__ */ dual(2, (self, n) => {
+  const input2 = fromIterable2(self);
+  if (isNonEmptyReadonlyArray(input2)) {
+    return chop(input2, splitNonEmptyAt(n));
+  }
+  return [];
+});
+var groupWith = /* @__PURE__ */ dual(2, (self, isEquivalent) => chop(self, (as11) => {
+  const h = headNonEmpty(as11);
+  const out = [h];
+  let i = 1;
+  for (; i < as11.length; i++) {
+    const a = as11[i];
+    if (isEquivalent(a, h)) {
+      out.push(a);
+    } else {
+      break;
+    }
+  }
+  return [out, as11.slice(i)];
+}));
+var group = /* @__PURE__ */ groupWith(/* @__PURE__ */ equivalence());
+var groupBy = /* @__PURE__ */ dual(2, (self, f) => {
+  const out = {};
+  for (const a of self) {
+    const k = f(a);
+    if (Object.prototype.hasOwnProperty.call(out, k)) {
+      out[k].push(a);
+    } else {
+      out[k] = [a];
+    }
+  }
+  return out;
+});
 var unionWith = /* @__PURE__ */ dual(3, (self, that, isEquivalent) => {
   const a = fromIterable2(self);
   const b = fromIterable2(that);
@@ -22000,7 +22344,12 @@ var intersectionWith = (isEquivalent) => {
   return dual(2, (self, that) => fromIterable2(self).filter((a) => has8(that, a)));
 };
 var intersection = /* @__PURE__ */ intersectionWith(_equivalence2);
-var empty = () => [];
+var differenceWith = (isEquivalent) => {
+  const has8 = containsWith2(isEquivalent);
+  return dual(2, (self, that) => fromIterable2(self).filter((a) => !has8(that, a)));
+};
+var difference = /* @__PURE__ */ differenceWith(_equivalence2);
+var empty2 = () => [];
 var of = (a) => [a];
 var map3 = /* @__PURE__ */ dual(2, (self, f) => self.map(f));
 var flatMap3 = /* @__PURE__ */ dual(2, (self, f) => {
@@ -22052,6 +22401,34 @@ var partitionMap2 = /* @__PURE__ */ dual(2, (self, f) => {
   return [left3, right3];
 });
 var getSomes = /* @__PURE__ */ filterMap2(identity);
+var getLefts = (self) => {
+  const out = [];
+  for (const a of self) {
+    if (isLeft2(a)) {
+      out.push(a.left);
+    }
+  }
+  return out;
+};
+var getRights = (self) => {
+  const out = [];
+  for (const a of self) {
+    if (isRight2(a)) {
+      out.push(a.right);
+    }
+  }
+  return out;
+};
+var filter2 = /* @__PURE__ */ dual(2, (self, predicate) => {
+  const as11 = fromIterable2(self);
+  const out = [];
+  for (let i = 0; i < as11.length; i++) {
+    if (predicate(as11[i], i)) {
+      out.push(as11[i]);
+    }
+  }
+  return out;
+});
 var partition = /* @__PURE__ */ dual(2, (self, predicate) => {
   const left3 = [];
   const right3 = [];
@@ -22068,6 +22445,20 @@ var partition = /* @__PURE__ */ dual(2, (self, predicate) => {
 var separate = /* @__PURE__ */ partitionMap2(identity);
 var reduce = /* @__PURE__ */ dual(3, (self, b, f) => fromIterable2(self).reduce((b2, a, i) => f(b2, a, i), b));
 var reduceRight = /* @__PURE__ */ dual(3, (self, b, f) => fromIterable2(self).reduceRight((b2, a, i) => f(b2, a, i), b));
+var liftPredicate2 = (predicate) => (b) => predicate(b) ? [b] : [];
+var liftOption = (f) => (...a) => fromOption3(f(...a));
+var fromNullable3 = (a) => a == null ? empty2() : [a];
+var liftNullable2 = (f) => (...a) => fromNullable3(f(...a));
+var flatMapNullable2 = /* @__PURE__ */ dual(2, (self, f) => isNonEmptyReadonlyArray(self) ? fromNullable3(f(headNonEmpty(self))) : empty2());
+var liftEither = (f) => (...a) => {
+  const e = f(...a);
+  return isLeft2(e) ? [] : [e.right];
+};
+var every = /* @__PURE__ */ dual(2, (self, refinement) => self.every(refinement));
+var some3 = /* @__PURE__ */ dual(2, (self, predicate) => self.some(predicate));
+var extend = /* @__PURE__ */ dual(2, (self, f) => self.map((_, i, as11) => f(as11.slice(i))));
+var min2 = /* @__PURE__ */ dual(2, (self, O) => self.reduce(min(O)));
+var max2 = /* @__PURE__ */ dual(2, (self, O) => self.reduce(max(O)));
 var unfold = (b, f) => {
   const out = [];
   let next = b;
@@ -22079,12 +22470,14 @@ var unfold = (b, f) => {
   }
   return out;
 };
+var getOrder2 = array3;
 var getEquivalence3 = array2;
+var forEach = /* @__PURE__ */ dual(2, (self, f) => fromIterable2(self).forEach((a, i) => f(a, i)));
 var dedupeWith = /* @__PURE__ */ dual(2, (self, isEquivalent) => {
-  const input = fromIterable2(self);
-  if (isNonEmptyReadonlyArray(input)) {
-    const out = [headNonEmpty(input)];
-    const rest = tailNonEmpty(input);
+  const input2 = fromIterable2(self);
+  if (isNonEmptyReadonlyArray(input2)) {
+    const out = [headNonEmpty(input2)];
+    const rest = tailNonEmpty(input2);
     for (const r of rest) {
       if (out.every((a) => !isEquivalent(r, a))) {
         out.push(r);
@@ -22118,6 +22511,8 @@ var mapAccum = /* @__PURE__ */ dual(3, (self, s, f) => {
   }
   return [s1, out];
 });
+var cartesianWith = /* @__PURE__ */ dual(3, (self, that, f) => flatMap3(self, (a) => map3(that, (b) => f(a, b))));
+var cartesian = /* @__PURE__ */ dual(2, (self, that) => cartesianWith(self, that, (a, b) => [a, b]));
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Chunk.js
 var TypeId5 = /* @__PURE__ */ Symbol.for("effect/Chunk");
@@ -22215,7 +22610,7 @@ var isChunk = (u) => hasProperty(u, TypeId5);
 var _empty = /* @__PURE__ */ makeChunk({
   _tag: "IEmpty"
 });
-var empty2 = () => _empty;
+var empty3 = () => _empty;
 var make5 = (...as11) => as11.length === 1 ? of2(as11[0]) : unsafeFromNonEmptyArray(as11);
 var of2 = (a) => makeChunk({
   _tag: "ISingleton",
@@ -22225,26 +22620,26 @@ var fromIterable3 = (self) => isChunk(self) ? self : makeChunk({
   _tag: "IArray",
   array: fromIterable2(self)
 });
-var copyToArray = (self, array5, initial) => {
+var copyToArray = (self, array6, initial) => {
   switch (self.backing._tag) {
     case "IArray": {
-      copy2(self.backing.array, 0, array5, initial, self.length);
+      copy2(self.backing.array, 0, array6, initial, self.length);
       break;
     }
     case "IConcat": {
-      copyToArray(self.left, array5, initial);
-      copyToArray(self.right, array5, initial + self.left.length);
+      copyToArray(self.left, array6, initial);
+      copyToArray(self.right, array6, initial + self.left.length);
       break;
     }
     case "ISingleton": {
-      array5[initial] = self.backing.a;
+      array6[initial] = self.backing.a;
       break;
     }
     case "ISlice": {
       let i = 0;
       let j = initial;
       while (i < self.length) {
-        array5[j] = unsafeGet2(self, i);
+        array6[j] = unsafeGet2(self, i);
         i += 1;
         j += 1;
       }
@@ -22330,7 +22725,7 @@ var unsafeGet2 = /* @__PURE__ */ dual(2, (self, index2) => {
 });
 var append2 = /* @__PURE__ */ dual(2, (self, a) => appendAll2(self, of2(a)));
 var prepend2 = /* @__PURE__ */ dual(2, (self, elem) => appendAll2(of2(elem), self));
-var take = /* @__PURE__ */ dual(2, (self, n) => {
+var take2 = /* @__PURE__ */ dual(2, (self, n) => {
   if (n <= 0) {
     return _empty;
   } else if (n >= self.length) {
@@ -22350,10 +22745,10 @@ var take = /* @__PURE__ */ dual(2, (self, n) => {
           return makeChunk({
             _tag: "IConcat",
             left: self.left,
-            right: take(self.right, n - self.left.length)
+            right: take2(self.right, n - self.left.length)
           });
         }
-        return take(self.left, n);
+        return take2(self.left, n);
       }
       default: {
         return makeChunk({
@@ -22402,8 +22797,8 @@ var drop2 = /* @__PURE__ */ dual(2, (self, n) => {
     }
   }
 });
-var dropRight = /* @__PURE__ */ dual(2, (self, n) => take(self, Math.max(0, self.length - n)));
-var dropWhile = /* @__PURE__ */ dual(2, (self, predicate) => {
+var dropRight2 = /* @__PURE__ */ dual(2, (self, n) => take2(self, Math.max(0, self.length - n)));
+var dropWhile2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const arr = toReadonlyArray(self);
   const len = arr.length;
   let i = 0;
@@ -22412,7 +22807,7 @@ var dropWhile = /* @__PURE__ */ dual(2, (self, predicate) => {
   }
   return drop2(self, i);
 });
-var prependAll = /* @__PURE__ */ dual(2, (self, that) => appendAll2(that, self));
+var prependAll2 = /* @__PURE__ */ dual(2, (self, that) => appendAll2(that, self));
 var appendAll2 = /* @__PURE__ */ dual(2, (self, that) => {
   if (self.backing._tag === "IEmpty") {
     return that;
@@ -22498,7 +22893,7 @@ var appendAll2 = /* @__PURE__ */ dual(2, (self, that) => {
   }
 });
 var filterMap3 = /* @__PURE__ */ dual(2, (self, f) => unsafeFromArray(filterMap2(self, f)));
-var filter2 = /* @__PURE__ */ dual(2, (self, predicate) => unsafeFromArray(filterMap2(self, liftPredicate(predicate))));
+var filter3 = /* @__PURE__ */ dual(2, (self, predicate) => unsafeFromArray(filterMap2(self, liftPredicate(predicate))));
 var filterMapWhile2 = /* @__PURE__ */ dual(2, (self, f) => unsafeFromArray(filterMapWhile(self, f)));
 var compact = (self) => filterMap3(self, identity);
 var flatMap4 = /* @__PURE__ */ dual(2, (self, f) => {
@@ -22512,9 +22907,9 @@ var flatMap4 = /* @__PURE__ */ dual(2, (self, f) => {
   }
   return out;
 });
-var forEach = /* @__PURE__ */ dual(2, (self, f) => toReadonlyArray(self).forEach(f));
+var forEach2 = /* @__PURE__ */ dual(2, (self, f) => toReadonlyArray(self).forEach(f));
 var flatten3 = /* @__PURE__ */ flatMap4(identity);
-var chunksOf = /* @__PURE__ */ dual(2, (self, n) => {
+var chunksOf2 = /* @__PURE__ */ dual(2, (self, n) => {
   const gr = [];
   let current2 = [];
   toReadonlyArray(self).forEach((a) => {
@@ -22547,14 +22942,14 @@ var partitionMap3 = /* @__PURE__ */ dual(2, (self, f) => pipe(partitionMap2(toRe
 var separate2 = (self) => pipe(separate(toReadonlyArray(self)), ([l, r]) => [unsafeFromArray(l), unsafeFromArray(r)]);
 var size = (self) => self.length;
 var sort2 = /* @__PURE__ */ dual(2, (self, O) => unsafeFromArray(sort(toReadonlyArray(self), O)));
-var sortWith = /* @__PURE__ */ dual(3, (self, f, order2) => sort2(self, mapInput2(order2, f)));
-var splitAt2 = /* @__PURE__ */ dual(2, (self, n) => [take(self, n), drop2(self, n)]);
+var sortWith2 = /* @__PURE__ */ dual(3, (self, f, order2) => sort2(self, mapInput2(order2, f)));
+var splitAt2 = /* @__PURE__ */ dual(2, (self, n) => [take2(self, n), drop2(self, n)]);
 var splitNonEmptyAt2 = /* @__PURE__ */ dual(2, (self, n) => {
   const _n = Math.max(1, Math.floor(n));
-  return _n >= self.length ? [self, empty2()] : [take(self, _n), drop2(self, _n)];
+  return _n >= self.length ? [self, empty3()] : [take2(self, _n), drop2(self, _n)];
 });
-var split = /* @__PURE__ */ dual(2, (self, n) => chunksOf(self, Math.ceil(self.length / Math.floor(n))));
-var splitWhere = /* @__PURE__ */ dual(2, (self, predicate) => {
+var split2 = /* @__PURE__ */ dual(2, (self, n) => chunksOf2(self, Math.ceil(self.length / Math.floor(n))));
+var splitWhere2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   let i = 0;
   for (const a of toReadonlyArray(self)) {
     if (predicate(a)) {
@@ -22565,10 +22960,10 @@ var splitWhere = /* @__PURE__ */ dual(2, (self, predicate) => {
   }
   return splitAt2(self, i);
 });
-var tail = (self) => self.length > 0 ? some2(drop2(self, 1)) : none2();
+var tail2 = (self) => self.length > 0 ? some2(drop2(self, 1)) : none2();
 var tailNonEmpty2 = (self) => drop2(self, 1);
-var takeRight = /* @__PURE__ */ dual(2, (self, n) => drop2(self, self.length - n));
-var takeWhile = /* @__PURE__ */ dual(2, (self, predicate) => {
+var takeRight2 = /* @__PURE__ */ dual(2, (self, n) => drop2(self, self.length - n));
+var takeWhile2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const out = [];
   for (const a of toReadonlyArray(self)) {
     if (predicate(a)) {
@@ -22590,19 +22985,19 @@ var zipWith4 = /* @__PURE__ */ dual(3, (self, that, f) => unsafeFromArray(zipWit
 var zip2 = /* @__PURE__ */ dual(2, (self, that) => zipWith4(self, that, (a, b) => [a, b]));
 var remove2 = /* @__PURE__ */ dual(2, (self, i) => unsafeFromArray(remove(toReadonlyArray(self), i)));
 var modifyOption2 = /* @__PURE__ */ dual(3, (self, i, f) => map(modifyOption(toReadonlyArray(self), i, f), unsafeFromArray));
-var modify = /* @__PURE__ */ dual(3, (self, i, f) => getOrElse(modifyOption2(self, i, f), () => self));
-var replace = /* @__PURE__ */ dual(3, (self, i, b) => modify(self, i, () => b));
-var replaceOption = /* @__PURE__ */ dual(3, (self, i, b) => modifyOption2(self, i, () => b));
+var modify2 = /* @__PURE__ */ dual(3, (self, i, f) => getOrElse(modifyOption2(self, i, f), () => self));
+var replace2 = /* @__PURE__ */ dual(3, (self, i, b) => modify2(self, i, () => b));
+var replaceOption2 = /* @__PURE__ */ dual(3, (self, i, b) => modifyOption2(self, i, () => b));
 var makeBy2 = /* @__PURE__ */ dual(2, (n, f) => fromIterable3(makeBy(n, f)));
-var range = (start3, end6) => start3 <= end6 ? makeBy2(end6 - start3 + 1, (i) => start3 + i) : of2(start3);
+var range2 = (start3, end6) => start3 <= end6 ? makeBy2(end6 - start3 + 1, (i) => start3 + i) : of2(start3);
 var contains3 = contains2;
 var containsWith3 = containsWith2;
 var findFirst2 = findFirst;
 var findFirstIndex2 = findFirstIndex;
 var findLast2 = findLast;
 var findLastIndex2 = findLastIndex;
-var every = /* @__PURE__ */ dual(2, (self, refinement) => fromIterable2(self).every(refinement));
-var some3 = /* @__PURE__ */ dual(2, (self, predicate) => fromIterable2(self).some(predicate));
+var every2 = /* @__PURE__ */ dual(2, (self, refinement) => fromIterable2(self).every(refinement));
+var some4 = /* @__PURE__ */ dual(2, (self, predicate) => fromIterable2(self).some(predicate));
 var join2 = join;
 var reduce2 = reduce;
 var reduceRight2 = reduceRight;
@@ -23060,10 +23455,10 @@ var visitLazyChildren = (len, children2, i, f, cont) => {
   return applyCont(cont);
 };
 var _empty2 = /* @__PURE__ */ makeImpl(false, 0, /* @__PURE__ */ new EmptyNode(), 0);
-var empty3 = () => _empty2;
+var empty4 = () => _empty2;
 var make6 = (...entries2) => fromIterable4(entries2);
 var fromIterable4 = (entries2) => {
-  const map25 = beginMutation(empty3());
+  const map25 = beginMutation(empty4());
   for (const entry of entries2) {
     set(map25, entry[0], entry[1]);
   }
@@ -23148,8 +23543,8 @@ var modifyHash = /* @__PURE__ */ dual(4, (self, key, hash2, f) => {
   return pipe(self, setTree(newRoot, size15.value));
 });
 var remove3 = /* @__PURE__ */ dual(2, (self, key) => modifyAt(self, key, none2));
-var map5 = /* @__PURE__ */ dual(2, (self, f) => reduce3(self, empty3(), (map25, value3, key) => set(map25, key, f(value3, key))));
-var forEach2 = /* @__PURE__ */ dual(2, (self, f) => reduce3(self, void 0, (_, value3, key) => f(value3, key)));
+var map5 = /* @__PURE__ */ dual(2, (self, f) => reduce3(self, empty4(), (map25, value3, key) => set(map25, key, f(value3, key))));
+var forEach3 = /* @__PURE__ */ dual(2, (self, f) => reduce3(self, void 0, (_, value3, key) => f(value3, key)));
 var reduce3 = /* @__PURE__ */ dual(3, (self, zero2, f) => {
   const root = self._root;
   if (root._tag === "LeafNode") {
@@ -23216,17 +23611,17 @@ var makeImpl2 = (keyMap) => {
   return set8;
 };
 var isHashSet = (u) => hasProperty(u, HashSetTypeId);
-var _empty3 = /* @__PURE__ */ makeImpl2(/* @__PURE__ */ empty3());
-var empty4 = () => _empty3;
+var _empty3 = /* @__PURE__ */ makeImpl2(/* @__PURE__ */ empty4());
+var empty5 = () => _empty3;
 var fromIterable5 = (elements) => {
-  const set8 = beginMutation2(empty4());
+  const set8 = beginMutation2(empty5());
   for (const value3 of elements) {
     add(set8, value3);
   }
   return endMutation2(set8);
 };
 var make7 = (...elements) => {
-  const set8 = beginMutation2(empty4());
+  const set8 = beginMutation2(empty5());
   for (const value3 of elements) {
     add(set8, value3);
   }
@@ -23246,29 +23641,29 @@ var mutate = /* @__PURE__ */ dual(2, (self, f) => {
 });
 var add = /* @__PURE__ */ dual(2, (self, value3) => self._keyMap._editable ? (set(value3, true)(self._keyMap), self) : makeImpl2(set(value3, true)(self._keyMap)));
 var remove4 = /* @__PURE__ */ dual(2, (self, value3) => self._keyMap._editable ? (remove3(value3)(self._keyMap), self) : makeImpl2(remove3(value3)(self._keyMap)));
-var difference = /* @__PURE__ */ dual(2, (self, that) => mutate(self, (set8) => {
+var difference2 = /* @__PURE__ */ dual(2, (self, that) => mutate(self, (set8) => {
   for (const value3 of that) {
     remove4(set8, value3);
   }
 }));
-var union3 = /* @__PURE__ */ dual(2, (self, that) => mutate(empty4(), (set8) => {
-  forEach3(self, (value3) => add(set8, value3));
+var union3 = /* @__PURE__ */ dual(2, (self, that) => mutate(empty5(), (set8) => {
+  forEach4(self, (value3) => add(set8, value3));
   for (const value3 of that) {
     add(set8, value3);
   }
 }));
-var forEach3 = /* @__PURE__ */ dual(2, (self, f) => forEach2(self._keyMap, (_, k) => f(k)));
+var forEach4 = /* @__PURE__ */ dual(2, (self, f) => forEach3(self._keyMap, (_, k) => f(k)));
 var reduce4 = /* @__PURE__ */ dual(3, (self, zero2, f) => reduce3(self._keyMap, zero2, (z, _, a) => f(z, a)));
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/HashSet.js
-var empty5 = empty4;
+var empty6 = empty5;
 var fromIterable6 = fromIterable5;
 var make8 = make7;
 var has3 = has2;
 var size4 = size3;
 var add2 = add;
 var remove5 = remove4;
-var difference2 = difference;
+var difference3 = difference2;
 var union4 = union3;
 var reduce5 = reduce4;
 
@@ -23340,7 +23735,7 @@ var proto = {
     return this.toJSON();
   }
 };
-var empty6 = /* @__PURE__ */ (() => {
+var empty7 = /* @__PURE__ */ (() => {
   const o = /* @__PURE__ */ Object.create(proto);
   o._tag = OP_EMPTY;
   return o;
@@ -23401,9 +23796,9 @@ var isEmpty3 = (self) => {
 };
 var isInterrupted = (self) => isSome2(interruptOption(self));
 var isInterruptedOnly = (self) => reduceWithContext(void 0, IsInterruptedOnlyCauseReducer)(self);
-var failures = (self) => reverse2(reduce6(self, empty2(), (list2, cause3) => cause3._tag === OP_FAIL ? some2(pipe(list2, prepend2(cause3.error))) : none2()));
-var defects = (self) => reverse2(reduce6(self, empty2(), (list2, cause3) => cause3._tag === OP_DIE ? some2(pipe(list2, prepend2(cause3.defect))) : none2()));
-var interruptors = (self) => reduce6(self, empty5(), (set8, cause3) => cause3._tag === OP_INTERRUPT ? some2(pipe(set8, add2(cause3.fiberId))) : none2());
+var failures = (self) => reverse2(reduce6(self, empty3(), (list2, cause3) => cause3._tag === OP_FAIL ? some2(pipe(list2, prepend2(cause3.error))) : none2()));
+var defects = (self) => reverse2(reduce6(self, empty3(), (list2, cause3) => cause3._tag === OP_DIE ? some2(pipe(list2, prepend2(cause3.defect))) : none2()));
+var interruptors = (self) => reduce6(self, empty6(), (set8, cause3) => cause3._tag === OP_INTERRUPT ? some2(pipe(set8, add2(cause3.fiberId))) : none2());
 var failureOption = (self) => find(self, (cause3) => cause3._tag === OP_FAIL ? some2(cause3.error) : none2());
 var failureOrCause = (self) => {
   const option5 = failureOption(self);
@@ -23417,7 +23812,7 @@ var failureOrCause = (self) => {
   }
 };
 var flipCauseOption = (self) => match4(self, {
-  onEmpty: some2(empty6),
+  onEmpty: some2(empty7),
   onFail: (failureOption2) => pipe(failureOption2, map(fail)),
   onDie: (defect) => some2(die(defect)),
   onInterrupt: (fiberId3) => some2(interrupt(fiberId3)),
@@ -23508,15 +23903,15 @@ var keepDefectsAndElectFailures = (self) => match4(self, {
   }
 });
 var stripFailures = (self) => match4(self, {
-  onEmpty: empty6,
-  onFail: () => empty6,
+  onEmpty: empty7,
+  onFail: () => empty7,
   onDie: (defect) => die(defect),
   onInterrupt: (fiberId3) => interrupt(fiberId3),
   onSequential: sequential,
   onParallel: parallel
 });
 var electFailures = (self) => match4(self, {
-  onEmpty: empty6,
+  onEmpty: empty7,
   onFail: (failure) => die(failure),
   onDie: (defect) => die(defect),
   onInterrupt: (fiberId3) => interrupt(fiberId3),
@@ -23525,7 +23920,7 @@ var electFailures = (self) => match4(self, {
 });
 var map8 = /* @__PURE__ */ dual(2, (self, f) => flatMap7(self, (e) => fail(f(e))));
 var flatMap7 = /* @__PURE__ */ dual(2, (self, f) => match4(self, {
-  onEmpty: empty6,
+  onEmpty: empty7,
   onFail: (error3) => f(error3),
   onDie: (defect) => die(defect),
   onInterrupt: (fiberId3) => interrupt(fiberId3),
@@ -23537,11 +23932,11 @@ var causeEquals = (left3, right3) => {
   let leftStack = of2(left3);
   let rightStack = of2(right3);
   while (isNonEmpty(leftStack) && isNonEmpty(rightStack)) {
-    const [leftParallel, leftSequential] = pipe(headNonEmpty2(leftStack), reduce6([empty5(), empty2()], ([parallel4, sequential4], cause3) => {
+    const [leftParallel, leftSequential] = pipe(headNonEmpty2(leftStack), reduce6([empty6(), empty3()], ([parallel4, sequential4], cause3) => {
       const [par2, seq2] = evaluateCause(cause3);
       return some2([pipe(parallel4, union4(par2)), pipe(sequential4, appendAll2(seq2))]);
     }));
-    const [rightParallel, rightSequential] = pipe(headNonEmpty2(rightStack), reduce6([empty5(), empty2()], ([parallel4, sequential4], cause3) => {
+    const [rightParallel, rightSequential] = pipe(headNonEmpty2(rightStack), reduce6([empty6(), empty3()], ([parallel4, sequential4], cause3) => {
       const [par2, seq2] = evaluateCause(cause3);
       return some2([pipe(parallel4, union4(par2)), pipe(sequential4, appendAll2(seq2))]);
     }));
@@ -23554,11 +23949,11 @@ var causeEquals = (left3, right3) => {
   return true;
 };
 var flattenCause = (cause3) => {
-  return flattenCauseLoop(of2(cause3), empty2());
+  return flattenCauseLoop(of2(cause3), empty3());
 };
 var flattenCauseLoop = (causes, flattened) => {
   while (1) {
-    const [parallel4, sequential4] = pipe(causes, reduce([empty5(), empty2()], ([parallel5, sequential5], cause3) => {
+    const [parallel4, sequential4] = pipe(causes, reduce([empty6(), empty3()], ([parallel5, sequential5], cause3) => {
       const [par2, seq2] = evaluateCause(cause3);
       return [pipe(parallel5, union4(par2)), pipe(sequential5, appendAll2(seq2))];
     }));
@@ -23598,8 +23993,8 @@ var find = /* @__PURE__ */ dual(2, (self, pf) => {
 var evaluateCause = (self) => {
   let cause3 = self;
   const stack = [];
-  let _parallel = empty5();
-  let _sequential = empty2();
+  let _parallel = empty6();
+  let _sequential = empty3();
   while (cause3 !== void 0) {
     switch (cause3._tag) {
       case OP_EMPTY: {
@@ -23721,10 +24116,10 @@ var reduce6 = /* @__PURE__ */ dual(3, (self, zero2, pf) => {
   return accumulator;
 });
 var reduceWithContext = /* @__PURE__ */ dual(3, (self, context11, reducer) => {
-  const input = [self];
+  const input2 = [self];
   const output = [];
-  while (input.length > 0) {
-    const cause3 = input.pop();
+  while (input2.length > 0) {
+    const cause3 = input2.pop();
     switch (cause3._tag) {
       case OP_EMPTY: {
         output.push(right2(reducer.emptyCase(context11)));
@@ -23743,16 +24138,16 @@ var reduceWithContext = /* @__PURE__ */ dual(3, (self, context11, reducer) => {
         break;
       }
       case OP_SEQUENTIAL: {
-        input.push(cause3.right);
-        input.push(cause3.left);
+        input2.push(cause3.right);
+        input2.push(cause3.left);
         output.push(left2({
           _tag: OP_SEQUENTIAL_CASE
         }));
         break;
       }
       case OP_PARALLEL: {
-        input.push(cause3.right);
-        input.push(cause3.left);
+        input2.push(cause3.right);
+        input2.push(cause3.left);
         output.push(left2({
           _tag: OP_PARALLEL_CASE
         }));
@@ -23886,7 +24281,7 @@ var Context_exports = {};
 __export(Context_exports, {
   Tag: () => Tag,
   add: () => add4,
-  empty: () => empty8,
+  empty: () => empty9,
   get: () => get5,
   getOption: () => getOption2,
   isContext: () => isContext2,
@@ -24016,7 +24411,7 @@ var serviceNotFoundError = (tag2) => {
 var isContext = (u) => hasProperty(u, TypeId6);
 var isTag = (u) => hasProperty(u, TagTypeId);
 var _empty4 = /* @__PURE__ */ makeContext(/* @__PURE__ */ new Map());
-var empty7 = () => _empty4;
+var empty8 = () => _empty4;
 var make9 = (tag2, service3) => makeContext(/* @__PURE__ */ new Map([[tag2, service3]]));
 var add3 = /* @__PURE__ */ dual(3, (self, tag2, service3) => {
   const map25 = new Map(self.unsafeMap);
@@ -24066,7 +24461,7 @@ var Tag = makeTag;
 var unsafeMake = makeContext;
 var isContext2 = isContext;
 var isTag2 = isTag;
-var empty8 = empty7;
+var empty9 = empty8;
 var make10 = make9;
 var add4 = add3;
 var get5 = get4;
@@ -24222,7 +24617,7 @@ var combine2 = /* @__PURE__ */ dual(2, (self, that) => {
 var ids = (self) => {
   switch (self._tag) {
     case OP_NONE: {
-      return empty5();
+      return empty6();
     }
     case OP_RUNTIME: {
       return make8(self.id);
@@ -24251,7 +24646,7 @@ var threadName2 = threadName;
 var unsafeMake3 = unsafeMake2;
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/HashMap.js
-var empty9 = empty3;
+var empty10 = empty4;
 var make13 = make6;
 var fromIterable7 = fromIterable4;
 var isEmpty4 = isEmpty2;
@@ -24262,7 +24657,7 @@ var set3 = set;
 var keys2 = keys;
 var size5 = size2;
 var map9 = map5;
-var forEach4 = forEach2;
+var forEach5 = forEach3;
 var reduce7 = reduce3;
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/List.js
@@ -24326,10 +24721,10 @@ var ConsProto = {
     return pipeArguments(this, arguments);
   }
 };
-var makeCons = (head7, tail2) => {
+var makeCons = (head7, tail3) => {
   const cons2 = Object.create(ConsProto);
   cons2.head = head7;
-  cons2.tail = tail2;
+  cons2.tail = tail3;
   return cons2;
 };
 var NilProto = {
@@ -24372,20 +24767,20 @@ var isList = (u) => hasProperty(u, TypeId8);
 var isNil = (self) => self._tag === "Nil";
 var isCons = (self) => self._tag === "Cons";
 var nil = () => _Nil;
-var cons = (head7, tail2) => makeCons(head7, tail2);
-var empty10 = nil;
+var cons = (head7, tail3) => makeCons(head7, tail3);
+var empty11 = nil;
 var of3 = (value3) => makeCons(value3, _Nil);
-var appendAll3 = /* @__PURE__ */ dual(2, (self, that) => prependAll2(that, self));
+var appendAll3 = /* @__PURE__ */ dual(2, (self, that) => prependAll3(that, self));
 var prepend3 = /* @__PURE__ */ dual(2, (self, element) => cons(element, self));
-var prependAll2 = /* @__PURE__ */ dual(2, (self, prefix) => {
+var prependAll3 = /* @__PURE__ */ dual(2, (self, prefix2) => {
   if (isNil(self)) {
-    return prefix;
-  } else if (isNil(prefix)) {
+    return prefix2;
+  } else if (isNil(prefix2)) {
     return self;
   } else {
-    const result = makeCons(prefix.head, self);
+    const result = makeCons(prefix2.head, self);
     let curr = result;
-    let that = prefix.tail;
+    let that = prefix2.tail;
     while (!isNil(that)) {
       const temp = makeCons(that.head, self);
       curr.tail = temp;
@@ -24405,7 +24800,7 @@ var reduce8 = /* @__PURE__ */ dual(3, (self, zero2, f) => {
   return acc;
 });
 var reverse3 = (self) => {
-  let result = empty10();
+  let result = empty11();
   let these = self;
   while (!isNil(these)) {
     result = prepend3(result, these.head);
@@ -24440,7 +24835,7 @@ var EmptyProto = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(Pat
   _tag: "Empty"
 });
 var _empty5 = /* @__PURE__ */ Object.create(EmptyProto);
-var empty11 = () => _empty5;
+var empty12 = () => _empty5;
 var AndThenProto = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(PatchProto), {
   _tag: "AndThen"
 });
@@ -24478,7 +24873,7 @@ var makeUpdateService = (tag2, update4) => {
 };
 var diff = (oldValue, newValue) => {
   const missingServices = new Map(oldValue.unsafeMap);
-  let patch9 = empty11();
+  let patch9 = empty12();
   for (const [tag2, newService] of newValue.unsafeMap.entries()) {
     if (missingServices.has(tag2)) {
       const old = missingServices.get(tag2);
@@ -24506,30 +24901,30 @@ var patch = /* @__PURE__ */ dual(2, (self, context11) => {
   const updatedContext = new Map(context11.unsafeMap);
   while (isNonEmpty(patches)) {
     const head7 = headNonEmpty2(patches);
-    const tail2 = tailNonEmpty2(patches);
+    const tail3 = tailNonEmpty2(patches);
     switch (head7._tag) {
       case "Empty": {
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "AddService": {
         updatedContext.set(head7.tag, head7.service);
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "AndThen": {
-        patches = prepend2(prepend2(tail2, head7.second), head7.first);
+        patches = prepend2(prepend2(tail3, head7.second), head7.first);
         break;
       }
       case "RemoveService": {
         updatedContext.delete(head7.tag);
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "UpdateService": {
         updatedContext.set(head7.tag, head7.update(updatedContext.get(head7.tag)));
         wasServiceUpdated = true;
-        patches = tail2;
+        patches = tail3;
         break;
       }
     }
@@ -24567,7 +24962,7 @@ var EmptyProto2 = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(Pa
   _tag: "Empty"
 });
 var _empty6 = /* @__PURE__ */ Object.create(EmptyProto2);
-var empty12 = () => _empty6;
+var empty13 = () => _empty6;
 var AndThenProto2 = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(PatchProto2), {
   _tag: "AndThen"
 });
@@ -24594,7 +24989,7 @@ var makeRemove = (value3) => {
   return o;
 };
 var diff2 = (oldValue, newValue) => {
-  const [removed, patch9] = reduce5([oldValue, empty12()], ([set8, patch10], value3) => {
+  const [removed, patch9] = reduce5([oldValue, empty13()], ([set8, patch10], value3) => {
     if (has3(value3)(set8)) {
       return [remove5(value3)(set8), patch10];
     }
@@ -24611,24 +25006,24 @@ var patch2 = /* @__PURE__ */ dual(2, (self, oldValue) => {
   let patches = of2(self);
   while (isNonEmpty(patches)) {
     const head7 = headNonEmpty2(patches);
-    const tail2 = tailNonEmpty2(patches);
+    const tail3 = tailNonEmpty2(patches);
     switch (head7._tag) {
       case "Empty": {
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "AndThen": {
-        patches = prepend2(head7.first)(prepend2(head7.second)(tail2));
+        patches = prepend2(head7.first)(prepend2(head7.second)(tail3));
         break;
       }
       case "Add": {
         set8 = add2(head7.value)(set8);
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "Remove": {
         set8 = remove5(head7.value)(set8);
-        patches = tail2;
+        patches = tail3;
       }
     }
   }
@@ -24651,7 +25046,7 @@ var EmptyProto3 = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(Pa
   _tag: "Empty"
 });
 var _empty7 = /* @__PURE__ */ Object.create(EmptyProto3);
-var empty13 = () => _empty7;
+var empty14 = () => _empty7;
 var AndThenProto3 = /* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(PatchProto3), {
   _tag: "AndThen"
 });
@@ -24689,7 +25084,7 @@ var makeUpdate = (index2, patch9) => {
 };
 var diff3 = (options) => {
   let i = 0;
-  let patch9 = empty13();
+  let patch9 = empty14();
   while (i < options.oldValue.length && i < options.newValue.length) {
     const oldElement = options.oldValue[i];
     const newElement = options.newValue[i];
@@ -24716,30 +25111,30 @@ var patch3 = /* @__PURE__ */ dual(3, (self, oldValue, differ3) => {
   let patches = of(self);
   while (isNonEmptyArray2(patches)) {
     const head7 = headNonEmpty(patches);
-    const tail2 = tailNonEmpty(patches);
+    const tail3 = tailNonEmpty(patches);
     switch (head7._tag) {
       case "Empty": {
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "AndThen": {
-        tail2.unshift(head7.first, head7.second);
-        patches = tail2;
+        tail3.unshift(head7.first, head7.second);
+        patches = tail3;
         break;
       }
       case "Append": {
         readonlyArray2.push(...head7.values);
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "Slice": {
         readonlyArray2 = readonlyArray2.slice(head7.from, head7.until);
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case "Update": {
         readonlyArray2[head7.index] = differ3.patch(head7.patch, readonlyArray2[head7.index]);
-        patches = tail2;
+        patches = tail3;
         break;
       }
     }
@@ -24764,19 +25159,19 @@ var make14 = (params) => {
   return differ3;
 };
 var environment = () => make14({
-  empty: empty11(),
+  empty: empty12(),
   combine: (first2, second) => combine4(second)(first2),
   diff: (oldValue, newValue) => diff(oldValue, newValue),
   patch: (patch9, oldValue) => patch(oldValue)(patch9)
 });
 var hashSet = () => make14({
-  empty: empty12(),
+  empty: empty13(),
   combine: (first2, second) => combine5(second)(first2),
   diff: (oldValue, newValue) => diff2(oldValue, newValue),
   patch: (patch9, oldValue) => patch2(oldValue)(patch9)
 });
 var readonlyArray = (differ3) => make14({
-  empty: empty13(),
+  empty: empty14(),
   combine: (first2, second) => combine6(first2, second),
   diff: (oldValue, newValue) => diff3({
     oldValue,
@@ -24812,7 +25207,7 @@ var BIT_SHIFT = 8;
 var active = (patch9) => patch9 & BIT_MASK;
 var enabled = (patch9) => patch9 >> BIT_SHIFT & BIT_MASK;
 var make15 = (active2, enabled2) => (active2 & BIT_MASK) + ((enabled2 & active2 & BIT_MASK) << BIT_SHIFT);
-var empty14 = /* @__PURE__ */ make15(0, 0);
+var empty15 = /* @__PURE__ */ make15(0, 0);
 var enable = (flag) => make15(flag, flag);
 var disable = (flag) => make15(flag, 0);
 var exclude = /* @__PURE__ */ dual(2, (self, flag) => make15(active(self) & ~flag, enabled(self)));
@@ -24838,20 +25233,20 @@ var windDown = (self) => isEnabled(self, WindDown);
 var diff4 = /* @__PURE__ */ dual(2, (self, that) => make15(self ^ that, that));
 var patch4 = /* @__PURE__ */ dual(2, (self, patch9) => self & (invert(active(patch9)) | enabled(patch9)) | active(patch9) & enabled(patch9));
 var differ = /* @__PURE__ */ make14({
-  empty: empty14,
+  empty: empty15,
   diff: (oldValue, newValue) => diff4(oldValue, newValue),
   combine: (first2, second) => andThen3(second)(first2),
   patch: (_patch, oldValue) => patch4(oldValue, _patch)
 });
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/RuntimeFlagsPatch.js
-var empty15 = empty14;
+var empty16 = empty15;
 var enable3 = enable;
 var disable2 = disable;
 var exclude2 = exclude;
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/blockedRequests.js
-var empty16 = {
+var empty17 = {
   _tag: "Empty"
 };
 var par = (self, that) => ({
@@ -24871,9 +25266,9 @@ var single = (dataSource, blockedRequest) => ({
 });
 var flatten5 = (self) => {
   let current2 = of3(self);
-  let updated = empty10();
+  let updated = empty11();
   while (1) {
-    const [parallel4, sequential4] = reduce8(current2, [parallelCollectionEmpty(), empty10()], ([parallel5, sequential5], blockedRequest) => {
+    const [parallel4, sequential4] = reduce8(current2, [parallelCollectionEmpty(), empty11()], ([parallel5, sequential5], blockedRequest) => {
       const [par2, seq2] = step(blockedRequest);
       return [parallelCollectionCombine(parallel5, par2), appendAll3(sequential5, seq2)];
     });
@@ -24888,8 +25283,8 @@ var flatten5 = (self) => {
 var step = (requests) => {
   let current2 = requests;
   let parallel4 = parallelCollectionEmpty();
-  let stack = empty10();
-  let sequential4 = empty10();
+  let stack = empty11();
+  let sequential4 = empty11();
   while (1) {
     switch (current2._tag) {
       case "Empty": {
@@ -24993,7 +25388,7 @@ var ParallelImpl = class {
     this.map = map25;
   }
 };
-var parallelCollectionEmpty = () => new ParallelImpl(empty9());
+var parallelCollectionEmpty = () => new ParallelImpl(empty10());
 var parallelCollectionMake = (dataSource, blockedRequest) => new ParallelImpl(make13([dataSource, Array.of(blockedRequest)]));
 var parallelCollectionCombine = (self, that) => new ParallelImpl(reduce7(self.map, that.map, (map25, value3, key) => set3(map25, key, match(get7(map25, key), {
   onNone: () => value3,
@@ -25787,31 +26182,31 @@ var fiberRefUnsafeMakeRuntimeFlags = (initial) => fiberRefUnsafeMakePatch(initia
   differ,
   fork: differ.empty
 });
-var currentContext = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentContext"), () => fiberRefUnsafeMakeContext(empty8()));
+var currentContext = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentContext"), () => fiberRefUnsafeMakeContext(empty9()));
 var currentSchedulingPriority = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentSchedulingPriority"), () => fiberRefUnsafeMake(0));
 var currentMaxOpsBeforeYield = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentMaxOpsBeforeYield"), () => fiberRefUnsafeMake(2048));
-var currentLogAnnotations = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentLogAnnotation"), () => fiberRefUnsafeMake(empty9()));
+var currentLogAnnotations = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentLogAnnotation"), () => fiberRefUnsafeMake(empty10()));
 var currentLogLevel = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentLogLevel"), () => fiberRefUnsafeMake(logLevelInfo));
-var currentLogSpan = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentLogSpan"), () => fiberRefUnsafeMake(empty10()));
+var currentLogSpan = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentLogSpan"), () => fiberRefUnsafeMake(empty11()));
 var withSchedulingPriority = /* @__PURE__ */ dual(2, (self, scheduler) => fiberRefLocally(self, currentSchedulingPriority, scheduler));
 var withMaxOpsBeforeYield = /* @__PURE__ */ dual(2, (self, scheduler) => fiberRefLocally(self, currentMaxOpsBeforeYield, scheduler));
 var currentConcurrency = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentConcurrency"), () => fiberRefUnsafeMake("unbounded"));
 var currentRequestBatching = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentRequestBatching"), () => fiberRefUnsafeMake(true));
 var currentUnhandledErrorLogLevel = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentUnhandledErrorLogLevel"), () => fiberRefUnsafeMake(some2(logLevelDebug)));
 var withUnhandledErrorLogLevel = /* @__PURE__ */ dual(2, (self, level) => fiberRefLocally(self, currentUnhandledErrorLogLevel, level));
-var currentMetricLabels = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentMetricLabels"), () => fiberRefUnsafeMakeReadonlyArray(empty()));
+var currentMetricLabels = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentMetricLabels"), () => fiberRefUnsafeMakeReadonlyArray(empty2()));
 var metricLabels = /* @__PURE__ */ fiberRefGet(currentMetricLabels);
 var currentForkScopeOverride = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentForkScopeOverride"), () => fiberRefUnsafeMake(none2(), {
   fork: () => none2(),
   join: (parent, _) => parent
 }));
-var currentInterruptedCause = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentInterruptedCause"), () => fiberRefUnsafeMake(empty6, {
-  fork: () => empty6,
+var currentInterruptedCause = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentInterruptedCause"), () => fiberRefUnsafeMake(empty7, {
+  fork: () => empty7,
   join: (parent, _) => parent
 }));
 var currentTracerTimingEnabled = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentTracerTiming"), () => fiberRefUnsafeMake(true));
-var currentTracerSpanAnnotations = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentTracerSpanAnnotations"), () => fiberRefUnsafeMake(empty9()));
-var currentTracerSpanLinks = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentTracerSpanLinks"), () => fiberRefUnsafeMake(empty2()));
+var currentTracerSpanAnnotations = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentTracerSpanAnnotations"), () => fiberRefUnsafeMake(empty10()));
+var currentTracerSpanLinks = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentTracerSpanLinks"), () => fiberRefUnsafeMake(empty3()));
 var ScopeTypeId = /* @__PURE__ */ Symbol.for("effect/Scope");
 var CloseableScopeTypeId = /* @__PURE__ */ Symbol.for("effect/CloseableScope");
 var scopeAddFinalizer = (self, finalizer3) => self.addFinalizer(() => asUnit2(finalizer3));
@@ -26194,7 +26589,7 @@ __export(Effect_exports, {
   allSuccesses: () => allSuccesses2,
   allWith: () => allWith2,
   allowInterrupt: () => allowInterrupt2,
-  andThen: () => andThen7,
+  andThen: () => andThen6,
   annotateCurrentSpan: () => annotateCurrentSpan2,
   annotateLogs: () => annotateLogs2,
   annotateSpans: () => annotateSpans2,
@@ -26248,13 +26643,13 @@ __export(Effect_exports, {
   diffFiberRefs: () => diffFiberRefs2,
   disconnect: () => disconnect2,
   dropUntil: () => dropUntil2,
-  dropWhile: () => dropWhile3,
+  dropWhile: () => dropWhile4,
   either: () => either3,
   ensuring: () => ensuring2,
   ensuringChild: () => ensuringChild2,
   ensuringChildren: () => ensuringChildren2,
   eventually: () => eventually2,
-  every: () => every5,
+  every: () => every6,
   exists: () => exists3,
   exit: () => exit2,
   fail: () => fail8,
@@ -26263,7 +26658,7 @@ __export(Effect_exports, {
   failSync: () => failSync3,
   fiberId: () => fiberId2,
   fiberIdWith: () => fiberIdWith2,
-  filter: () => filter7,
+  filter: () => filter8,
   filterOrDie: () => filterOrDie2,
   filterOrDieMessage: () => filterOrDieMessage2,
   filterOrElse: () => filterOrElse2,
@@ -26285,7 +26680,7 @@ __export(Effect_exports, {
   forkWithErrorHandler: () => forkWithErrorHandler2,
   fromFiber: () => fromFiber2,
   fromFiberEffect: () => fromFiberEffect2,
-  fromNullable: () => fromNullable4,
+  fromNullable: () => fromNullable5,
   gen: () => gen4,
   getFiberRefs: () => getFiberRefs,
   getRuntimeFlags: () => getRuntimeFlags,
@@ -26347,7 +26742,7 @@ __export(Effect_exports, {
   optionFromOptional: () => optionFromOptional2,
   orDie: () => orDie3,
   orDieWith: () => orDieWith2,
-  orElse: () => orElse7,
+  orElse: () => orElse6,
   orElseFail: () => orElseFail2,
   orElseSucceed: () => orElseSucceed2,
   parallelErrors: () => parallelErrors2,
@@ -26376,7 +26771,7 @@ __export(Effect_exports, {
   repeatUntilEffect: () => repeatUntilEffect,
   repeatWhile: () => repeatWhile,
   repeatWhileEffect: () => repeatWhileEffect,
-  replicate: () => replicate2,
+  replicate: () => replicate3,
   replicateEffect: () => replicateEffect2,
   request: () => request,
   retry: () => retry2,
@@ -26424,7 +26819,7 @@ __export(Effect_exports, {
   tagMetrics: () => tagMetrics2,
   tagMetricsScoped: () => tagMetricsScoped2,
   takeUntil: () => takeUntil2,
-  takeWhile: () => takeWhile3,
+  takeWhile: () => takeWhile4,
   tap: () => tap4,
   tapBoth: () => tapBoth2,
   tapDefect: () => tapDefect2,
@@ -26503,20 +26898,20 @@ var TypeId9 = /* @__PURE__ */ Symbol.for("effect/Duration");
 var bigint1e3 = /* @__PURE__ */ BigInt(1e3);
 var bigint1e9 = /* @__PURE__ */ BigInt(1e9);
 var DURATION_REGEX = /^(-?\d+(?:\.\d+)?)\s+(nanos|micros|millis|seconds|minutes|hours|days|weeks)$/;
-var decode = (input) => {
-  if (isDuration(input)) {
-    return input;
-  } else if (isNumber(input)) {
-    return millis(input);
-  } else if (isBigInt(input)) {
-    return nanos(input);
-  } else if (Array.isArray(input)) {
-    if (input.length === 2 && isNumber(input[0]) && isNumber(input[1])) {
-      return nanos(BigInt(input[0]) * bigint1e9 + BigInt(input[1]));
+var decode = (input2) => {
+  if (isDuration(input2)) {
+    return input2;
+  } else if (isNumber(input2)) {
+    return millis(input2);
+  } else if (isBigInt(input2)) {
+    return nanos(input2);
+  } else if (Array.isArray(input2)) {
+    if (input2.length === 2 && isNumber(input2[0]) && isNumber(input2[1])) {
+      return nanos(BigInt(input2[0]) * bigint1e9 + BigInt(input2[1]));
     }
   } else {
     DURATION_REGEX.lastIndex = 0;
-    const match17 = DURATION_REGEX.exec(input);
+    const match17 = DURATION_REGEX.exec(input2);
     if (match17) {
       const [_, valueStr, unit10] = match17;
       const value3 = Number(valueStr);
@@ -26588,30 +26983,30 @@ var DurationProto = {
     return pipeArguments(this, arguments);
   }
 };
-var make18 = (input) => {
+var make18 = (input2) => {
   const duration2 = Object.create(DurationProto);
-  if (isNumber(input)) {
-    if (isNaN(input) || input < 0) {
+  if (isNumber(input2)) {
+    if (isNaN(input2) || input2 < 0) {
       duration2.value = zeroValue;
-    } else if (!Number.isFinite(input)) {
+    } else if (!Number.isFinite(input2)) {
       duration2.value = infinityValue;
-    } else if (!Number.isInteger(input)) {
+    } else if (!Number.isInteger(input2)) {
       duration2.value = {
         _tag: "Nanos",
-        nanos: BigInt(Math.round(input * 1e6))
+        nanos: BigInt(Math.round(input2 * 1e6))
       };
     } else {
       duration2.value = {
         _tag: "Millis",
-        millis: input
+        millis: input2
       };
     }
-  } else if (input < BigInt(0)) {
+  } else if (input2 < BigInt(0)) {
     duration2.value = zeroValue;
   } else {
     duration2.value = {
       _tag: "Nanos",
-      nanos: input
+      nanos: input2
     };
   }
   return duration2;
@@ -26706,11 +27101,11 @@ var format2 = (self) => {
   if (sec % 60n !== 0n) {
     parts.push(`${sec % 60n}s`);
   }
-  const min3 = sec / 60n;
-  if (min3 % 60n !== 0n) {
-    parts.push(`${min3 % 60n}m`);
+  const min4 = sec / 60n;
+  if (min4 % 60n !== 0n) {
+    parts.push(`${min4 % 60n}m`);
   }
-  const hr = min3 / 60n;
+  const hr = min4 / 60n;
   if (hr % 24n !== 0n) {
     parts.push(`${hr % 24n}h`);
   }
@@ -26907,25 +27302,25 @@ var isInvalidData = (self) => self._tag === OP_INVALID_DATA;
 var isMissingData = (self) => self._tag === OP_MISSING_DATA;
 var isSourceUnavailable = (self) => self._tag === OP_SOURCE_UNAVAILABLE;
 var isUnsupported = (self) => self._tag === OP_UNSUPPORTED;
-var prefixed = /* @__PURE__ */ dual(2, (self, prefix) => {
+var prefixed = /* @__PURE__ */ dual(2, (self, prefix2) => {
   switch (self._tag) {
     case OP_AND: {
-      return And(prefixed(self.left, prefix), prefixed(self.right, prefix));
+      return And(prefixed(self.left, prefix2), prefixed(self.right, prefix2));
     }
     case OP_OR: {
-      return Or(prefixed(self.left, prefix), prefixed(self.right, prefix));
+      return Or(prefixed(self.left, prefix2), prefixed(self.right, prefix2));
     }
     case OP_INVALID_DATA: {
-      return InvalidData([...prefix, ...self.path], self.message);
+      return InvalidData([...prefix2, ...self.path], self.message);
     }
     case OP_MISSING_DATA: {
-      return MissingData([...prefix, ...self.path], self.message);
+      return MissingData([...prefix2, ...self.path], self.message);
     }
     case OP_SOURCE_UNAVAILABLE: {
-      return SourceUnavailable([...prefix, ...self.path], self.message, self.cause);
+      return SourceUnavailable([...prefix2, ...self.path], self.message, self.cause);
     }
     case OP_UNSUPPORTED: {
-      return Unsupported([...prefix, ...self.path], self.message);
+      return Unsupported([...prefix2, ...self.path], self.message);
     }
   }
 });
@@ -26938,22 +27333,22 @@ var IsMissingDataOnlyReducer = {
   unsupportedCase: constFalse
 };
 var reduceWithContext2 = /* @__PURE__ */ dual(3, (self, context11, reducer) => {
-  const input = [self];
+  const input2 = [self];
   const output = [];
-  while (input.length > 0) {
-    const error3 = input.pop();
+  while (input2.length > 0) {
+    const error3 = input2.pop();
     switch (error3._tag) {
       case OP_AND: {
-        input.push(error3.right);
-        input.push(error3.left);
+        input2.push(error3.right);
+        input2.push(error3.left);
         output.push(left2({
           _tag: "AndCase"
         }));
         break;
       }
       case OP_OR: {
-        input.push(error3.right);
-        input.push(error3.left);
+        input2.push(error3.right);
+        input2.push(error3.left);
         output.push(left2({
           _tag: "OrCase"
         }));
@@ -27014,55 +27409,38 @@ var reduceWithContext2 = /* @__PURE__ */ dual(3, (self, context11, reducer) => {
 var isMissingDataOnly = (self) => reduceWithContext2(self, void 0, IsMissingDataOnlyReducer);
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/configProvider/pathPatch.js
-var empty17 = {
+var empty18 = {
   _tag: "Empty"
 };
-var andThen6 = /* @__PURE__ */ dual(2, (self, that) => ({
-  _tag: "AndThen",
-  first: self,
-  second: that
-}));
-var mapName = /* @__PURE__ */ dual(2, (self, f) => andThen6(self, {
-  _tag: "MapName",
-  f
-}));
-var nested = /* @__PURE__ */ dual(2, (self, name) => andThen6(self, {
-  _tag: "Nested",
-  name
-}));
-var unnested = /* @__PURE__ */ dual(2, (self, name) => andThen6(self, {
-  _tag: "Unnested",
-  name
-}));
 var patch5 = /* @__PURE__ */ dual(2, (path, patch9) => {
-  let input = of3(patch9);
+  let input2 = of3(patch9);
   let output = path;
-  while (isCons(input)) {
-    const patch10 = input.head;
+  while (isCons(input2)) {
+    const patch10 = input2.head;
     switch (patch10._tag) {
       case "Empty": {
-        input = input.tail;
+        input2 = input2.tail;
         break;
       }
       case "AndThen": {
-        input = cons(patch10.first, cons(patch10.second, input.tail));
+        input2 = cons(patch10.first, cons(patch10.second, input2.tail));
         break;
       }
       case "MapName": {
         output = map3(output, patch10.f);
-        input = input.tail;
+        input2 = input2.tail;
         break;
       }
       case "Nested": {
         output = prepend(output, patch10.name);
-        input = input.tail;
+        input2 = input2.tail;
         break;
       }
       case "Unnested": {
         const containsName = pipe(head(output), contains(patch10.name));
         if (containsName) {
           output = tailNonEmpty(output);
-          input = input.tail;
+          input2 = input2.tail;
         } else {
           return left2(MissingData(output, `Expected ${patch10.name} to be in path in ConfigProvider#unnested`));
         }
@@ -27086,44 +27464,6 @@ var OP_SEQUENCE = "Sequence";
 var OP_HASHMAP = "HashMap";
 var OP_ZIP_WITH = "ZipWith";
 
-// node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/string-utils.js
-var lowerCase = (str) => str.toLowerCase();
-var upperCase = (str) => str.toUpperCase();
-var replace2 = (input, re, value3) => re instanceof RegExp ? input.replace(re, value3) : re.reduce((input2, re2) => input2.replace(re2, value3), input);
-var DEFAULT_SPLIT_REGEXP = [/([a-z0-9])([A-Z])/g, /([A-Z])([A-Z][a-z])/g];
-var DEFAULT_STRIP_REGEXP = /[^A-Z0-9]+/gi;
-var noCase = (input, options = {}) => {
-  const {
-    delimiter = " ",
-    splitRegexp = DEFAULT_SPLIT_REGEXP,
-    stripRegexp = DEFAULT_STRIP_REGEXP,
-    transform: transform2 = lowerCase
-  } = options;
-  const result = replace2(replace2(input, splitRegexp, "$1\0$2"), stripRegexp, "\0");
-  let start3 = 0;
-  let end6 = result.length;
-  while (result.charAt(start3) === "\0") {
-    start3++;
-  }
-  while (result.charAt(end6 - 1) === "\0") {
-    end6--;
-  }
-  return result.slice(start3, end6).split("\0").map(transform2).join(delimiter);
-};
-var constantCase = (input, options = {}) => noCase(input, {
-  delimiter: "_",
-  transform: upperCase,
-  ...options
-});
-var kebabCase = (input, options = {}) => noCase(input, {
-  delimiter: "-",
-  ...options
-});
-var snakeCase = (input, options = {}) => noCase(input, {
-  delimiter: "_",
-  ...options
-});
-
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/configProvider.js
 var concat = (l, r) => [...l, ...r];
 var ConfigProviderSymbolKey = "effect/ConfigProvider";
@@ -27141,12 +27481,12 @@ var make20 = (options) => ({
 var makeFlat = (options) => ({
   [FlatConfigProviderTypeId]: FlatConfigProviderTypeId,
   patch: options.patch,
-  load: (path, config2, split4 = true) => options.load(path, config2, split4),
+  load: (path, config2, split5 = true) => options.load(path, config2, split5),
   enumerateChildren: options.enumerateChildren
 });
 var fromFlat = (flat) => make20({
-  load: (config2) => flatMap9(fromFlatLoop(flat, empty(), config2, false), (chunk5) => match(head(chunk5), {
-    onNone: () => fail2(MissingData(empty(), `Expected a single value having structure: ${config2}`)),
+  load: (config2) => flatMap9(fromFlatLoop(flat, empty2(), config2, false), (chunk5) => match(head(chunk5), {
+    onNone: () => fail2(MissingData(empty2(), `Expected a single value having structure: ${config2}`)),
     onSome: succeed
   })),
   flattened: flat
@@ -27162,11 +27502,11 @@ var fromEnv = (config2 = {}) => {
   const makePathString = (path) => pipe(path, join(pathDelim));
   const unmakePathString = (pathString) => pathString.split(pathDelim);
   const getEnv = () => typeof process !== "undefined" && "env" in process && typeof process.env === "object" ? process.env : {};
-  const load = (path, primitive3, split4 = true) => {
+  const load = (path, primitive3, split5 = true) => {
     const pathString = makePathString(path);
     const current2 = getEnv();
     const valueOpt = pathString in current2 ? some2(current2[pathString]) : none2();
-    return pipe(valueOpt, mapError(() => MissingData(path, `Expected ${pathString} to exist in the process context`)), flatMap9((value3) => parsePrimitive(value3, path, primitive3, seqDelim, split4)));
+    return pipe(valueOpt, mapError(() => MissingData(path, `Expected ${pathString} to exist in the process context`)), flatMap9((value3) => parsePrimitive(value3, path, primitive3, seqDelim, split5)));
   };
   const enumerateChildren = (path) => sync(() => {
     const current2 = getEnv();
@@ -27187,46 +27527,10 @@ var fromEnv = (config2 = {}) => {
   return fromFlat(makeFlat({
     load,
     enumerateChildren,
-    patch: empty17
+    patch: empty18
   }));
 };
-var fromMap = (map25, config2 = {}) => {
-  const {
-    pathDelim,
-    seqDelim
-  } = Object.assign({
-    seqDelim: ",",
-    pathDelim: "."
-  }, config2);
-  const makePathString = (path) => pipe(path, join(pathDelim));
-  const unmakePathString = (pathString) => pathString.split(pathDelim);
-  const mapWithIndexSplit = splitIndexInKeys(map25, (str) => Array.from(unmakePathString(str)), makePathString);
-  const load = (path, primitive3, split4 = true) => {
-    const pathString = makePathString(path);
-    const valueOpt = mapWithIndexSplit.has(pathString) ? some2(mapWithIndexSplit.get(pathString)) : none2();
-    return pipe(valueOpt, mapError(() => MissingData(path, `Expected ${pathString} to exist in the provided map`)), flatMap9((value3) => parsePrimitive(value3, path, primitive3, seqDelim, split4)));
-  };
-  const enumerateChildren = (path) => sync(() => {
-    const keyPaths = Array.from(mapWithIndexSplit.keys()).map(unmakePathString);
-    const filteredKeyPaths = keyPaths.filter((keyPath) => {
-      for (let i = 0; i < path.length; i++) {
-        const pathComponent = pipe(path, unsafeGet(i));
-        const currentElement = keyPath[i];
-        if (currentElement === void 0 || pathComponent !== currentElement) {
-          return false;
-        }
-      }
-      return true;
-    }).flatMap((keyPath) => keyPath.slice(path.length, path.length + 1));
-    return fromIterable6(filteredKeyPaths);
-  });
-  return fromFlat(makeFlat({
-    load,
-    enumerateChildren,
-    patch: empty17
-  }));
-};
-var extend = (leftDef, rightDef, left3, right3) => {
+var extend2 = (leftDef, rightDef, left3, right3) => {
   const leftPad = unfold(left3.length, (index2) => index2 >= right3.length ? none2() : some2([leftDef(index2), index2 + 1]));
   const rightPad = unfold(right3.length, (index2) => index2 >= left3.length ? none2() : some2([rightDef(index2), index2 + 1]));
   const leftExtension = concat(left3, leftPad);
@@ -27245,63 +27549,63 @@ var appendConfigPath = (path, config2) => {
   }
   return path;
 };
-var fromFlatLoop = (flat, prefix, config2, split4) => {
+var fromFlatLoop = (flat, prefix2, config2, split5) => {
   const op = config2;
   switch (op._tag) {
     case OP_CONSTANT: {
       return succeed(of(op.value));
     }
     case OP_DESCRIBED: {
-      return suspend(() => fromFlatLoop(flat, prefix, op.config, split4));
+      return suspend(() => fromFlatLoop(flat, prefix2, op.config, split5));
     }
     case OP_FAIL2: {
-      return fail2(MissingData(prefix, op.message));
+      return fail2(MissingData(prefix2, op.message));
     }
     case OP_FALLBACK: {
-      return pipe(suspend(() => fromFlatLoop(flat, prefix, op.first, split4)), catchAll((error1) => {
+      return pipe(suspend(() => fromFlatLoop(flat, prefix2, op.first, split5)), catchAll((error1) => {
         if (op.condition(error1)) {
-          return pipe(fromFlatLoop(flat, prefix, op.second, split4), catchAll((error22) => fail2(Or(error1, error22))));
+          return pipe(fromFlatLoop(flat, prefix2, op.second, split5), catchAll((error22) => fail2(Or(error1, error22))));
         }
         return fail2(error1);
       }));
     }
     case OP_LAZY: {
-      return suspend(() => fromFlatLoop(flat, prefix, op.config(), split4));
+      return suspend(() => fromFlatLoop(flat, prefix2, op.config(), split5));
     }
     case OP_MAP_OR_FAIL: {
-      return suspend(() => pipe(fromFlatLoop(flat, prefix, op.original, split4), flatMap9(forEachSequential((a) => pipe(op.mapOrFail(a), mapError(prefixed(appendConfigPath(prefix, op.original))))))));
+      return suspend(() => pipe(fromFlatLoop(flat, prefix2, op.original, split5), flatMap9(forEachSequential((a) => pipe(op.mapOrFail(a), mapError(prefixed(appendConfigPath(prefix2, op.original))))))));
     }
     case OP_NESTED: {
-      return suspend(() => fromFlatLoop(flat, concat(prefix, of(op.name)), op.config, split4));
+      return suspend(() => fromFlatLoop(flat, concat(prefix2, of(op.name)), op.config, split5));
     }
     case OP_PRIMITIVE: {
-      return pipe(patch5(prefix, flat.patch), flatMap9((prefix2) => pipe(flat.load(prefix2, op, split4), flatMap9((values3) => {
+      return pipe(patch5(prefix2, flat.patch), flatMap9((prefix3) => pipe(flat.load(prefix3, op, split5), flatMap9((values3) => {
         if (values3.length === 0) {
-          const name = pipe(last(prefix2), getOrElse(() => "<n/a>"));
+          const name = pipe(last(prefix3), getOrElse(() => "<n/a>"));
           return fail2(MissingData([], `Expected ${op.description} with name ${name}`));
         }
         return succeed(values3);
       }))));
     }
     case OP_SEQUENCE: {
-      return pipe(patch5(prefix, flat.patch), flatMap9((patchedPrefix) => pipe(flat.enumerateChildren(patchedPrefix), flatMap9(indicesFrom), flatMap9((indices) => {
+      return pipe(patch5(prefix2, flat.patch), flatMap9((patchedPrefix) => pipe(flat.enumerateChildren(patchedPrefix), flatMap9(indicesFrom), flatMap9((indices) => {
         if (indices.length === 0) {
           return suspend(() => map10(fromFlatLoop(flat, patchedPrefix, op.config, true), of));
         }
-        return pipe(forEachSequential(indices, (index2) => fromFlatLoop(flat, append(prefix, `[${index2}]`), op.config, true)), map10((chunkChunk) => {
+        return pipe(forEachSequential(indices, (index2) => fromFlatLoop(flat, append(prefix2, `[${index2}]`), op.config, true)), map10((chunkChunk) => {
           const flattened = flatten2(chunkChunk);
           if (flattened.length === 0) {
-            return of(empty());
+            return of(empty2());
           }
           return of(flattened);
         }));
       }))));
     }
     case OP_HASHMAP: {
-      return suspend(() => pipe(patch5(prefix, flat.patch), flatMap9((prefix2) => pipe(flat.enumerateChildren(prefix2), flatMap9((keys5) => {
-        return pipe(keys5, forEachSequential((key) => fromFlatLoop(flat, concat(prefix2, of(key)), op.valueConfig, split4)), map10((values3) => {
+      return suspend(() => pipe(patch5(prefix2, flat.patch), flatMap9((prefix3) => pipe(flat.enumerateChildren(prefix3), flatMap9((keys5) => {
+        return pipe(keys5, forEachSequential((key) => fromFlatLoop(flat, concat(prefix3, of(key)), op.valueConfig, split5)), map10((values3) => {
           if (values3.length === 0) {
-            return of(empty9());
+            return of(empty10());
           }
           const matrix = values3.map((x) => Array.from(x));
           return pipe(transpose(matrix), map3((values4) => fromIterable7(zip(fromIterable2(keys5), values4))));
@@ -27309,7 +27613,7 @@ var fromFlatLoop = (flat, prefix, config2, split4) => {
       })))));
     }
     case OP_ZIP_WITH: {
-      return suspend(() => pipe(fromFlatLoop(flat, prefix, op.left, split4), either2, flatMap9((left3) => pipe(fromFlatLoop(flat, prefix, op.right, split4), either2, flatMap9((right3) => {
+      return suspend(() => pipe(fromFlatLoop(flat, prefix2, op.left, split5), either2, flatMap9((left3) => pipe(fromFlatLoop(flat, prefix2, op.right, split5), either2, flatMap9((right3) => {
         if (isLeft2(left3) && isLeft2(right3)) {
           return fail2(And(left3.left, right3.left));
         }
@@ -27320,9 +27624,9 @@ var fromFlatLoop = (flat, prefix, config2, split4) => {
           return fail2(right3.left);
         }
         if (isRight2(left3) && isRight2(right3)) {
-          const path = pipe(prefix, join("."));
-          const fail17 = fromFlatLoopFail(prefix, path);
-          const [lefts, rights] = extend(fail17, fail17, pipe(left3.right, map3(right2)), pipe(right3.right, map3(right2)));
+          const path = pipe(prefix2, join("."));
+          const fail17 = fromFlatLoopFail(prefix2, path);
+          const [lefts, rights] = extend2(fail17, fail17, pipe(left3.right, map3(right2)), pipe(right3.right, map3(right2)));
           return pipe(lefts, zip(rights), forEachSequential(([left4, right4]) => pipe(zip3(left4, right4), map10(([left5, right5]) => op.zip(left5, right5)))));
         }
         throw new Error("BUG: ConfigProvider.fromFlatLoop - please report an issue at https://github.com/Effect-TS/effect/issues");
@@ -27330,59 +27634,13 @@ var fromFlatLoop = (flat, prefix, config2, split4) => {
     }
   }
 };
-var fromFlatLoopFail = (prefix, path) => (index2) => left2(MissingData(prefix, `The element at index ${index2} in a sequence at path "${path}" was missing`));
-var mapInputPath = /* @__PURE__ */ dual(2, (self, f) => fromFlat(mapInputPathFlat(self.flattened, f)));
-var mapInputPathFlat = (self, f) => makeFlat({
-  load: (path, config2, split4 = true) => self.load(path, config2, split4),
-  enumerateChildren: (path) => self.enumerateChildren(path),
-  patch: mapName(self.patch, f)
-});
-var nested2 = /* @__PURE__ */ dual(2, (self, name) => fromFlat(makeFlat({
-  load: (path, config2) => self.flattened.load(path, config2, true),
-  enumerateChildren: (path) => self.flattened.enumerateChildren(path),
-  patch: nested(self.flattened.patch, name)
-})));
-var unnested2 = /* @__PURE__ */ dual(2, (self, name) => fromFlat(makeFlat({
-  load: (path, config2) => self.flattened.load(path, config2, true),
-  enumerateChildren: (path) => self.flattened.enumerateChildren(path),
-  patch: unnested(self.flattened.patch, name)
-})));
-var orElse4 = /* @__PURE__ */ dual(2, (self, that) => fromFlat(orElseFlat(self.flattened, () => that().flattened)));
-var orElseFlat = (self, that) => makeFlat({
-  load: (path, config2, split4) => pipe(patch5(path, self.patch), flatMap9((patch9) => self.load(patch9, config2, split4)), catchAll((error1) => pipe(sync(that), flatMap9((that2) => pipe(patch5(path, that2.patch), flatMap9((patch9) => that2.load(patch9, config2, split4)), catchAll((error22) => fail2(Or(error1, error22)))))))),
-  enumerateChildren: (path) => pipe(patch5(path, self.patch), flatMap9((patch9) => self.enumerateChildren(patch9)), either2, flatMap9((left3) => pipe(sync(that), flatMap9((that2) => pipe(patch5(path, that2.patch), flatMap9((patch9) => that2.enumerateChildren(patch9)), either2, flatMap9((right3) => {
-    if (isLeft2(left3) && isLeft2(right3)) {
-      return fail2(And(left3.left, right3.left));
-    }
-    if (isLeft2(left3) && isRight2(right3)) {
-      return succeed(right3.right);
-    }
-    if (isRight2(left3) && isLeft2(right3)) {
-      return succeed(left3.right);
-    }
-    if (isRight2(left3) && isRight2(right3)) {
-      return succeed(pipe(left3.right, union4(right3.right)));
-    }
-    throw new Error("BUG: ConfigProvider.orElseFlat - please report an issue at https://github.com/Effect-TS/effect/issues");
-  })))))),
-  patch: empty17
-});
-var constantCase2 = (self) => mapInputPath(self, constantCase);
-var kebabCase2 = (self) => mapInputPath(self, kebabCase);
-var lowerCase2 = (self) => mapInputPath(self, lowerCase);
-var snakeCase2 = (self) => mapInputPath(self, snakeCase);
-var upperCase2 = (self) => mapInputPath(self, upperCase);
-var within = /* @__PURE__ */ dual(3, (self, path, f) => {
-  const unnest = reduce(path, self, (provider, name) => unnested2(provider, name));
-  const nest = reduceRight(path, f(unnest), (provider, name) => nested2(provider, name));
-  return orElse4(nest, () => self);
-});
+var fromFlatLoopFail = (prefix2, path) => (index2) => left2(MissingData(prefix2, `The element at index ${index2} in a sequence at path "${path}" was missing`));
 var splitPathString = (text3, delim) => {
-  const split4 = text3.split(new RegExp(`\\s*${escapeRegex(delim)}\\s*`));
-  return split4;
+  const split5 = text3.split(new RegExp(`\\s*${escapeRegex(delim)}\\s*`));
+  return split5;
 };
-var parsePrimitive = (text3, path, primitive3, delimiter, split4) => {
-  if (!split4) {
+var parsePrimitive = (text3, path, primitive3, delimiter, split5) => {
+  if (!split5) {
     return pipe(primitive3.parse(text3), mapBoth2({
       onFailure: prefixed(path),
       onSuccess: of
@@ -27390,17 +27648,16 @@ var parsePrimitive = (text3, path, primitive3, delimiter, split4) => {
   }
   return pipe(splitPathString(text3, delimiter), forEachSequential((char) => primitive3.parse(char.trim())), mapError(prefixed(path)));
 };
-var transpose = (array5) => {
-  return Object.keys(array5[0]).map((column) => array5.map((row) => row[column]));
+var transpose = (array6) => {
+  return Object.keys(array6[0]).map((column) => array6.map((row) => row[column]));
 };
 var escapeRegex = (string6) => {
   return string6.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 };
 var indicesFrom = (quotedIndices) => pipe(forEachSequential(quotedIndices, parseQuotedIndex), mapBoth2({
-  onFailure: () => empty(),
+  onFailure: () => empty2(),
   onSuccess: sort(Order)
 }), either2, map10(merge));
-var STR_INDEX_REGEX = /(^.+)(\[(\d+)\])$/;
 var QUOTED_INDEX_REGEX = /^(\[(\d+)\])$/;
 var parseQuotedIndex = (str) => {
   const match17 = str.match(QUOTED_INDEX_REGEX);
@@ -27410,100 +27667,9 @@ var parseQuotedIndex = (str) => {
   }
   return none2();
 };
-var splitIndexInKeys = (map25, unmakePathString, makePathString) => {
-  const newMap = /* @__PURE__ */ new Map();
-  for (const [pathString, value3] of map25) {
-    const keyWithIndex = pipe(unmakePathString(pathString), flatMap3((key) => match(splitIndexFrom(key), {
-      onNone: () => of(key),
-      onSome: ([key2, index2]) => make4(key2, `[${index2}]`)
-    })));
-    newMap.set(makePathString(keyWithIndex), value3);
-  }
-  return newMap;
-};
-var splitIndexFrom = (key) => {
-  const match17 = key.match(STR_INDEX_REGEX);
-  if (match17 !== null) {
-    const matchedString = match17[1];
-    const matchedIndex = match17[3];
-    const optionalString = matchedString !== void 0 && matchedString.length > 0 ? some2(matchedString) : none2();
-    const optionalIndex = pipe(matchedIndex !== void 0 && matchedIndex.length > 0 ? some2(matchedIndex) : none2(), flatMap(parseInteger));
-    return all([optionalString, optionalIndex]);
-  }
-  return none2();
-};
 var parseInteger = (str) => {
   const parsedIndex = Number.parseInt(str);
   return Number.isNaN(parsedIndex) ? none2() : some2(parsedIndex);
-};
-var keyName = (name) => ({
-  _tag: "KeyName",
-  name
-});
-var keyIndex = (index2) => ({
-  _tag: "KeyIndex",
-  index: index2
-});
-var fromJson = (json) => {
-  const hiddenDelimiter = "\uFEFF";
-  const indexedEntries = map3(getIndexedEntries(json), ([key, value3]) => [configPathToString(key).join(hiddenDelimiter), value3]);
-  return fromMap(new Map(indexedEntries), {
-    pathDelim: hiddenDelimiter,
-    seqDelim: hiddenDelimiter
-  });
-};
-var configPathToString = (path) => {
-  const output = [];
-  let i = 0;
-  while (i < path.length) {
-    const component = path[i];
-    if (component._tag === "KeyName") {
-      if (i + 1 < path.length) {
-        const nextComponent = path[i + 1];
-        if (nextComponent._tag === "KeyIndex") {
-          output.push(`${component.name}[${nextComponent.index}]`);
-          i += 2;
-        } else {
-          output.push(component.name);
-          i += 1;
-        }
-      } else {
-        output.push(component.name);
-        i += 1;
-      }
-    }
-  }
-  return output;
-};
-var getIndexedEntries = (config2) => {
-  const loopAny = (path, value3) => {
-    if (typeof value3 === "string") {
-      return make4([path, value3]);
-    }
-    if (typeof value3 === "number" || typeof value3 === "boolean") {
-      return make4([path, String(value3)]);
-    }
-    if (Array.isArray(value3)) {
-      return loopArray(path, value3);
-    }
-    if (typeof value3 === "object" && value3 !== null) {
-      return loopObject(path, value3);
-    }
-    return empty();
-  };
-  const loopArray = (path, values3) => match3(values3, {
-    onEmpty: () => make4([path, "<nil>"]),
-    onNonEmpty: flatMap3((value3, index2) => loopAny(append(path, keyIndex(index2)), value3))
-  });
-  const loopObject = (path, value3) => Object.entries(value3).flatMap(([key, value4]) => {
-    const newPath = append(path, keyName(key));
-    const result = loopAny(newPath, value4);
-    if (isEmptyReadonlyArray(result)) {
-      return make4([newPath, ""]);
-    }
-    return result;
-  });
-  return loopObject(empty(), config2);
 };
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/defaultServices/console.js
@@ -27615,11 +27781,11 @@ var RandomImpl = class {
   get nextInt() {
     return sync(() => this.PRNG.integer(Number.MAX_SAFE_INTEGER));
   }
-  nextRange(min3, max5) {
-    return map10(this.next, (n) => (max5 - min3) * n + min3);
+  nextRange(min4, max6) {
+    return map10(this.next, (n) => (max6 - min4) * n + min4);
   }
-  nextIntBetween(min3, max5) {
-    return sync(() => this.PRNG.integer(max5 - min3) + min3);
+  nextIntBetween(min4, max6) {
+    return sync(() => this.PRNG.integer(max6 - min4) + min4);
   }
   shuffle(elements) {
     return shuffleWith(elements, (n) => this.nextIntBetween(0, n));
@@ -27643,7 +27809,7 @@ var swap = (buffer4, index1, index2) => {
 var make21 = (seed) => new RandomImpl(seed);
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/defaultServices.js
-var liveServices = /* @__PURE__ */ pipe(/* @__PURE__ */ empty8(), /* @__PURE__ */ add4(clockTag, /* @__PURE__ */ make19()), /* @__PURE__ */ add4(consoleTag, defaultConsole), /* @__PURE__ */ add4(randomTag, /* @__PURE__ */ make21(/* @__PURE__ */ Math.random() * 4294967296 >>> 0)), /* @__PURE__ */ add4(configProviderTag, /* @__PURE__ */ fromEnv()), /* @__PURE__ */ add4(tracerTag, nativeTracer));
+var liveServices = /* @__PURE__ */ pipe(/* @__PURE__ */ empty9(), /* @__PURE__ */ add4(clockTag, /* @__PURE__ */ make19()), /* @__PURE__ */ add4(consoleTag, defaultConsole), /* @__PURE__ */ add4(randomTag, /* @__PURE__ */ make21(/* @__PURE__ */ Math.random() * 4294967296 >>> 0)), /* @__PURE__ */ add4(configProviderTag, /* @__PURE__ */ fromEnv()), /* @__PURE__ */ add4(tracerTag, nativeTracer));
 var currentServices = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/DefaultServices/currentServices"), () => fiberRefUnsafeMakeContext(liveServices));
 var sleep = (duration2) => {
   const decodedDuration = decode(duration2);
@@ -27661,7 +27827,7 @@ var tracerWith = (f) => fiberRefGetWith(currentServices, (services) => f(get5(se
 var withTracer = /* @__PURE__ */ dual(2, (effect3, value3) => fiberRefLocallyWith(currentServices, add4(tracerTag, value3))(effect3));
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Boolean.js
-var not = (self) => !self;
+var not2 = (self) => !self;
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Deferred.js
 var make22 = deferredMake;
@@ -27704,7 +27870,7 @@ var parallelN2 = parallelN;
 function unsafeMake5(fiberRefLocals) {
   return new FiberRefsImpl(fiberRefLocals);
 }
-function empty18() {
+function empty19() {
   return unsafeMake5(/* @__PURE__ */ new Map());
 }
 var FiberRefsSym = /* @__PURE__ */ Symbol.for("effect/FiberRefs");
@@ -27875,7 +28041,7 @@ var getOrDefault2 = getOrDefault;
 var joinAs2 = joinAs;
 var setAll2 = setAll;
 var updateManyAs2 = updateManyAs;
-var empty19 = empty18;
+var empty20 = empty19;
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/fiberRefs/patch.js
 var OP_EMPTY2 = "Empty";
@@ -27883,12 +28049,12 @@ var OP_ADD = "Add";
 var OP_REMOVE = "Remove";
 var OP_UPDATE = "Update";
 var OP_AND_THEN = "AndThen";
-var empty20 = {
+var empty21 = {
   _tag: OP_EMPTY2
 };
 var diff5 = (oldValue, newValue) => {
   const missingLocals = new Map(oldValue.locals);
-  let patch9 = empty20;
+  let patch9 = empty21;
   for (const [fiberRef, pairs] of newValue.locals.entries()) {
     const newValue2 = headNonEmpty(pairs)[1];
     const old = missingLocals.get(fiberRef);
@@ -27928,10 +28094,10 @@ var patch6 = /* @__PURE__ */ dual(3, (self, fiberId3, oldValue) => {
   let patches = of(self);
   while (isNonEmptyReadonlyArray(patches)) {
     const head7 = headNonEmpty(patches);
-    const tail2 = tailNonEmpty(patches);
+    const tail3 = tailNonEmpty(patches);
     switch (head7._tag) {
       case OP_EMPTY2: {
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case OP_ADD: {
@@ -27940,12 +28106,12 @@ var patch6 = /* @__PURE__ */ dual(3, (self, fiberId3, oldValue) => {
           fiberRef: head7.fiberRef,
           value: head7.value
         });
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case OP_REMOVE: {
         fiberRefs3 = delete_(fiberRefs3, head7.fiberRef);
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case OP_UPDATE: {
@@ -27955,11 +28121,11 @@ var patch6 = /* @__PURE__ */ dual(3, (self, fiberId3, oldValue) => {
           fiberRef: head7.fiberRef,
           value: head7.fiberRef.patch(head7.patch)(value3)
         });
-        patches = tail2;
+        patches = tail3;
         break;
       }
       case OP_AND_THEN: {
-        patches = prepend(head7.first)(prepend(head7.second)(tail2));
+        patches = prepend(head7.first)(prepend(head7.second)(tail3));
         break;
       }
     }
@@ -28092,14 +28258,14 @@ var make23 = (value3) => sync(() => unsafeMake6(value3));
 var get10 = (self) => self.modify((a) => [a, a]);
 var set5 = /* @__PURE__ */ dual(2, (self, value3) => self.modify(() => [void 0, value3]));
 var getAndSet = /* @__PURE__ */ dual(2, (self, value3) => self.modify((a) => [a, value3]));
-var modify3 = /* @__PURE__ */ dual(2, (self, f) => self.modify(f));
+var modify4 = /* @__PURE__ */ dual(2, (self, f) => self.modify(f));
 var update2 = /* @__PURE__ */ dual(2, (self, f) => self.modify((a) => [void 0, f(a)]));
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Ref.js
 var make24 = make23;
 var get11 = get10;
 var getAndSet2 = getAndSet;
-var modify4 = modify3;
+var modify5 = modify4;
 var set6 = set5;
 var update3 = update2;
 
@@ -28444,7 +28610,7 @@ var catchTags = /* @__PURE__ */ dual(2, (self, cases) => {
 });
 var cause = (self) => matchCause(self, {
   onFailure: identity,
-  onSuccess: () => empty6
+  onSuccess: () => empty7
 });
 var clockWith3 = clockWith2;
 var clock = /* @__PURE__ */ clockWith3(succeed);
@@ -28489,7 +28655,7 @@ var dropUntil = /* @__PURE__ */ dual(2, (elements, predicate) => suspend(() => {
   }
   return map10(dropping4, () => builder);
 }));
-var dropWhile2 = /* @__PURE__ */ dual(2, (elements, predicate) => suspend(() => {
+var dropWhile3 = /* @__PURE__ */ dual(2, (elements, predicate) => suspend(() => {
   const iterator2 = elements[Symbol.iterator]();
   const builder = [];
   let next;
@@ -28509,10 +28675,10 @@ var dropWhile2 = /* @__PURE__ */ dual(2, (elements, predicate) => suspend(() => 
 }));
 var contextWith = (f) => map10(context(), f);
 var eventually = (self) => orElse3(self, () => flatMap9(yieldNow(), () => eventually(self)));
-var filterOrDie = /* @__PURE__ */ dual(3, (self, filter10, orDieWith6) => filterOrElse(self, filter10, (a) => dieSync(() => orDieWith6(a))));
-var filterOrDieMessage = /* @__PURE__ */ dual(3, (self, filter10, message) => filterOrElse(self, filter10, () => dieMessage(message)));
-var filterOrElse = /* @__PURE__ */ dual(3, (self, filter10, orElse17) => flatMap9(self, (a) => filter10(a) ? succeed(a) : orElse17(a)));
-var filterOrFail = /* @__PURE__ */ dual(3, (self, filter10, orFailWith) => filterOrElse(self, filter10, (a) => failSync(() => orFailWith(a))));
+var filterOrDie = /* @__PURE__ */ dual(3, (self, filter11, orDieWith6) => filterOrElse(self, filter11, (a) => dieSync(() => orDieWith6(a))));
+var filterOrDieMessage = /* @__PURE__ */ dual(3, (self, filter11, message) => filterOrElse(self, filter11, () => dieMessage(message)));
+var filterOrElse = /* @__PURE__ */ dual(3, (self, filter11, orElse15) => flatMap9(self, (a) => filter11(a) ? succeed(a) : orElse15(a)));
+var filterOrFail = /* @__PURE__ */ dual(3, (self, filter11, orFailWith) => filterOrElse(self, filter11, (a) => failSync(() => orFailWith(a))));
 var findFirst4 = /* @__PURE__ */ dual(2, (elements, f) => suspend(() => {
   const iterator2 = elements[Symbol.iterator]();
   const next = iterator2.next();
@@ -28546,7 +28712,7 @@ var match7 = /* @__PURE__ */ dual(2, (self, {
   onFailure: (e) => succeed(onFailure(e)),
   onSuccess: (a) => succeed(onSuccess(a))
 }));
-var every4 = /* @__PURE__ */ dual(2, (elements, f) => suspend(() => forAllLoop(elements[Symbol.iterator](), 0, f)));
+var every5 = /* @__PURE__ */ dual(2, (elements, f) => suspend(() => forAllLoop(elements[Symbol.iterator](), 0, f)));
 var forAllLoop = (iterator2, index2, f) => {
   const next = iterator2.next();
   return next.done ? succeed(true) : flatMap9(f(next.value, index2), (b) => b ? forAllLoop(iterator2, index2 + 1, f) : succeed(b));
@@ -28582,8 +28748,8 @@ var gen3 = function() {
   return suspend(() => {
     const iterator2 = f(adapter4);
     const state = iterator2.next();
-    const run5 = (state2) => state2.done ? succeed(state2.value) : pipe(state2.value.value, flatMap9((val) => run5(iterator2.next(val))));
-    return run5(state);
+    const run6 = (state2) => state2.done ? succeed(state2.value) : pipe(state2.value.value, flatMap9((val) => run6(iterator2.next(val))));
+    return run6(state);
   });
 };
 var fiberRefs2 = /* @__PURE__ */ withFiberRuntime((state) => succeed(state.getFiberRefs()));
@@ -28627,7 +28793,7 @@ var logWithLevel = (level) => (messageOrCause, supplementary) => {
     message = supplementary ?? "";
   } else {
     message = messageOrCause;
-    cause3 = supplementary ?? empty6;
+    cause3 = supplementary ?? empty7;
   }
   return withFiberRuntime((fiberState) => {
     fiberState.log(message, cause3, levelOption);
@@ -28644,7 +28810,7 @@ var logFatal = /* @__PURE__ */ logWithLevel(Fatal);
 var withLogSpan = /* @__PURE__ */ dual(2, (effect3, label) => flatMap9(currentTimeMillis2, (now) => fiberRefLocallyWith(effect3, currentLogSpan, prepend3(make26(label, now)))));
 var logAnnotations = /* @__PURE__ */ fiberRefGet(currentLogAnnotations);
 var loop = (initial, options) => options.discard ? loopDiscard(initial, options.while, options.step, options.body) : map10(loopInternal(initial, options.while, options.step, options.body), (x) => Array.from(x));
-var loopInternal = (initial, cont, inc, body) => suspend(() => cont(initial) ? flatMap9(body(initial), (a) => map10(loopInternal(inc(initial), cont, inc, body), prepend3(a))) : sync(() => empty10()));
+var loopInternal = (initial, cont, inc, body) => suspend(() => cont(initial) ? flatMap9(body(initial), (a) => map10(loopInternal(inc(initial), cont, inc, body), prepend3(a))) : sync(() => empty11()));
 var loopDiscard = (initial, cont, inc, body) => suspend(() => cont(initial) ? flatMap9(body(initial), () => loopDiscard(inc(initial), cont, inc, body)) : unit2);
 var mapAccum3 = /* @__PURE__ */ dual(3, (elements, zero2, f) => suspend(() => {
   const iterator2 = elements[Symbol.iterator]();
@@ -28748,7 +28914,7 @@ var takeUntil = /* @__PURE__ */ dual(2, (elements, predicate) => suspend(() => {
   }
   return map10(effect3, () => builder);
 }));
-var takeWhile2 = /* @__PURE__ */ dual(2, (elements, predicate) => suspend(() => {
+var takeWhile3 = /* @__PURE__ */ dual(2, (elements, predicate) => suspend(() => {
   const iterator2 = elements[Symbol.iterator]();
   const builder = [];
   let next;
@@ -28917,9 +29083,9 @@ var makeSpan = (name, options) => flatMap9(fiberRefs2, (fiberRefs3) => sync(() =
   const linksFromEnv = get9(fiberRefs3, currentTracerSpanLinks);
   const parent = options?.parent ? some2(options.parent) : options?.root ? none2() : getOption2(context11, spanTag);
   const links = linksFromEnv._tag === "Some" ? [...toReadonlyArray(linksFromEnv.value), ...options?.links ?? []] : options?.links ?? [];
-  const span4 = tracer3.span(name, parent, options?.context ?? empty8(), links, timingEnabled ? clock3.unsafeCurrentTimeNanos() : bigint0);
+  const span4 = tracer3.span(name, parent, options?.context ?? empty9(), links, timingEnabled ? clock3.unsafeCurrentTimeNanos() : bigint0);
   if (annotationsFromEnv._tag === "Some") {
-    forEach4(annotationsFromEnv.value, (value3, key) => span4.attribute(key, value3));
+    forEach5(annotationsFromEnv.value, (value3, key) => span4.attribute(key, value3));
   }
   if (options?.attributes) {
     Object.entries(options.attributes).forEach(([k, v]) => span4.attribute(k, v));
@@ -28935,7 +29101,7 @@ var useSpan = (name, ...args) => {
 };
 var withParentSpan = /* @__PURE__ */ dual(2, (self, span4) => provideService(self, spanTag, span4));
 var withSpan = /* @__PURE__ */ dual((args) => typeof args[0] !== "string", (self, name, options) => useSpan(name, options ?? {}, (span4) => withParentSpan(self, span4)));
-var fromNullable3 = (value3) => value3 == null ? fail2(new NoSuchElementException()) : succeed(value3);
+var fromNullable4 = (value3) => value3 == null ? fail2(new NoSuchElementException()) : succeed(value3);
 var optionFromOptional = (self) => catchAll(map10(self, some2), (error3) => isNoSuchElementException(error3) ? succeedNone : fail2(error3));
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Exit.js
@@ -29311,7 +29477,7 @@ var BucketIterator = class {
     return result;
   }
 };
-var empty21 = () => {
+var empty22 = () => {
   const self = Object.create(MutableHashMapProto);
   self.referential = /* @__PURE__ */ new Map();
   self.buckets = /* @__PURE__ */ new Map();
@@ -29471,11 +29637,11 @@ var HistogramState = class {
   sum;
   [MetricStateTypeId] = metricStateVariance;
   [HistogramStateTypeId] = HistogramStateTypeId;
-  constructor(buckets, count6, min3, max5, sum4) {
+  constructor(buckets, count6, min4, max6, sum4) {
     this.buckets = buckets;
     this.count = count6;
-    this.min = min3;
-    this.max = max5;
+    this.min = min4;
+    this.max = max6;
     this.sum = sum4;
   }
   [symbol]() {
@@ -29497,12 +29663,12 @@ var SummaryState = class {
   sum;
   [MetricStateTypeId] = metricStateVariance;
   [SummaryStateTypeId] = SummaryStateTypeId;
-  constructor(error3, quantiles, count6, min3, max5, sum4) {
+  constructor(error3, quantiles, count6, min4, max6, sum4) {
     this.error = error3;
     this.quantiles = quantiles;
     this.count = count6;
-    this.min = min3;
-    this.max = max5;
+    this.min = min4;
+    this.max = max6;
     this.sum = sum4;
   }
   [symbol]() {
@@ -29584,8 +29750,8 @@ var histogram4 = (key) => {
   const boundaries = new Float32Array(size15);
   let count6 = 0;
   let sum4 = 0;
-  let min3 = Number.MAX_VALUE;
-  let max5 = Number.MIN_VALUE;
+  let min4 = Number.MAX_VALUE;
+  let max6 = Number.MIN_VALUE;
   pipe(bounds, sort(Order), map3((n, i) => {
     boundaries[i] = n;
   }));
@@ -29611,11 +29777,11 @@ var histogram4 = (key) => {
     values3[from] = values3[from] + 1;
     count6 = count6 + 1;
     sum4 = sum4 + value3;
-    if (value3 < min3) {
-      min3 = value3;
+    if (value3 < min4) {
+      min4 = value3;
     }
-    if (value3 > max5) {
-      max5 = value3;
+    if (value3 > max6) {
+      max6 = value3;
     }
   };
   const getBuckets = () => {
@@ -29633,8 +29799,8 @@ var histogram4 = (key) => {
     get: () => histogram3({
       buckets: getBuckets(),
       count: count6,
-      min: min3,
-      max: max5,
+      min: min4,
+      max: max6,
       sum: sum4
     }),
     update: update4
@@ -29652,8 +29818,8 @@ var summary3 = (key) => {
   let head7 = 0;
   let count6 = 0;
   let sum4 = 0;
-  let min3 = Number.MAX_VALUE;
-  let max5 = Number.MIN_VALUE;
+  let min4 = Number.MAX_VALUE;
+  let max6 = Number.MIN_VALUE;
   const snapshot = (now) => {
     const builder = [];
     let i = 0;
@@ -29678,11 +29844,11 @@ var summary3 = (key) => {
     }
     count6 = count6 + 1;
     sum4 = sum4 + value3;
-    if (value3 < min3) {
-      min3 = value3;
+    if (value3 < min4) {
+      min4 = value3;
     }
-    if (value3 > max5) {
-      max5 = value3;
+    if (value3 > max6) {
+      max6 = value3;
     }
   };
   return make28({
@@ -29690,8 +29856,8 @@ var summary3 = (key) => {
       error: error3,
       quantiles: snapshot(Date.now()),
       count: count6,
-      min: min3,
-      max: max5,
+      min: min4,
+      max: max6,
       sum: sum4
     }),
     update: ([value3, timestamp]) => observe(value3, timestamp)
@@ -29700,13 +29866,13 @@ var summary3 = (key) => {
 var calculateQuantiles = (error3, sortedQuantiles, sortedSamples) => {
   const sampleCount = sortedSamples.length;
   if (!isNonEmptyReadonlyArray(sortedQuantiles)) {
-    return empty();
+    return empty2();
   }
   const head7 = sortedQuantiles[0];
-  const tail2 = sortedQuantiles.slice(1);
+  const tail3 = sortedQuantiles.slice(1);
   const resolvedHead = resolveQuantile(error3, sampleCount, none2(), 0, head7, sortedSamples);
   const resolved = of(resolvedHead);
-  tail2.forEach((quantile) => {
+  tail3.forEach((quantile) => {
     resolved.push(resolveQuantile(error3, sampleCount, resolvedHead.value, resolvedHead.consumed, quantile, resolvedHead.rest));
   });
   return map3(resolved, (rq) => [rq.quantile, rq.value]);
@@ -29837,7 +30003,7 @@ var MetricRegistrySymbolKey = "effect/MetricRegistry";
 var MetricRegistryTypeId = /* @__PURE__ */ Symbol.for(MetricRegistrySymbolKey);
 var MetricRegistryImpl = class {
   [MetricRegistryTypeId] = MetricRegistryTypeId;
-  map = empty21();
+  map = empty22();
   snapshot() {
     const result = [];
     for (const [key, hook2] of this.map) {
@@ -29976,12 +30142,12 @@ var fromMetricKey = (key) => {
     hookCache.set(extraTags, hook3);
     return hook3;
   };
-  return make30(key.keyType, (input, extraTags) => hook2(extraTags).update(input), (extraTags) => hook2(extraTags).get());
+  return make30(key.keyType, (input2, extraTags) => hook2(extraTags).update(input2), (extraTags) => hook2(extraTags).get());
 };
 var histogram5 = (name, boundaries, description) => fromMetricKey(histogram2(name, boundaries, description));
 var tagged = /* @__PURE__ */ dual(3, (self, key, value3) => taggedWithLabels2(self, [make27(key, value3)]));
 var taggedWithLabels2 = /* @__PURE__ */ dual(2, (self, extraTags) => {
-  return make30(self.keyType, (input, extraTags1) => self.unsafeUpdate(input, union(extraTags, extraTags1)), (extraTags1) => self.unsafeValue(union(extraTags, extraTags1)));
+  return make30(self.keyType, (input2, extraTags1) => self.unsafeUpdate(input2, union(extraTags, extraTags1)), (extraTags1) => self.unsafeValue(union(extraTags, extraTags1)));
 });
 var complete = /* @__PURE__ */ dual(2, (self, result) => fiberRefGetWith(currentRequestMap, (map25) => sync(() => {
   if (map25.has(self)) {
@@ -30165,7 +30331,7 @@ var OP_EMPTY3 = "Empty";
 var OP_ADD_SUPERVISOR = "AddSupervisor";
 var OP_REMOVE_SUPERVISOR = "RemoveSupervisor";
 var OP_AND_THEN2 = "AndThen";
-var empty24 = {
+var empty25 = {
   _tag: OP_EMPTY3
 };
 var combine8 = (self, that) => {
@@ -30219,7 +30385,7 @@ var removeSupervisor = (self, that) => {
 };
 var toSet2 = (self) => {
   if (equals(self, none8)) {
-    return empty5();
+    return empty6();
   } else {
     if (isZip(self)) {
       return pipe(toSet2(self.left), union4(toSet2(self.right)));
@@ -30230,22 +30396,22 @@ var toSet2 = (self) => {
 };
 var diff7 = (oldValue, newValue) => {
   if (equals(oldValue, newValue)) {
-    return empty24;
+    return empty25;
   }
   const oldSupervisors = toSet2(oldValue);
   const newSupervisors = toSet2(newValue);
-  const added = pipe(newSupervisors, difference2(oldSupervisors), reduce5(empty24, (patch9, supervisor) => combine8(patch9, {
+  const added = pipe(newSupervisors, difference3(oldSupervisors), reduce5(empty25, (patch9, supervisor) => combine8(patch9, {
     _tag: OP_ADD_SUPERVISOR,
     supervisor
   })));
-  const removed = pipe(oldSupervisors, difference2(newSupervisors), reduce5(empty24, (patch9, supervisor) => combine8(patch9, {
+  const removed = pipe(oldSupervisors, difference3(newSupervisors), reduce5(empty25, (patch9, supervisor) => combine8(patch9, {
     _tag: OP_REMOVE_SUPERVISOR,
     supervisor
   })));
   return combine8(added, removed);
 };
 var differ2 = /* @__PURE__ */ make32({
-  empty: empty24,
+  empty: empty25,
   patch: patch8,
   combine: combine8,
   diff: diff7
@@ -31305,17 +31471,17 @@ var existsLoop = (iterator2, index2, f) => {
   }
   return pipe(flatMap9(f(next.value, index2), (b) => b ? succeed(b) : existsLoop(iterator2, index2 + 1, f)));
 };
-var filter6 = /* @__PURE__ */ dual((args) => isIterable(args[0]), (elements, f, options) => {
-  const predicate = options?.negate ? (a, i) => map10(f(a, i), not) : f;
+var filter7 = /* @__PURE__ */ dual((args) => isIterable(args[0]), (elements, f, options) => {
+  const predicate = options?.negate ? (a, i) => map10(f(a, i), not2) : f;
   return matchSimple(options?.concurrency, () => suspend(() => fromIterable2(elements).reduceRight((effect3, a, i) => zipWith5(effect3, suspend(() => predicate(a, i)), (list2, b) => b ? [a, ...list2] : list2), sync(() => new Array()))), () => map10(forEach8(elements, (a, i) => map10(predicate(a, i), (b) => b ? some2(a) : none2()), options), getSomes));
 });
-var allResolveInput = (input) => {
-  if (Array.isArray(input) || isIterable(input)) {
-    return [input, none2()];
+var allResolveInput = (input2) => {
+  if (Array.isArray(input2) || isIterable(input2)) {
+    return [input2, none2()];
   }
-  const keys5 = Object.keys(input);
+  const keys5 = Object.keys(input2);
   const size15 = keys5.length;
-  return [keys5.map((k) => input[k]), some2((values3) => {
+  return [keys5.map((k) => input2[k]), some2((values3) => {
     const res = {};
     for (let i = 0; i < size15; i++) {
       res[keys5[i]] = values3[i];
@@ -31383,10 +31549,10 @@ var all4 = (arg, options) => {
 };
 var allWith = (options) => (arg) => all4(arg, options);
 var allSuccesses = (elements, options) => map10(all4(fromIterable2(elements).map(exit), options), filterMap2((exit4) => exitIsSuccess(exit4) ? some2(exit4.i0) : none2()));
-var replicate = /* @__PURE__ */ dual(2, (self, n) => Array.from({
+var replicate2 = /* @__PURE__ */ dual(2, (self, n) => Array.from({
   length: n
 }, () => self));
-var replicateEffect = /* @__PURE__ */ dual((args) => isEffect(args[0]), (self, n, options) => all4(replicate(self, n), options));
+var replicateEffect = /* @__PURE__ */ dual((args) => isEffect(args[0]), (self, n, options) => all4(replicate2(self, n), options));
 var forEach8 = /* @__PURE__ */ dual((args) => isIterable(args[0]), (self, f, options) => withFiberRuntime((r) => {
   const isRequestBatchingEnabled = options?.batching === true || options?.batching === "inherit" && r.getFiberRef(currentRequestBatching);
   if (options?.discard) {
@@ -31396,9 +31562,9 @@ var forEach8 = /* @__PURE__ */ dual((args) => isIterable(args[0]), (self, f, opt
 }));
 var forEachParUnbounded = (self, f, batching) => suspend(() => {
   const as11 = fromIterable2(self);
-  const array5 = new Array(as11.length);
-  const fn = (a, i) => flatMap9(f(a, i), (b) => sync(() => array5[i] = b));
-  return zipRight2(forEachConcurrentDiscard(as11, fn, batching, false), succeed(array5));
+  const array6 = new Array(as11.length);
+  const fn = (a, i) => flatMap9(f(a, i), (b) => sync(() => array6[i] = b));
+  return zipRight2(forEachConcurrentDiscard(as11, fn, batching, false), succeed(array6));
 });
 var forEachConcurrentDiscard = (self, f, batching, processAll, n) => uninterruptibleMask((restore) => transplant((graft) => withFiberRuntime((parent) => {
   let todos = Array.from(self).reverse();
@@ -31524,9 +31690,9 @@ var forEachConcurrentDiscard = (self, f, batching, processAll, n) => uninterrupt
 })));
 var forEachParN = (self, n, f, batching) => suspend(() => {
   const as11 = fromIterable2(self);
-  const array5 = new Array(as11.length);
-  const fn = (a, i) => map10(f(a, i), (b) => array5[i] = b);
-  return zipRight2(forEachConcurrentDiscard(as11, fn, batching, false, n), succeed(array5));
+  const array6 = new Array(as11.length);
+  const fn = (a, i) => map10(f(a, i), (b) => array6[i] = b);
+  return zipRight2(forEachConcurrentDiscard(as11, fn, batching, false, n), succeed(array6));
 });
 var fork = (self) => withFiberRuntime((state, status2) => succeed(unsafeFork(self, state, status2.runtimeFlags)));
 var forkDaemon = (self) => forkWithScopeOverride(self, globalScope);
@@ -31578,10 +31744,10 @@ var raceAll = (all9) => {
   const self = headNonEmpty2(list2);
   const effects = tailNonEmpty2(list2);
   const inheritAll3 = (res) => pipe(inheritAll(res[1]), as2(res[0]));
-  return pipe(deferredMake(), flatMap9((done9) => pipe(make24(effects.length), flatMap9((fails) => uninterruptibleMask((restore) => pipe(fork(interruptible2(self)), flatMap9((head7) => pipe(effects, forEachSequential((effect3) => fork(interruptible2(effect3))), map10(unsafeFromArray), map10((tail2) => pipe(tail2, prepend2(head7))), tap2((fibers) => pipe(fibers, reduce(unit2, (effect3, fiber) => pipe(effect3, zipRight2(pipe(_await2(fiber), flatMap9(raceAllArbiter(fibers, fiber, done9, fails)), fork, asUnit2)))))), flatMap9((fibers) => pipe(restore(pipe(_await(done9), flatMap9(inheritAll3))), onInterrupt(() => pipe(fibers, reduce(unit2, (effect3, fiber) => pipe(effect3, zipLeft2(interruptFiber(fiber))))))))))))))));
+  return pipe(deferredMake(), flatMap9((done9) => pipe(make24(effects.length), flatMap9((fails) => uninterruptibleMask((restore) => pipe(fork(interruptible2(self)), flatMap9((head7) => pipe(effects, forEachSequential((effect3) => fork(interruptible2(effect3))), map10(unsafeFromArray), map10((tail3) => pipe(tail3, prepend2(head7))), tap2((fibers) => pipe(fibers, reduce(unit2, (effect3, fiber) => pipe(effect3, zipRight2(pipe(_await2(fiber), flatMap9(raceAllArbiter(fibers, fiber, done9, fails)), fork, asUnit2)))))), flatMap9((fibers) => pipe(restore(pipe(_await(done9), flatMap9(inheritAll3))), onInterrupt(() => pipe(fibers, reduce(unit2, (effect3, fiber) => pipe(effect3, zipLeft2(interruptFiber(fiber))))))))))))))));
 };
 var raceAllArbiter = (fibers, winner, deferred, fails) => (exit4) => exitMatchEffect(exit4, {
-  onFailure: (cause3) => pipe(modify4(fails, (fails2) => [fails2 === 0 ? pipe(deferredFailCause(deferred, cause3), asUnit2) : unit2, fails2 - 1]), flatten6),
+  onFailure: (cause3) => pipe(modify5(fails, (fails2) => [fails2 === 0 ? pipe(deferredFailCause(deferred, cause3), asUnit2) : unit2, fails2 - 1]), flatten6),
   onSuccess: (value3) => pipe(deferredSucceed(deferred, [value3, winner]), flatMap9((set8) => set8 ? pipe(fromIterable3(fibers), reduce(unit2, (effect3, fiber) => fiber === winner ? effect3 : pipe(effect3, zipLeft2(interruptFiber(fiber))))) : unit2))
 });
 var reduceEffect = /* @__PURE__ */ dual((args) => isIterable(args[0]), (elements, zero2, f, options) => matchSimple(options?.concurrency, () => fromIterable2(elements).reduce((acc, a, i) => zipWith5(acc, a, (acc2, a2) => f(acc2, a2, i)), zero2), () => suspend(() => pipe(mergeAll([zero2, ...elements], none2(), (acc, elem, i) => {
@@ -31672,7 +31838,7 @@ var zipWithOptions = /* @__PURE__ */ dual((args) => isEffect(args[1]), (self, th
   batching: options?.batching
 }), ([a, a2]) => f(a, a2)));
 var withRuntimeFlagsScoped = (update4) => {
-  if (update4 === empty15) {
+  if (update4 === empty16) {
     return unit2;
   }
   return pipe(runtimeFlags, flatMap9((runtimeFlags2) => {
@@ -31725,7 +31891,7 @@ var scopeExtend = /* @__PURE__ */ dual(2, (effect3, scope5) => mapInputContext(
 var scopeUse = /* @__PURE__ */ dual(2, (effect3, scope5) => pipe(effect3, scopeExtend(scope5), onExit((exit4) => scope5.close(exit4))));
 var fiberRefUnsafeMakeSupervisor = (initial) => fiberRefUnsafeMakePatch(initial, {
   differ: differ2,
-  fork: empty24
+  fork: empty25
 });
 var fiberRefLocallyScoped = /* @__PURE__ */ dual(2, (self, value3) => asUnit2(acquireRelease(flatMap9(fiberRefGet(self), (oldValue) => as2(fiberRefSet(self, value3), oldValue)), (oldValue) => fiberRefSet(self, oldValue))));
 var fiberRefLocallyScopedWith = /* @__PURE__ */ dual(2, (self, f) => fiberRefGetWith(self, (a) => fiberRefLocallyScoped(self, f(a))));
@@ -31860,14 +32026,14 @@ var withSpanScoped = /* @__PURE__ */ dual((args) => typeof args[0] !== "string",
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/schedule/interval.js
 var IntervalSymbolKey = "effect/ScheduleInterval";
 var IntervalTypeId = /* @__PURE__ */ Symbol.for(IntervalSymbolKey);
-var empty25 = {
+var empty26 = {
   [IntervalTypeId]: IntervalTypeId,
   startMillis: 0,
   endMillis: 0
 };
 var make33 = (startMillis, endMillis) => {
   if (startMillis > endMillis) {
-    return empty25;
+    return empty26;
   }
   return {
     [IntervalTypeId]: IntervalTypeId,
@@ -31884,7 +32050,7 @@ var after = (startMilliseconds) => {
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/ScheduleInterval.js
 var make34 = make33;
-var empty26 = empty25;
+var empty27 = empty26;
 var size11 = size10;
 var after2 = after;
 
@@ -31898,10 +32064,10 @@ var make35 = (intervals) => {
   };
 };
 var start = (self) => {
-  return pipe(self.intervals, head2, getOrElse(() => empty26)).startMillis;
+  return pipe(self.intervals, head2, getOrElse(() => empty27)).startMillis;
 };
 var end = (self) => {
-  return pipe(self.intervals, head2, getOrElse(() => empty26)).endMillis;
+  return pipe(self.intervals, head2, getOrElse(() => empty27)).endMillis;
 };
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/ScheduleIntervals.js
@@ -31930,7 +32096,7 @@ var isDone5 = isDone4;
 var Scope = scopeTag;
 var addFinalizer2 = scopeAddFinalizer;
 var close = scopeClose;
-var extend2 = scopeExtend;
+var extend3 = scopeExtend;
 var fork2 = scopeFork;
 var use = scopeUse;
 var make37 = scopeMake;
@@ -31994,15 +32160,15 @@ var ScheduleDriverImpl = class {
   get reset() {
     return set5(this.ref, [none2(), this.schedule.initial]);
   }
-  next(input) {
-    return pipe(map10(get10(this.ref), (tuple2) => tuple2[1]), flatMap9((state) => pipe(currentTimeMillis2, flatMap9((now) => pipe(suspend(() => this.schedule.step(now, input, state)), flatMap9(([state2, out, decision]) => isDone5(decision) ? pipe(set5(this.ref, [some2(out), state2]), zipRight2(fail2(none2()))) : pipe(set5(this.ref, [some2(out), state2]), zipRight2(sleep3(millis(start2(decision.intervals) - now))), as2(out))))))));
+  next(input2) {
+    return pipe(map10(get10(this.ref), (tuple2) => tuple2[1]), flatMap9((state) => pipe(currentTimeMillis2, flatMap9((now) => pipe(suspend(() => this.schedule.step(now, input2, state)), flatMap9(([state2, out, decision]) => isDone5(decision) ? pipe(set5(this.ref, [some2(out), state2]), zipRight2(fail2(none2()))) : pipe(set5(this.ref, [some2(out), state2]), zipRight2(sleep3(millis(start2(decision.intervals) - now))), as2(out))))))));
   }
 };
 var makeWithState = (initial, step4) => new ScheduleImpl(initial, step4);
 var addDelay = /* @__PURE__ */ dual(2, (self, f) => addDelayEffect(self, (out) => sync(() => f(out))));
 var addDelayEffect = /* @__PURE__ */ dual(2, (self, f) => modifyDelayEffect(self, (out, duration2) => map10(f(out), (delay3) => sum(duration2, decode(delay3)))));
 var driver = (self) => pipe(make23([none2(), self.initial]), map10((ref) => new ScheduleDriverImpl(self, ref)));
-var modifyDelayEffect = /* @__PURE__ */ dual(2, (self, f) => makeWithState(self.initial, (now, input, state) => flatMap9(self.step(now, input, state), ([state2, out, decision]) => {
+var modifyDelayEffect = /* @__PURE__ */ dual(2, (self, f) => makeWithState(self.initial, (now, input2, state) => flatMap9(self.step(now, input2, state), ([state2, out, decision]) => {
   if (isDone5(decision)) {
     return succeed([state2, out, decision]);
   }
@@ -32021,16 +32187,16 @@ var modifyDelayEffect = /* @__PURE__ */ dual(2, (self, f) => makeWithState(self.
 var spaced = (duration2) => addDelay(forever2, () => duration2);
 var unfold2 = (initial, f) => makeWithState(initial, (now, _, state) => sync(() => [f(state), state, continueWith2(after2(now))]));
 var repeat_Effect = /* @__PURE__ */ dual(2, (self, schedule4) => repeatOrElse_Effect(self, schedule4, (e, _) => fail2(e)));
-var repeatOrElse_Effect = /* @__PURE__ */ dual(3, (self, schedule4, orElse17) => flatMap9(driver(schedule4), (driver3) => matchEffect(self, {
-  onFailure: (error3) => orElse17(error3, none2()),
-  onSuccess: (value3) => repeatOrElseEffectLoop(self, driver3, orElse17, value3)
+var repeatOrElse_Effect = /* @__PURE__ */ dual(3, (self, schedule4, orElse15) => flatMap9(driver(schedule4), (driver3) => matchEffect(self, {
+  onFailure: (error3) => orElse15(error3, none2()),
+  onSuccess: (value3) => repeatOrElseEffectLoop(self, driver3, orElse15, value3)
 })));
-var repeatOrElseEffectLoop = (self, driver3, orElse17, value3) => {
+var repeatOrElseEffectLoop = (self, driver3, orElse15, value3) => {
   return matchEffect(driver3.next(value3), {
     onFailure: () => orDie(driver3.last),
     onSuccess: (b) => matchEffect(self, {
-      onFailure: (error3) => orElse17(error3, some2(b)),
-      onSuccess: (value4) => repeatOrElseEffectLoop(self, driver3, orElse17, value4)
+      onFailure: (error3) => orElse15(error3, some2(b)),
+      onSuccess: (value4) => repeatOrElseEffectLoop(self, driver3, orElse15, value4)
     })
   });
 };
@@ -32043,11 +32209,11 @@ var retryN_Effect = /* @__PURE__ */ dual(2, (self, n) => retryN_EffectLoop(self,
 var retryN_EffectLoop = (self, n) => {
   return catchAll(self, (e) => n <= 0 ? fail2(e) : flatMap9(yieldNow(), () => retryN_EffectLoop(self, n - 1)));
 };
-var retryOrElse_Effect = /* @__PURE__ */ dual(3, (self, policy, orElse17) => flatMap9(driver(policy), (driver3) => retryOrElse_EffectLoop(self, driver3, orElse17)));
-var retryOrElse_EffectLoop = (self, driver3, orElse17) => {
+var retryOrElse_Effect = /* @__PURE__ */ dual(3, (self, policy, orElse15) => flatMap9(driver(policy), (driver3) => retryOrElse_EffectLoop(self, driver3, orElse15)));
+var retryOrElse_EffectLoop = (self, driver3, orElse15) => {
   return catchAll(self, (e) => matchEffect(driver3.next(e), {
-    onFailure: () => pipe(driver3.last, orDie, flatMap9((out) => orElse17(e, out))),
-    onSuccess: () => retryOrElse_EffectLoop(self, driver3, orElse17)
+    onFailure: () => pipe(driver3.last, orDie, flatMap9((out) => orElse15(e, out))),
+    onSuccess: () => retryOrElse_EffectLoop(self, driver3, orElse15)
   }));
 };
 var retryUntil_Effect = /* @__PURE__ */ dual(2, (self, f) => retryUntilEffect_Effect(self, (e) => sync(() => f(e))));
@@ -32162,7 +32328,7 @@ var Key = class {
   }
 };
 var memoizeFunction = (f, eq) => {
-  return pipe(sync(() => empty21()), flatMap9(makeSynchronized), map10((ref) => (a) => pipe(ref.modifyEffect((map25) => {
+  return pipe(sync(() => empty22()), flatMap9(makeSynchronized), map10((ref) => (a) => pipe(ref.modifyEffect((map25) => {
     const result = pipe(map25, get12(new Key(a, eq)));
     if (isNone2(result)) {
       return pipe(deferredMake(), tap2((deferred) => pipe(diffFiberRefs(f(a)), intoDeferred(deferred), fork)), map10((deferred) => [deferred, pipe(map25, set7(new Key(a, eq), deferred))]));
@@ -32459,9 +32625,9 @@ var make38 = (options) => new RuntimeImpl(options.context, options.runtimeFlags,
 var runtime2 = () => withFiberRuntime((state, status2) => succeed(new RuntimeImpl(state.getFiberRef(currentContext), status2.runtimeFlags, state.getFiberRefs())));
 var defaultRuntimeFlags = /* @__PURE__ */ make16(Interruption, CooperativeYielding, RuntimeMetrics);
 var defaultRuntime = /* @__PURE__ */ make38({
-  context: /* @__PURE__ */ empty8(),
+  context: /* @__PURE__ */ empty9(),
   runtimeFlags: defaultRuntimeFlags,
-  fiberRefs: /* @__PURE__ */ empty19()
+  fiberRefs: /* @__PURE__ */ empty20()
 });
 var unsafeRunEffect = /* @__PURE__ */ unsafeRunCallback(defaultRuntime);
 var unsafeForkEffect = /* @__PURE__ */ unsafeFork2(defaultRuntime);
@@ -32527,7 +32693,7 @@ var MemoMapImpl = class {
               return pipe(deferredFailCause(deferred, exit4.i0), zipRight2(scopeClose(innerScope, exit4)), zipRight2(failCause(exit4.i0)));
             }
             case OP_SUCCESS: {
-              return pipe(set5(finalizerRef, (exit5) => pipe(scopeClose(innerScope, exit5), whenEffect(modify3(observers, (n) => [n === 1, n - 1])), asUnit2)), zipRight2(update2(observers, (n) => n + 1)), zipRight2(scopeAddFinalizerExit(scope5, (exit5) => pipe(sync(() => map25.delete(layer4)), zipRight2(get10(finalizerRef)), flatMap9((finalizer3) => finalizer3(exit5))))), zipRight2(deferredSucceed(deferred, exit4.i0)), as2(exit4.i0[1]));
+              return pipe(set5(finalizerRef, (exit5) => pipe(scopeClose(innerScope, exit5), whenEffect(modify4(observers, (n) => [n === 1, n - 1])), asUnit2)), zipRight2(update2(observers, (n) => n + 1)), zipRight2(scopeAddFinalizerExit(scope5, (exit5) => pipe(sync(() => map25.delete(layer4)), zipRight2(get10(finalizerRef)), flatMap9((finalizer3) => finalizer3(exit5))))), zipRight2(deferredSucceed(deferred, exit4.i0)), as2(exit4.i0[1]));
             }
           }
         })))));
@@ -32542,8 +32708,8 @@ var MemoMapImpl = class {
 };
 var makeMemoMap = /* @__PURE__ */ suspend(() => map10(makeSynchronized(/* @__PURE__ */ new Map()), (ref) => new MemoMapImpl(ref)));
 var build = (self) => scopeWith((scope5) => buildWithScope(self, scope5));
-var buildWithScope = /* @__PURE__ */ dual(2, (self, scope5) => flatMap9(makeMemoMap, (memoMap) => flatMap9(makeBuilder(self, scope5), (run5) => run5(memoMap))));
-var buildWithMemoMap = /* @__PURE__ */ dual(3, (self, memoMap, scope5) => flatMap9(makeBuilder(self, scope5), (run5) => run5(memoMap)));
+var buildWithScope = /* @__PURE__ */ dual(2, (self, scope5) => flatMap9(makeMemoMap, (memoMap) => flatMap9(makeBuilder(self, scope5), (run6) => run6(memoMap))));
+var buildWithMemoMap = /* @__PURE__ */ dual(3, (self, memoMap, scope5) => flatMap9(makeBuilder(self, scope5), (run6) => run6(memoMap)));
 var makeBuilder = (self, scope5, inMemoMap = false) => {
   const op = self;
   switch (op._tag) {
@@ -32594,7 +32760,7 @@ var catchAllCause2 = /* @__PURE__ */ dual(2, (self, onFailure) => matchCause2(se
 }));
 var die5 = (defect) => failCause5(die3(defect));
 var dieSync2 = (evaluate2) => failCauseSync2(() => die3(evaluate2()));
-var discard = (self) => map14(self, () => empty8());
+var discard = (self) => map14(self, () => empty9());
 var context2 = () => fromEffectContext(context());
 var extendScope = (self) => {
   const extendScope3 = Object.create(proto3);
@@ -32623,7 +32789,7 @@ var fromEffect3 = /* @__PURE__ */ dual(2, (a, b) => {
   const effect3 = tagFirst ? b : a;
   return fromEffectContext(map10(effect3, (service3) => make10(tag2, service3)));
 });
-var fromEffectDiscard = (effect3) => fromEffectContext(map10(effect3, () => empty8()));
+var fromEffectDiscard = (effect3) => fromEffectContext(map10(effect3, () => empty9()));
 function fromEffectContext(effect3) {
   const fromEffect9 = Object.create(proto3);
   fromEffect9._tag = OP_FROM_EFFECT;
@@ -32683,7 +32849,7 @@ var mergeAll2 = (...layers) => {
   return final;
 };
 var orDie2 = (self) => catchAll2(self, (defect) => die5(defect));
-var orElse6 = /* @__PURE__ */ dual(2, (self, that) => catchAll2(self, that));
+var orElse5 = /* @__PURE__ */ dual(2, (self, that) => catchAll2(self, that));
 var passthrough = (self) => merge6(context2(), self);
 var project = /* @__PURE__ */ dual(4, (self, tagA, tagB, f) => map14(self, (context11) => make10(tagB, f(unsafeGet5(context11, tagA)))));
 var retry = /* @__PURE__ */ dual(2, (self, schedule4) => suspend2(() => {
@@ -32706,7 +32872,7 @@ var scoped = /* @__PURE__ */ dual(2, (a, b) => {
   const effect3 = tagFirst ? b : a;
   return scopedContext(map10(effect3, (service3) => make10(tag2, service3)));
 });
-var scopedDiscard = (effect3) => scopedContext(pipe(effect3, as2(empty8())));
+var scopedDiscard = (effect3) => scopedContext(pipe(effect3, as2(empty9())));
 var scopedContext = (effect3) => {
   const scoped7 = Object.create(proto3);
   scoped7._tag = OP_SCOPED;
@@ -32724,7 +32890,7 @@ var succeed5 = /* @__PURE__ */ dual(2, (a, b) => {
 var succeedContext = (context11) => {
   return fromEffectContext(succeed(context11));
 };
-var empty28 = /* @__PURE__ */ succeedContext(/* @__PURE__ */ empty8());
+var empty29 = /* @__PURE__ */ succeedContext(/* @__PURE__ */ empty9());
 var suspend2 = (evaluate2) => {
   const suspend12 = Object.create(proto3);
   suspend12._tag = OP_SUSPEND;
@@ -32832,7 +32998,7 @@ var debug = (...args) => consoleWith((_) => _.debug(...args));
 var dir = (item, options) => consoleWith((_) => _.dir(item, options));
 var dirxml = (...args) => consoleWith((_) => _.dirxml(...args));
 var error = (...args) => consoleWith((_) => _.error(...args));
-var group = (options) => consoleWith((_) => acquireRelease(_.group(options), () => _.groupEnd));
+var group2 = (options) => consoleWith((_) => acquireRelease(_.group(options), () => _.groupEnd));
 var info = (...args) => consoleWith((_) => _.info(...args));
 var log2 = (...args) => consoleWith((_) => _.log(...args));
 var table = (tabularData, properties) => consoleWith((_) => _.table(tabularData, properties));
@@ -32902,15 +33068,15 @@ var LinkedListNode = class {
     this.value = value3;
   }
 };
-var empty29 = () => {
+var empty30 = () => {
   const list2 = Object.create(MutableListProto);
   list2.head = void 0;
   list2.tail = void 0;
   list2._length = 0;
   return list2;
 };
-var isEmpty8 = (self) => length(self) === 0;
-var length = (self) => self._length;
+var isEmpty8 = (self) => length2(self) === 0;
+var length2 = (self) => self._length;
 var append3 = /* @__PURE__ */ dual(2, (self, value3) => {
   const node2 = new LinkedListNode(value3);
   if (self.head === void 0) {
@@ -32983,17 +33149,17 @@ var MutableQueueProto = {
 };
 var make39 = (capacity5) => {
   const queue = Object.create(MutableQueueProto);
-  queue.queue = empty29();
+  queue.queue = empty30();
   queue.capacity = capacity5;
   return queue;
 };
 var bounded = (capacity5) => make39(capacity5);
 var unbounded = () => make39(void 0);
-var length2 = (self) => length(self.queue);
+var length3 = (self) => length2(self.queue);
 var isEmpty9 = (self) => isEmpty8(self.queue);
 var capacity = (self) => self.capacity === void 0 ? Infinity : self.capacity;
 var offer = /* @__PURE__ */ dual(2, (self, value3) => {
-  const queueLength = length(self.queue);
+  const queueLength = length2(self.queue);
   if (self.capacity !== void 0 && queueLength === self.capacity) {
     return false;
   }
@@ -33003,7 +33169,7 @@ var offer = /* @__PURE__ */ dual(2, (self, value3) => {
 var offerAll = /* @__PURE__ */ dual(2, (self, values3) => {
   const iterator2 = values3[Symbol.iterator]();
   let next;
-  let remainder = empty2();
+  let remainder = empty3();
   let offering = true;
   while (offering && (next = iterator2.next()) && !next.done) {
     offering = offer(next.value)(self);
@@ -33021,7 +33187,7 @@ var poll4 = /* @__PURE__ */ dual(2, (self, def) => {
   return shift(self.queue);
 });
 var pollUpTo = /* @__PURE__ */ dual(2, (self, n) => {
-  let result = empty2();
+  let result = empty3();
   let count6 = 0;
   while (count6 < n) {
     const element = poll4(EmptyMutableQueue)(self);
@@ -33125,7 +33291,7 @@ var makeCacheState = (map25, keys5, accesses, updating, hits, misses) => ({
   hits,
   misses
 });
-var initialCacheState = () => makeCacheState(empty21(), makeKeySet(), unbounded(), make11(false), 0, 0);
+var initialCacheState = () => makeCacheState(empty22(), makeKeySet(), unbounded(), make11(false), 0, 0);
 var CacheSymbolKey = "effect/Cache";
 var CacheTypeId = /* @__PURE__ */ Symbol.for(CacheSymbolKey);
 var cacheVariance = {
@@ -33258,7 +33424,7 @@ var CacheImpl = class {
   }
   get invalidateAll() {
     return sync(() => {
-      this.cacheState.map = empty21();
+      this.cacheState.map = empty22();
     });
   }
   refresh(key) {
@@ -33424,10 +33590,10 @@ var CacheImpl = class {
   hasExpired(clock3, timeToLiveMillis) {
     return clock3.unsafeCurrentTimeMillis() > timeToLiveMillis;
   }
-  lookupValueOf(input, deferred) {
+  lookupValueOf(input2, deferred) {
     return clockWith3((clock3) => suspend(() => {
-      const key = input;
-      return pipe(this.lookup(input), provideContext(this.context), exit, flatMap9((exit4) => {
+      const key = input2;
+      return pipe(this.lookup(input2), provideContext(this.context), exit, flatMap9((exit4) => {
         const now = clock3.unsafeCurrentTimeMillis();
         const stats = makeEntryStats(now);
         const value3 = complete2(makeMapKey(key), exit4, stats, now + toMillis(decode(this.timeToLive(exit4))));
@@ -33439,7 +33605,7 @@ var CacheImpl = class {
     }));
   }
 };
-var unsafeMakeWith = (capacity5, lookup, timeToLive) => new CacheImpl(capacity5, empty8(), none3, lookup, (exit4) => decode(timeToLive(exit4)));
+var unsafeMakeWith = (capacity5, lookup, timeToLive) => new CacheImpl(capacity5, empty9(), none3, lookup, (exit4) => decode(timeToLive(exit4)));
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/query.js
 var currentCache = /* @__PURE__ */ globalValue(/* @__PURE__ */ Symbol.for("effect/FiberRef/currentCache"), () => fiberRefUnsafeMake(unsafeMakeWith(65536, () => map10(deferredMake(), (handle) => ({
@@ -33455,7 +33621,7 @@ var fromRequest = (request3, dataSource) => flatMap9(isEffect(dataSource) ? data
         switch (orNew._tag) {
           case "Left": {
             orNew.left.listeners.increment();
-            return blocked(empty16, flatMap9(exit(deferredAwait(orNew.left.handle)), (exit4) => {
+            return blocked(empty17, flatMap9(exit(deferredAwait(orNew.left.handle)), (exit4) => {
               if (exit4._tag === "Failure" && isInterruptedOnly(exit4.cause)) {
                 orNew.left.listeners.decrement();
                 return flatMap9(cache.invalidateWhen(proxy, (entry) => entry.handle === orNew.left.handle), () => fromRequest(proxy, ds));
@@ -33530,10 +33696,10 @@ var all5 = all4;
 var allWith2 = allWith;
 var allSuccesses2 = allSuccesses;
 var dropUntil2 = dropUntil;
-var dropWhile3 = dropWhile2;
-var every5 = every4;
+var dropWhile4 = dropWhile3;
+var every6 = every5;
 var exists3 = exists2;
-var filter7 = filter6;
+var filter8 = filter7;
 var findFirst6 = findFirst4;
 var firstSuccessOf2 = firstSuccessOf;
 var forEach9 = forEach8;
@@ -33544,10 +33710,10 @@ var reduce11 = reduce9;
 var reduceEffect2 = reduceEffect;
 var reduceRight4 = reduceRight3;
 var reduceWhile2 = reduceWhile;
-var replicate2 = replicate;
+var replicate3 = replicate2;
 var replicateEffect2 = replicateEffect;
 var takeUntil2 = takeUntil;
-var takeWhile3 = takeWhile2;
+var takeWhile4 = takeWhile3;
 var validateAll2 = validateAll;
 var validateFirst2 = validateFirst;
 var async2 = async;
@@ -33715,7 +33881,7 @@ var whenEffect2 = whenEffect;
 var whenFiberRef2 = whenFiberRef;
 var whenRef2 = whenRef;
 var flatMap11 = flatMap9;
-var andThen7 = andThen4;
+var andThen6 = andThen4;
 var flatten9 = flatten6;
 var raceAll2 = raceAll;
 var race2 = race;
@@ -33770,7 +33936,7 @@ var logAnnotations2 = logAnnotations;
 var withUnhandledErrorLogLevel2 = withUnhandledErrorLogLevel;
 var orDie3 = orDie;
 var orDieWith2 = orDieWith;
-var orElse7 = orElse3;
+var orElse6 = orElse3;
 var orElseFail2 = orElseFail;
 var orElseSucceed2 = orElseSucceed;
 var random3 = random2;
@@ -33829,7 +33995,7 @@ var useSpan2 = useSpan;
 var withSpan3 = withSpan;
 var withSpanScoped2 = withSpanScoped;
 var withParentSpan3 = withParentSpan;
-var fromNullable4 = fromNullable3;
+var fromNullable5 = fromNullable4;
 var optionFromOptional2 = optionFromOptional;
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/Runtime.js
@@ -33897,7 +34063,7 @@ __export(Layer_exports, {
   effect: () => effect,
   effectContext: () => effectContext,
   effectDiscard: () => effectDiscard,
-  empty: () => empty30,
+  empty: () => empty31,
   extendScope: () => extendScope2,
   fail: () => fail9,
   failCause: () => failCause7,
@@ -33924,7 +34090,7 @@ __export(Layer_exports, {
   merge: () => merge8,
   mergeAll: () => mergeAll4,
   orDie: () => orDie4,
-  orElse: () => orElse8,
+  orElse: () => orElse7,
   parentSpan: () => parentSpan2,
   passthrough: () => passthrough2,
   project: () => project2,
@@ -33984,7 +34150,7 @@ var discard2 = discard;
 var effect = fromEffect3;
 var effectDiscard = fromEffectDiscard;
 var effectContext = fromEffectContext;
-var empty30 = empty28;
+var empty31 = empty29;
 var extendScope2 = extendScope;
 var fail9 = fail7;
 var failSync4 = failSync2;
@@ -34003,7 +34169,7 @@ var memoize3 = memoize2;
 var merge8 = merge6;
 var mergeAll4 = mergeAll2;
 var orDie4 = orDie2;
-var orElse8 = orElse6;
+var orElse7 = orElse5;
 var passthrough2 = passthrough;
 var project2 = project;
 var locallyEffect2 = locallyEffect;
@@ -34100,7 +34266,7 @@ var QueueImpl = class {
     if (get6(this.shutdownFlag)) {
       return none2();
     }
-    return some2(this.queue.length() - length2(this.takers) + this.strategy.surplusSize());
+    return some2(this.queue.length() - length3(this.takers) + this.strategy.surplusSize());
   }
   get isEmpty() {
     return map10(this.size, (size15) => size15 <= 0);
@@ -34177,7 +34343,7 @@ var QueueImpl = class {
         return interrupt2;
       }
       const values3 = fromIterable2(iterable);
-      const pTakers = this.queue.length() === 0 ? fromIterable2(unsafePollN(this.takers, values3.length)) : empty;
+      const pTakers = this.queue.length() === 0 ? fromIterable2(unsafePollN(this.takers, values3.length)) : empty2;
       const [forTakers, remaining] = pipe(values3, splitAt(pTakers.length));
       for (let i = 0; i < pTakers.length; i++) {
         const taker = pTakers[i];
@@ -34222,28 +34388,28 @@ var QueueImpl = class {
       });
     });
   }
-  takeUpTo(max5) {
+  takeUpTo(max6) {
     return suspend(() => get6(this.shutdownFlag) ? interrupt2 : sync(() => {
-      const values3 = this.queue.pollUpTo(max5);
+      const values3 = this.queue.pollUpTo(max6);
       this.strategy.unsafeOnQueueEmptySpace(this.queue, this.takers);
       return fromIterable3(values3);
     }));
   }
-  takeBetween(min3, max5) {
-    return suspend(() => takeRemainderLoop(this, min3, max5, empty2()));
+  takeBetween(min4, max6) {
+    return suspend(() => takeRemainderLoop(this, min4, max6, empty3()));
   }
 };
-var takeRemainderLoop = (self, min3, max5, acc) => {
-  if (max5 < min3) {
+var takeRemainderLoop = (self, min4, max6, acc) => {
+  if (max6 < min4) {
     return succeed(acc);
   }
-  return pipe(takeUpTo(self, max5), flatMap9((bs) => {
-    const remaining = min3 - bs.length;
+  return pipe(takeUpTo(self, max6), flatMap9((bs) => {
+    const remaining = min4 - bs.length;
     if (remaining === 1) {
-      return pipe(take2(self), map10((b) => pipe(acc, appendAll2(bs), append2(b))));
+      return pipe(take3(self), map10((b) => pipe(acc, appendAll2(bs), append2(b))));
     }
     if (remaining > 1) {
-      return pipe(take2(self), flatMap9((b) => takeRemainderLoop(self, remaining - 1, max5 - bs.length - 1, pipe(acc, appendAll2(bs), append2(b)))));
+      return pipe(take3(self), flatMap9((b) => takeRemainderLoop(self, remaining - 1, max6 - bs.length - 1, pipe(acc, appendAll2(bs), append2(b)))));
     }
     return succeed(pipe(acc, appendAll2(bs)));
   }));
@@ -34278,7 +34444,7 @@ var BackingQueueFromMutableQueue = class {
     return capacity(this.mutable);
   }
   length() {
-    return length2(this.mutable);
+    return length3(this.mutable);
   }
 };
 var backingQueueFromMutableQueue = (mutable) => new BackingQueueFromMutableQueue(mutable);
@@ -34292,10 +34458,10 @@ var shutdown = (self) => self.shutdown;
 var offer2 = /* @__PURE__ */ dual(2, (self, value3) => self.offer(value3));
 var offerAll2 = /* @__PURE__ */ dual(2, (self, iterable) => self.offerAll(iterable));
 var poll5 = (self) => map10(self.takeUpTo(1), head2);
-var take2 = (self) => self.take;
+var take3 = (self) => self.take;
 var takeAll = (self) => self.takeAll;
-var takeUpTo = /* @__PURE__ */ dual(2, (self, max5) => self.takeUpTo(max5));
-var takeBetween = /* @__PURE__ */ dual(3, (self, min3, max5) => self.takeBetween(min3, max5));
+var takeUpTo = /* @__PURE__ */ dual(2, (self, max6) => self.takeUpTo(max6));
+var takeBetween = /* @__PURE__ */ dual(3, (self, min4, max6) => self.takeBetween(min4, max6));
 var takeN = /* @__PURE__ */ dual(2, (self, n) => self.takeBetween(n, n));
 var backPressureStrategy = () => new BackPressureStrategy();
 var droppingStrategy = () => new DroppingStrategy();
@@ -34304,7 +34470,7 @@ var BackPressureStrategy = class {
   [QueueStrategyTypeId] = queueStrategyVariance;
   putters = unbounded();
   surplusSize() {
-    return length2(this.putters);
+    return length3(this.putters);
   }
   onCompleteTakersWithEmptyQueue(takers) {
     while (!isEmpty9(this.putters) && !isEmpty9(takers)) {
@@ -34359,7 +34525,7 @@ var BackPressureStrategy = class {
     }
   }
   unsafeRemove(deferred) {
-    unsafeOfferAll(this.putters, pipe(unsafePollAll(this.putters), filter2(([, _]) => _ !== deferred)));
+    unsafeOfferAll(this.putters, pipe(unsafePollAll(this.putters), filter3(([, _]) => _ !== deferred)));
   }
 };
 var DroppingStrategy = class {
@@ -34419,11 +34585,11 @@ var unsafeOfferAll = (queue, as11) => {
 var unsafePollAll = (queue) => {
   return pipe(queue, pollUpTo(Number.POSITIVE_INFINITY));
 };
-var unsafePollN = (queue, max5) => {
-  return pipe(queue, pollUpTo(max5));
+var unsafePollN = (queue, max6) => {
+  return pipe(queue, pollUpTo(max6));
 };
 var unsafeRemove = (queue, a) => {
-  unsafeOfferAll(queue, pipe(unsafePollAll(queue), filter2((b) => a !== b)));
+  unsafeOfferAll(queue, pipe(unsafePollAll(queue), filter3((b) => a !== b)));
 };
 var unsafeCompleteTakers = (strategy, queue, takers) => {
   let keepPolling = true;
@@ -34591,13 +34757,13 @@ var BoundedPubSubArbSubscription = class {
   }
   pollUpTo(n) {
     if (this.unsubscribed) {
-      return empty2();
+      return empty3();
     }
     this.subscriberIndex = Math.max(this.subscriberIndex, this.self.subscribersIndex);
     const size15 = this.self.publisherIndex - this.subscriberIndex;
     const toPoll = Math.min(n, size15);
     if (toPoll <= 0) {
-      return empty2();
+      return empty3();
     }
     const builder = [];
     const pollUpToIndex = this.subscriberIndex + toPoll;
@@ -34741,13 +34907,13 @@ var BoundedPubSubPow2Subscription = class {
   }
   pollUpTo(n) {
     if (this.unsubscribed) {
-      return empty2();
+      return empty3();
     }
     this.subscriberIndex = Math.max(this.subscriberIndex, this.self.subscribersIndex);
     const size15 = this.self.publisherIndex - this.subscriberIndex;
     const toPoll = Math.min(n, size15);
     if (toPoll <= 0) {
-      return empty2();
+      return empty3();
     }
     const builder = [];
     const pollUpToIndex = this.subscriberIndex + toPoll;
@@ -34861,7 +35027,7 @@ var BoundedPubSubSingleSubscription = class {
   }
   pollUpTo(n) {
     if (this.isEmpty() || n < 1) {
-      return empty2();
+      return empty3();
     }
     const a = this.self.value;
     this.self.subscribers -= 1;
@@ -34967,36 +35133,36 @@ var SubscriptionImpl = class {
       if (get6(this.shutdownFlag)) {
         return interrupt2;
       }
-      const as11 = isEmpty9(this.pollers) ? unsafePollAllSubscription(this.subscription) : empty2();
+      const as11 = isEmpty9(this.pollers) ? unsafePollAllSubscription(this.subscription) : empty3();
       this.strategy.unsafeOnPubSubEmptySpace(this.pubsub, this.subscribers);
       return succeed(as11);
     });
   }
-  takeUpTo(max5) {
+  takeUpTo(max6) {
     return suspend(() => {
       if (get6(this.shutdownFlag)) {
         return interrupt2;
       }
-      const as11 = isEmpty9(this.pollers) ? unsafePollN2(this.subscription, max5) : empty2();
+      const as11 = isEmpty9(this.pollers) ? unsafePollN2(this.subscription, max6) : empty3();
       this.strategy.unsafeOnPubSubEmptySpace(this.pubsub, this.subscribers);
       return succeed(as11);
     });
   }
-  takeBetween(min3, max5) {
-    return suspend(() => takeRemainderLoop2(this, min3, max5, empty2()));
+  takeBetween(min4, max6) {
+    return suspend(() => takeRemainderLoop2(this, min4, max6, empty3()));
   }
 };
-var takeRemainderLoop2 = (self, min3, max5, acc) => {
-  if (max5 < min3) {
+var takeRemainderLoop2 = (self, min4, max6, acc) => {
+  if (max6 < min4) {
     return succeed(acc);
   }
-  return pipe(self.takeUpTo(max5), flatMap9((bs) => {
-    const remaining = min3 - bs.length;
+  return pipe(self.takeUpTo(max6), flatMap9((bs) => {
+    const remaining = min4 - bs.length;
     if (remaining === 1) {
       return pipe(self.take, map10((b) => pipe(acc, appendAll2(bs), append2(b))));
     }
     if (remaining > 1) {
-      return pipe(self.take, flatMap9((b) => takeRemainderLoop2(self, remaining - 1, max5 - bs.length - 1, pipe(acc, appendAll2(bs), append2(b)))));
+      return pipe(self.take, flatMap9((b) => takeRemainderLoop2(self, remaining - 1, max6 - bs.length - 1, pipe(acc, appendAll2(bs), append2(b)))));
     }
     return succeed(pipe(acc, appendAll2(bs)));
   }));
@@ -35125,14 +35291,14 @@ var unsafePollAllQueue = (queue) => {
 var unsafePollAllSubscription = (subscription) => {
   return subscription.pollUpTo(Number.POSITIVE_INFINITY);
 };
-var unsafePollN2 = (subscription, max5) => {
-  return subscription.pollUpTo(max5);
+var unsafePollN2 = (subscription, max6) => {
+  return subscription.pollUpTo(max6);
 };
 var unsafePublishAll = (pubsub, as11) => {
   return pubsub.publishAll(as11);
 };
 var unsafeRemove2 = (queue, value3) => {
-  unsafeOfferAll2(queue, pipe(unsafePollAllQueue(queue), filter2((elem) => elem !== value3)));
+  unsafeOfferAll2(queue, pipe(unsafePollAllQueue(queue), filter3((elem) => elem !== value3)));
 };
 var BackPressureStrategy2 = class {
   publishers = unbounded();
@@ -35189,7 +35355,7 @@ var BackPressureStrategy2 = class {
     }
   }
   unsafeRemove(deferred) {
-    unsafeOfferAll2(this.publishers, pipe(unsafePollAllQueue(this.publishers), filter2(([_, a]) => a !== deferred)));
+    unsafeOfferAll2(this.publishers, pipe(unsafePollAllQueue(this.publishers), filter3(([_, a]) => a !== deferred)));
   }
 };
 var unsafeStrategyCompletePollers = (strategy, pubsub, subscribers, subscription, pollers) => {
@@ -35243,7 +35409,7 @@ var shutdown4 = shutdown;
 var offer3 = offer2;
 var offerAll3 = offerAll2;
 var poll6 = poll5;
-var take3 = take2;
+var take4 = take3;
 var takeAll2 = takeAll;
 var takeUpTo2 = takeUpTo;
 var takeBetween2 = takeBetween;
@@ -35426,10 +35592,10 @@ var concatMapWith = /* @__PURE__ */ dual(4, (self, f, g, h) => {
   op.k = f;
   return op;
 });
-var embedInput = /* @__PURE__ */ dual(2, (self, input) => {
+var embedInput = /* @__PURE__ */ dual(2, (self, input2) => {
   const op = Object.create(proto6);
   op._tag = OP_BRIDGE;
-  op.input = input;
+  op.input = input2;
   op.channel = self;
   return op;
 });
@@ -36317,14 +36483,14 @@ var readUpstream = (r, onSuccess, onFailure) => {
 };
 var run = (self) => pipe(runScoped(self), scoped2);
 var runScoped = (self) => {
-  const run5 = (channelDeferred, scopeDeferred, scope5) => acquireUseRelease2(sync3(() => new ChannelExecutor(self, void 0, identity)), (exec) => suspend3(() => pipe(runScopedInterpret(exec.run(), exec), intoDeferred2(channelDeferred), zipRight4(_await(channelDeferred)), zipLeft3(_await(scopeDeferred)))), (exec, exit4) => {
+  const run6 = (channelDeferred, scopeDeferred, scope5) => acquireUseRelease2(sync3(() => new ChannelExecutor(self, void 0, identity)), (exec) => suspend3(() => pipe(runScopedInterpret(exec.run(), exec), intoDeferred2(channelDeferred), zipRight4(_await(channelDeferred)), zipLeft3(_await(scopeDeferred)))), (exec, exit4) => {
     const finalize = exec.close(exit4);
     if (finalize === void 0) {
       return unit5;
     }
     return tapErrorCause3(finalize, (cause3) => addFinalizer2(scope5, failCause6(cause3)));
   });
-  return uninterruptibleMask2((restore) => flatMap11(scope3, (parent) => pipe(all5([fork2(parent, sequential3), make22(), make22()]), flatMap11(([child, channelDeferred, scopeDeferred]) => pipe(forkScoped2(restore(run5(channelDeferred, scopeDeferred, child))), flatMap11((fiber) => pipe(addFinalizer3(() => succeed2(scopeDeferred, void 0)), zipRight4(restore(_await(channelDeferred))), zipLeft3(inheritAll2(fiber)))))))));
+  return uninterruptibleMask2((restore) => flatMap11(scope3, (parent) => pipe(all5([fork2(parent, sequential3), make22(), make22()]), flatMap11(([child, channelDeferred, scopeDeferred]) => pipe(forkScoped2(restore(run6(channelDeferred, scopeDeferred, child))), flatMap11((fiber) => pipe(addFinalizer3(() => succeed2(scopeDeferred, void 0)), zipRight4(restore(_await(channelDeferred))), zipLeft3(inheritAll2(fiber)))))))));
 };
 var runScopedInterpret = (channelState, exec) => {
   const op = channelState;
@@ -36465,13 +36631,13 @@ var SingleProducerAsyncInputImpl = class {
     this.ref = ref;
   }
   awaitRead() {
-    return flatten9(modify4(this.ref, (state) => state._tag === OP_STATE_EMPTY ? [_await(state.notifyProducer), state] : [unit5, state]));
+    return flatten9(modify5(this.ref, (state) => state._tag === OP_STATE_EMPTY ? [_await(state.notifyProducer), state] : [unit5, state]));
   }
   get close() {
     return fiberIdWith2((fiberId3) => this.error(interrupt3(fiberId3)));
   }
   done(value3) {
-    return flatten9(modify4(this.ref, (state) => {
+    return flatten9(modify5(this.ref, (state) => {
       switch (state._tag) {
         case OP_STATE_EMPTY: {
           return [_await(state.notifyProducer), state];
@@ -36491,7 +36657,7 @@ var SingleProducerAsyncInputImpl = class {
     }));
   }
   emit(element) {
-    return flatMap11(make22(), (deferred) => flatten9(modify4(this.ref, (state) => {
+    return flatMap11(make22(), (deferred) => flatten9(modify5(this.ref, (state) => {
       switch (state._tag) {
         case OP_STATE_EMPTY: {
           return [_await(state.notifyProducer), state];
@@ -36514,7 +36680,7 @@ var SingleProducerAsyncInputImpl = class {
     })));
   }
   error(cause3) {
-    return flatten9(modify4(this.ref, (state) => {
+    return flatten9(modify5(this.ref, (state) => {
       switch (state._tag) {
         case OP_STATE_EMPTY: {
           return [_await(state.notifyProducer), state];
@@ -36537,7 +36703,7 @@ var SingleProducerAsyncInputImpl = class {
     return this.takeWith((cause3) => failCause3(map11(cause3, left2)), (elem) => succeed3(elem), (done9) => fail5(right2(done9)));
   }
   takeWith(onError5, onElement, onDone3) {
-    return flatMap11(make22(), (deferred) => flatten9(modify4(this.ref, (state) => {
+    return flatMap11(make22(), (deferred) => flatten9(modify5(this.ref, (state) => {
       switch (state._tag) {
         case OP_STATE_EMPTY: {
           return [zipRight4(succeed2(state.notifyProducer, void 0), matchCause3(_await(deferred), {
@@ -36572,15 +36738,15 @@ var make41 = () => pipe(make22(), flatMap11((deferred) => make24(stateEmpty(defe
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/channel.js
 var as5 = /* @__PURE__ */ dual(2, (self, value3) => map17(self, () => value3));
 var buffer = (options) => suspend5(() => {
-  const doBuffer = (empty33, isEmpty13, ref) => unwrap(modify4(ref, (inElem) => isEmpty13(inElem) ? [readWith({
-    onInput: (input) => flatMap13(write(input), () => doBuffer(empty33, isEmpty13, ref)),
+  const doBuffer = (empty34, isEmpty13, ref) => unwrap(modify5(ref, (inElem) => isEmpty13(inElem) ? [readWith({
+    onInput: (input2) => flatMap13(write(input2), () => doBuffer(empty34, isEmpty13, ref)),
     onFailure: (error3) => fail10(error3),
     onDone: (done9) => succeedNow(done9)
-  }), inElem] : [flatMap13(write(inElem), () => doBuffer(empty33, isEmpty13, ref)), empty33]));
+  }), inElem] : [flatMap13(write(inElem), () => doBuffer(empty34, isEmpty13, ref)), empty34]));
   return doBuffer(options.empty, options.isEmpty, options.ref);
 });
 var bufferChunk = (ref) => buffer({
-  empty: empty2(),
+  empty: empty3(),
   isEmpty,
   ref
 });
@@ -36626,10 +36792,10 @@ var foldChannel = /* @__PURE__ */ dual(2, (self, options) => foldCauseChannel(se
   },
   onSuccess: options.onSuccess
 }));
-var fromInput = (input) => unwrap(input.takeWith(failCause8, (elem) => flatMap13(write(elem), () => fromInput(input)), succeed8));
+var fromInput = (input2) => unwrap(input2.takeWith(failCause8, (elem) => flatMap13(write(elem), () => fromInput(input2)), succeed8));
 var fromPubSubScoped = (pubsub) => map15(subscribe2(pubsub), fromQueue);
 var fromQueue = (queue) => suspend5(() => fromQueueInternal(queue));
-var fromQueueInternal = (queue) => pipe(fromEffect4(take3(queue)), flatMap13(match2({
+var fromQueueInternal = (queue) => pipe(fromEffect4(take4(queue)), flatMap13(match2({
   onLeft: match8({
     onFailure: failCause8,
     onSuccess: succeedNow
@@ -36637,7 +36803,7 @@ var fromQueueInternal = (queue) => pipe(fromEffect4(take3(queue)), flatMap13(mat
   onRight: (elem) => flatMap13(write(elem), () => fromQueueInternal(queue))
 })));
 var identityChannel = () => readWith({
-  onInput: (input) => flatMap13(write(input), () => identityChannel()),
+  onInput: (input2) => flatMap13(write(input2), () => identityChannel()),
   onFailure: fail10,
   onDone: succeedNow
 });
@@ -36695,7 +36861,7 @@ var mapOutEffectPar = /* @__PURE__ */ dual(3, (self, f, n) => pipe(gen4(function
   }), forever3, interruptible3, forkScoped2);
   return queue;
 }), map15((queue) => {
-  const consumer = unwrap(matchCause3(flatten9(take3(queue)), {
+  const consumer = unwrap(matchCause3(flatten9(take4(queue)), {
     onFailure: failCause8,
     onSuccess: match2({
       onLeft: succeedNow,
@@ -36713,8 +36879,8 @@ var mergeAllWith = ({
   mergeStrategy = BackPressure()
 }) => (channels, f) => pipe(gen4(function* ($) {
   const concurrencyN = concurrency === "unbounded" ? Number.MAX_SAFE_INTEGER : concurrency;
-  const input = yield* $(make41());
-  const queueReader = fromInput(input);
+  const input2 = yield* $(make41());
+  const queueReader = fromInput(input2);
   const queue = yield* $(acquireRelease2(bounded5(bufferSize), (queue2) => shutdown4(queue2)));
   const cancelers = yield* $(acquireRelease2(unbounded4(), (queue2) => shutdown4(queue2)));
   const lastDone = yield* $(make24(none2()));
@@ -36751,7 +36917,7 @@ var mergeAllWith = ({
           const canceler = yield* $2(make22());
           const latch = yield* $2(make22());
           const size15 = yield* $2(size14(cancelers));
-          yield* $2(take3(cancelers), flatMap11((_) => succeed2(_, void 0)), when2(() => size15 >= concurrencyN));
+          yield* $2(take4(cancelers), flatMap11((_) => succeed2(_, void 0)), when2(() => size15 >= concurrencyN));
           yield* $2(offer3(cancelers, canceler));
           const raceEffects = pipe(queueReader, pipeTo(channel), toPull, flatMap11((pull2) => pipe(evaluatePull(pull2), race2(_await(errorSignal)), race2(_await(canceler)))), scoped2);
           yield* $2(succeed2(latch, void 0), zipRight4(raceEffects), withPermits(1), forkScoped2);
@@ -36762,20 +36928,20 @@ var mergeAllWith = ({
       })
     })
   }), repeatWhile(identity), forkScoped2);
-  return [queue, input];
-}), map15(([queue, input]) => {
-  const consumer = pipe(take3(queue), flatten9, matchCause3({
+  return [queue, input2];
+}), map15(([queue, input2]) => {
+  const consumer = pipe(take4(queue), flatten9, matchCause3({
     onFailure: failCause8,
     onSuccess: match2({
       onLeft: succeedNow,
       onRight: (outElem) => flatMap13(write(outElem), () => consumer)
     })
   }), unwrap);
-  return embedInput(consumer, input);
+  return embedInput(consumer, input2);
 }), unwrapScoped3);
 var mergeMap = /* @__PURE__ */ dual(3, (self, f, options) => mergeAll5(options)(mapOut(self, f)));
-var mergeWith = /* @__PURE__ */ dual(2, (self, options) => unwrapScoped3(flatMap11(make41(), (input) => {
-  const queueReader = fromInput(input);
+var mergeWith = /* @__PURE__ */ dual(2, (self, options) => unwrapScoped3(flatMap11(make41(), (input2) => {
+  const queueReader = fromInput(input2);
   return map15(zip6(toPull(pipeTo(queueReader, self)), toPull(pipeTo(queueReader, options.other))), ([pullL, pullR]) => {
     const handleSide = (exit4, fiber, pull) => (done9, both2, single2) => {
       const onDecision2 = (decision) => {
@@ -36829,13 +36995,13 @@ var mergeWith = /* @__PURE__ */ dual(2, (self, options) => unwrapScoped3(flatMap
         }
       }
     };
-    return pipe(fromEffect4(zipWith7(forkDaemon2(pullL), forkDaemon2(pullR), (left3, right3) => BothRunning(left3, right3))), flatMap13(go), embedInput(input));
+    return pipe(fromEffect4(zipWith7(forkDaemon2(pullL), forkDaemon2(pullR), (left3, right3) => BothRunning(left3, right3))), flatMap13(go), embedInput(input2));
   });
 })));
 var orDieWith3 = /* @__PURE__ */ dual(2, (self, f) => catchAll5(self, (e) => {
   throw f(e);
 }));
-var orElse9 = /* @__PURE__ */ dual(2, (self, that) => catchAll5(self, that));
+var orElse8 = /* @__PURE__ */ dual(2, (self, that) => catchAll5(self, that));
 var pipeToOrFail = /* @__PURE__ */ dual(2, (self, that) => suspend5(() => {
   let channelException = void 0;
   const reader = readWith({
@@ -36855,7 +37021,7 @@ var pipeToOrFail = /* @__PURE__ */ dual(2, (self, that) => suspend5(() => {
 }));
 var repeated = (self) => flatMap13(self, () => repeated(self));
 var runDrain = (self) => run(drain(self));
-var scoped4 = (effect3) => unwrap(uninterruptibleMask2((restore) => map15(make37(), (scope5) => acquireReleaseOut(tapErrorCause3(restore(extend2(scope5)(effect3)), (cause3) => close(scope5, failCause3(cause3))), (_, exit4) => close(scope5, exit4)))));
+var scoped4 = (effect3) => unwrap(uninterruptibleMask2((restore) => map15(make37(), (scope5) => acquireReleaseOut(tapErrorCause3(restore(extend3(scope5)(effect3)), (cause3) => close(scope5, failCause3(cause3))), (_, exit4) => close(scope5, exit4)))));
 var toPubSub = (pubsub) => toQueue(pubsub);
 var toPull = (self) => map15(acquireRelease2(sync3(() => new ChannelExecutor(self, void 0, identity)), (exec, exit4) => {
   const finalize = exec.close(exit4);
@@ -36940,13 +37106,13 @@ var SinkImpl = class {
 var isSink = (u) => hasProperty(u, SinkTypeId2);
 var suspend6 = (evaluate2) => new SinkImpl(suspend5(() => toChannel(evaluate2())));
 var as6 = /* @__PURE__ */ dual(2, (self, z) => pipe(self, map18(() => z)));
-var collectAll = () => new SinkImpl(collectAllLoop(empty2()));
+var collectAll = () => new SinkImpl(collectAllLoop(empty3()));
 var collectAllLoop = (acc) => readWithCause({
   onInput: (chunk5) => collectAllLoop(pipe(acc, appendAll2(chunk5))),
   onFailure: failCause8,
   onDone: () => succeed8(acc)
 });
-var collectAllN = (n) => suspend6(() => fromChannel(collectAllNLoop(n, empty2())));
+var collectAllN = (n) => suspend6(() => fromChannel(collectAllNLoop(n, empty3())));
 var collectAllNLoop = (n, acc) => readWithCause({
   onInput: (chunk5) => {
     const [collected, leftovers] = splitAt2(chunk5, n);
@@ -36962,46 +37128,46 @@ var collectAllNLoop = (n, acc) => readWithCause({
   onDone: () => succeed8(acc)
 });
 var collectAllFrom = (self) => collectAllWhileWith(self, {
-  initial: empty2(),
+  initial: empty3(),
   while: constTrue,
   body: (chunk5, z) => pipe(chunk5, append2(z))
 });
 var collectAllToMap = (key, merge12) => {
-  return pipe(foldLeftChunks(empty9(), (map25, chunk5) => pipe(chunk5, reduce2(map25, (map26, input) => {
-    const k = key(input);
-    const v = pipe(map26, has4(k)) ? merge12(pipe(map26, unsafeGet6(k)), input) : input;
+  return pipe(foldLeftChunks(empty10(), (map25, chunk5) => pipe(chunk5, reduce2(map25, (map26, input2) => {
+    const k = key(input2);
+    const v = pipe(map26, has4(k)) ? merge12(pipe(map26, unsafeGet6(k)), input2) : input2;
     return pipe(map26, set3(k, v));
   }))));
 };
 var collectAllToMapN = (n, key, merge12) => {
   return foldWeighted({
-    initial: empty9(),
+    initial: empty10(),
     maxCost: n,
-    cost: (acc, input) => pipe(acc, has4(key(input))) ? 0 : 1,
-    body: (acc, input) => {
-      const k = key(input);
-      const v = pipe(acc, has4(k)) ? merge12(pipe(acc, unsafeGet6(k)), input) : input;
+    cost: (acc, input2) => pipe(acc, has4(key(input2))) ? 0 : 1,
+    body: (acc, input2) => {
+      const k = key(input2);
+      const v = pipe(acc, has4(k)) ? merge12(pipe(acc, unsafeGet6(k)), input2) : input2;
       return pipe(acc, set3(k, v));
     }
   });
 };
-var collectAllToSet = () => foldLeftChunks(empty5(), (acc, chunk5) => pipe(chunk5, reduce2(acc, (acc2, input) => pipe(acc2, add2(input)))));
+var collectAllToSet = () => foldLeftChunks(empty6(), (acc, chunk5) => pipe(chunk5, reduce2(acc, (acc2, input2) => pipe(acc2, add2(input2)))));
 var collectAllToSetN = (n) => foldWeighted({
-  initial: empty5(),
+  initial: empty6(),
   maxCost: n,
-  cost: (acc, input) => has3(acc, input) ? 0 : 1,
-  body: (acc, input) => add2(acc, input)
+  cost: (acc, input2) => has3(acc, input2) ? 0 : 1,
+  body: (acc, input2) => add2(acc, input2)
 });
 var collectAllUntil = (p) => {
-  return pipe(fold([empty2(), true], (tuple2) => tuple2[1], ([chunk5, _], input) => [pipe(chunk5, append2(input)), !p(input)]), map18((tuple2) => tuple2[0]));
+  return pipe(fold([empty3(), true], (tuple2) => tuple2[1], ([chunk5, _], input2) => [pipe(chunk5, append2(input2)), !p(input2)]), map18((tuple2) => tuple2[0]));
 };
 var collectAllUntilEffect = (p) => {
-  return pipe(foldEffect([empty2(), true], (tuple2) => tuple2[1], ([chunk5, _], input) => pipe(p(input), map15((bool) => [pipe(chunk5, append2(input)), !bool]))), map18((tuple2) => tuple2[0]));
+  return pipe(foldEffect([empty3(), true], (tuple2) => tuple2[1], ([chunk5, _], input2) => pipe(p(input2), map15((bool) => [pipe(chunk5, append2(input2)), !bool]))), map18((tuple2) => tuple2[0]));
 };
-var collectAllWhile = (predicate) => fromChannel(collectAllWhileReader(predicate, empty2()));
+var collectAllWhile = (predicate) => fromChannel(collectAllWhileReader(predicate, empty3()));
 var collectAllWhileReader = (predicate, done9) => readWith({
-  onInput: (input) => {
-    const [collected, leftovers] = pipe(toReadonlyArray(input), span(predicate));
+  onInput: (input2) => {
+    const [collected, leftovers] = pipe(toReadonlyArray(input2), span(predicate));
     if (leftovers.length === 0) {
       return collectAllWhileReader(predicate, pipe(done9, appendAll2(unsafeFromArray(collected))));
     }
@@ -37010,10 +37176,10 @@ var collectAllWhileReader = (predicate, done9) => readWith({
   onFailure: fail10,
   onDone: () => succeed8(done9)
 });
-var collectAllWhileEffect = (predicate) => fromChannel(collectAllWhileEffectReader(predicate, empty2()));
+var collectAllWhileEffect = (predicate) => fromChannel(collectAllWhileEffectReader(predicate, empty3()));
 var collectAllWhileEffectReader = (predicate, done9) => readWith({
-  onInput: (input) => pipe(fromEffect4(pipe(input, takeWhile3(predicate), map15(unsafeFromArray))), flatMap13((collected) => {
-    const leftovers = pipe(input, drop2(collected.length));
+  onInput: (input2) => pipe(fromEffect4(pipe(input2, takeWhile4(predicate), map15(unsafeFromArray))), flatMap13((collected) => {
+    const leftovers = pipe(input2, drop2(collected.length));
     if (isEmpty(leftovers)) {
       return collectAllWhileEffectReader(predicate, pipe(done9, appendAll2(collected)));
     }
@@ -37023,10 +37189,10 @@ var collectAllWhileEffectReader = (predicate, done9) => readWith({
   onDone: () => succeed8(done9)
 });
 var collectAllWhileWith = /* @__PURE__ */ dual(2, (self, options) => {
-  const refs = pipe(make24(empty2()), zip6(make24(false)));
+  const refs = pipe(make24(empty3()), zip6(make24(false)));
   const newChannel = pipe(fromEffect4(refs), flatMap13(([leftoversRef, upstreamDoneRef]) => {
     const upstreamMarker = readWith({
-      onInput: (input) => pipe(write(input), flatMap13(() => upstreamMarker)),
+      onInput: (input2) => pipe(write(input2), flatMap13(() => upstreamMarker)),
       onFailure: fail10,
       onDone: (done9) => pipe(fromEffect4(set6(upstreamDoneRef, true)), as5(done9))
     });
@@ -37072,10 +37238,10 @@ var dimapChunksEffect = /* @__PURE__ */ dual(2, (self, options) => mapEffect3(ma
 var drain2 = /* @__PURE__ */ new SinkImpl(/* @__PURE__ */ drain(/* @__PURE__ */ identityChannel()));
 var drop3 = (n) => suspend6(() => new SinkImpl(dropLoop(n)));
 var dropLoop = (n) => readWith({
-  onInput: (input) => {
-    const dropped = pipe(input, drop2(n));
-    const leftover3 = Math.max(n - input.length, 0);
-    const more = isEmpty(input) || leftover3 > 0;
+  onInput: (input2) => {
+    const dropped = pipe(input2, drop2(n));
+    const leftover3 = Math.max(n - input2.length, 0);
+    const more = isEmpty(input2) || leftover3 > 0;
     if (more) {
       return dropLoop(leftover3);
     }
@@ -37084,20 +37250,20 @@ var dropLoop = (n) => readWith({
   onFailure: fail10,
   onDone: () => unit6
 });
-var dropUntil3 = (predicate) => new SinkImpl(pipe(toChannel(dropWhile4((input) => !predicate(input))), pipeToOrFail(toChannel(drop3(1)))));
+var dropUntil3 = (predicate) => new SinkImpl(pipe(toChannel(dropWhile5((input2) => !predicate(input2))), pipeToOrFail(toChannel(drop3(1)))));
 var dropUntilEffect = (predicate) => suspend6(() => new SinkImpl(dropUntilEffectReader(predicate)));
 var dropUntilEffectReader = (predicate) => readWith({
-  onInput: (input) => pipe(input, dropUntil2(predicate), map15((leftover3) => {
+  onInput: (input2) => pipe(input2, dropUntil2(predicate), map15((leftover3) => {
     const more = leftover3.length === 0;
     return more ? dropUntilEffectReader(predicate) : pipe(write(unsafeFromArray(leftover3)), zipRight5(identityChannel()));
   }), unwrap),
   onFailure: fail10,
   onDone: () => unit6
 });
-var dropWhile4 = (predicate) => new SinkImpl(dropWhileReader(predicate));
+var dropWhile5 = (predicate) => new SinkImpl(dropWhileReader(predicate));
 var dropWhileReader = (predicate) => readWith({
-  onInput: (input) => {
-    const out = pipe(input, dropWhile(predicate));
+  onInput: (input2) => {
+    const out = pipe(input2, dropWhile2(predicate));
     if (isEmpty(out)) {
       return dropWhileReader(predicate);
     }
@@ -37108,7 +37274,7 @@ var dropWhileReader = (predicate) => readWith({
 });
 var dropWhileEffect = (predicate) => suspend6(() => new SinkImpl(dropWhileEffectReader(predicate)));
 var dropWhileEffectReader = (predicate) => readWith({
-  onInput: (input) => pipe(input, dropWhile3(predicate), map15((leftover3) => {
+  onInput: (input2) => pipe(input2, dropWhile4(predicate), map15((leftover3) => {
     const more = leftover3.length === 0;
     return more ? dropWhileEffectReader(predicate) : pipe(write(unsafeFromArray(leftover3)), zipRight5(identityChannel()));
   }), unwrap),
@@ -37121,19 +37287,19 @@ var context5 = () => fromEffect5(context3());
 var contextWith3 = (f) => pipe(context5(), map18(f));
 var contextWithEffect3 = (f) => pipe(context5(), mapEffect3(f));
 var contextWithSink = (f) => new SinkImpl(unwrap(pipe(contextWith2((context11) => toChannel(f(context11))))));
-var every6 = (predicate) => fold(true, identity, (acc, input) => acc && predicate(input));
+var every7 = (predicate) => fold(true, identity, (acc, input2) => acc && predicate(input2));
 var fail11 = (e) => new SinkImpl(fail10(e));
 var failSync6 = (evaluate2) => new SinkImpl(failSync5(evaluate2));
 var failCause9 = (cause3) => new SinkImpl(failCause8(cause3));
 var failCauseSync6 = (evaluate2) => new SinkImpl(failCauseSync5(evaluate2));
 var filterInput = (f) => {
-  return (self) => pipe(self, mapInputChunks(filter2(f)));
+  return (self) => pipe(self, mapInputChunks(filter3(f)));
 };
-var filterInputEffect = /* @__PURE__ */ dual(2, (self, f) => mapInputChunksEffect(self, (chunk5) => map15(filter7(chunk5, f), unsafeFromArray)));
+var filterInputEffect = /* @__PURE__ */ dual(2, (self, f) => mapInputChunksEffect(self, (chunk5) => map15(filter8(chunk5, f), unsafeFromArray)));
 var findEffect = /* @__PURE__ */ dual(2, (self, f) => {
-  const newChannel = pipe(fromEffect4(pipe(make24(empty2()), zip6(make24(false)))), flatMap13(([leftoversRef, upstreamDoneRef]) => {
+  const newChannel = pipe(fromEffect4(pipe(make24(empty3()), zip6(make24(false)))), flatMap13(([leftoversRef, upstreamDoneRef]) => {
     const upstreamMarker = readWith({
-      onInput: (input) => pipe(write(input), flatMap13(() => upstreamMarker)),
+      onInput: (input2) => pipe(write(input2), flatMap13(() => upstreamMarker)),
       onFailure: fail10,
       onDone: (done9) => pipe(fromEffect4(set6(upstreamDoneRef, true)), as5(done9))
     });
@@ -37159,8 +37325,8 @@ var foldReader = (s, contFn, f) => {
     return succeedNow(s);
   }
   return readWith({
-    onInput: (input) => {
-      const [nextS, leftovers] = foldChunkSplit(s, input, contFn, f, 0, input.length);
+    onInput: (input2) => {
+      const [nextS, leftovers] = foldChunkSplit(s, input2, contFn, f, 0, input2.length);
       if (isNonEmpty(leftovers)) {
         return pipe(write(leftovers), as5(nextS));
       }
@@ -37170,13 +37336,13 @@ var foldReader = (s, contFn, f) => {
     onDone: () => succeedNow(s)
   });
 };
-var foldChunkSplit = (s, chunk5, contFn, f, index2, length3) => {
-  if (index2 === length3) {
-    return [s, empty2()];
+var foldChunkSplit = (s, chunk5, contFn, f, index2, length4) => {
+  if (index2 === length4) {
+    return [s, empty3()];
   }
   const s1 = f(s, pipe(chunk5, unsafeGet2(index2)));
   if (contFn(s1)) {
-    return foldChunkSplit(s1, chunk5, contFn, f, index2 + 1, length3);
+    return foldChunkSplit(s1, chunk5, contFn, f, index2 + 1, length4);
   }
   return [s1, pipe(chunk5, drop2(index2 + 1))];
 };
@@ -37185,12 +37351,12 @@ var foldSink = /* @__PURE__ */ dual(2, (self, options) => {
     onFailure: (error3) => toChannel(options.onFailure(error3)),
     onSuccess: ([leftovers, z]) => suspend5(() => {
       const leftoversRef = {
-        ref: pipe(leftovers, filter2(isNonEmpty))
+        ref: pipe(leftovers, filter3(isNonEmpty))
       };
       const refReader = pipe(
         sync5(() => {
           const ref = leftoversRef.ref;
-          leftoversRef.ref = empty2();
+          leftoversRef.ref = empty3();
           return ref;
         }),
         // This cast is safe because of the L1 >: L <: In1 bound. It follows that
@@ -37210,7 +37376,7 @@ var foldChunksReader = (s, contFn, f) => {
     return succeedNow(s);
   }
   return readWith({
-    onInput: (input) => foldChunksReader(f(s, input), contFn, f),
+    onInput: (input2) => foldChunksReader(f(s, input2), contFn, f),
     onFailure: fail10,
     onDone: () => succeedNow(s)
   });
@@ -37221,7 +37387,7 @@ var foldChunksEffectReader = (s, contFn, f) => {
     return succeedNow(s);
   }
   return readWith({
-    onInput: (input) => pipe(fromEffect4(f(s, input)), flatMap13((s2) => foldChunksEffectReader(s2, contFn, f))),
+    onInput: (input2) => pipe(fromEffect4(f(s, input2)), flatMap13((s2) => foldChunksEffectReader(s2, contFn, f))),
     onFailure: fail10,
     onDone: () => succeedNow(s)
   });
@@ -37232,7 +37398,7 @@ var foldEffectReader = (s, contFn, f) => {
     return succeedNow(s);
   }
   return readWith({
-    onInput: (input) => pipe(fromEffect4(foldChunkSplitEffect(s, input, contFn, f)), flatMap13(([nextS, leftovers]) => pipe(leftovers, match({
+    onInput: (input2) => pipe(fromEffect4(foldChunkSplitEffect(s, input2, contFn, f)), flatMap13(([nextS, leftovers]) => pipe(leftovers, match({
       onNone: () => foldEffectReader(nextS, contFn, f),
       onSome: (leftover3) => pipe(write(leftover3), as5(nextS))
     })))),
@@ -37241,92 +37407,92 @@ var foldEffectReader = (s, contFn, f) => {
   });
 };
 var foldChunkSplitEffect = (s, chunk5, contFn, f) => foldChunkSplitEffectInternal(s, chunk5, 0, chunk5.length, contFn, f);
-var foldChunkSplitEffectInternal = (s, chunk5, index2, length3, contFn, f) => {
-  if (index2 === length3) {
+var foldChunkSplitEffectInternal = (s, chunk5, index2, length4, contFn, f) => {
+  if (index2 === length4) {
     return succeed6([s, none2()]);
   }
-  return pipe(f(s, pipe(chunk5, unsafeGet2(index2))), flatMap11((s1) => contFn(s1) ? foldChunkSplitEffectInternal(s1, chunk5, index2 + 1, length3, contFn, f) : succeed6([s1, some2(pipe(chunk5, drop2(index2 + 1)))])));
+  return pipe(f(s, pipe(chunk5, unsafeGet2(index2))), flatMap11((s1) => contFn(s1) ? foldChunkSplitEffectInternal(s1, chunk5, index2 + 1, length4, contFn, f) : succeed6([s1, some2(pipe(chunk5, drop2(index2 + 1)))])));
 };
 var foldLeft = (s, f) => ignoreLeftover(fold(s, constTrue, f));
 var foldLeftChunks = (s, f) => foldChunks(s, constTrue, f);
 var foldLeftChunksEffect = (s, f) => ignoreLeftover(foldChunksEffect(s, constTrue, f));
 var foldLeftEffect = (s, f) => foldEffect(s, constTrue, f);
-var foldUntil = (s, max5, f) => pipe(fold([s, 0], (tuple2) => tuple2[1] < max5, ([output, count6], input) => [f(output, input), count6 + 1]), map18((tuple2) => tuple2[0]));
-var foldUntilEffect = (s, max5, f) => pipe(foldEffect([s, 0], (tuple2) => tuple2[1] < max5, ([output, count6], input) => pipe(f(output, input), map15((s2) => [s2, count6 + 1]))), map18((tuple2) => tuple2[0]));
+var foldUntil = (s, max6, f) => pipe(fold([s, 0], (tuple2) => tuple2[1] < max6, ([output, count6], input2) => [f(output, input2), count6 + 1]), map18((tuple2) => tuple2[0]));
+var foldUntilEffect = (s, max6, f) => pipe(foldEffect([s, 0], (tuple2) => tuple2[1] < max6, ([output, count6], input2) => pipe(f(output, input2), map15((s2) => [s2, count6 + 1]))), map18((tuple2) => tuple2[0]));
 var foldWeighted = (options) => foldWeightedDecompose({
   ...options,
   decompose: of2
 });
 var foldWeightedDecompose = (options) => suspend6(() => new SinkImpl(foldWeightedDecomposeLoop(options.initial, 0, false, options.maxCost, options.cost, options.decompose, options.body)));
-var foldWeightedDecomposeLoop = (s, cost, dirty, max5, costFn, decompose, f) => readWith({
-  onInput: (input) => {
-    const [nextS, nextCost, nextDirty, leftovers] = foldWeightedDecomposeFold(input, 0, s, cost, dirty, max5, costFn, decompose, f);
+var foldWeightedDecomposeLoop = (s, cost, dirty, max6, costFn, decompose, f) => readWith({
+  onInput: (input2) => {
+    const [nextS, nextCost, nextDirty, leftovers] = foldWeightedDecomposeFold(input2, 0, s, cost, dirty, max6, costFn, decompose, f);
     if (isNonEmpty(leftovers)) {
       return pipe(write(leftovers), zipRight5(succeedNow(nextS)));
     }
-    if (cost > max5) {
+    if (cost > max6) {
       return succeedNow(nextS);
     }
-    return foldWeightedDecomposeLoop(nextS, nextCost, nextDirty, max5, costFn, decompose, f);
+    return foldWeightedDecomposeLoop(nextS, nextCost, nextDirty, max6, costFn, decompose, f);
   },
   onFailure: fail10,
   onDone: () => succeedNow(s)
 });
-var foldWeightedDecomposeFold = (input, index2, s, cost, dirty, max5, costFn, decompose, f) => {
-  if (index2 === input.length) {
-    return [s, cost, dirty, empty2()];
+var foldWeightedDecomposeFold = (input2, index2, s, cost, dirty, max6, costFn, decompose, f) => {
+  if (index2 === input2.length) {
+    return [s, cost, dirty, empty3()];
   }
-  const elem = pipe(input, unsafeGet2(index2));
+  const elem = pipe(input2, unsafeGet2(index2));
   const total = cost + costFn(s, elem);
-  if (total <= max5) {
-    return foldWeightedDecomposeFold(input, index2 + 1, f(s, elem), total, true, max5, costFn, decompose, f);
+  if (total <= max6) {
+    return foldWeightedDecomposeFold(input2, index2 + 1, f(s, elem), total, true, max6, costFn, decompose, f);
   }
   const decomposed = decompose(elem);
   if (decomposed.length <= 1 && !dirty) {
-    return [f(s, elem), total, true, pipe(input, drop2(index2 + 1))];
+    return [f(s, elem), total, true, pipe(input2, drop2(index2 + 1))];
   }
   if (decomposed.length <= 1 && dirty) {
-    return [s, cost, dirty, pipe(input, drop2(index2))];
+    return [s, cost, dirty, pipe(input2, drop2(index2))];
   }
-  const next = pipe(decomposed, appendAll2(pipe(input, drop2(index2 + 1))));
-  return foldWeightedDecomposeFold(next, 0, s, cost, dirty, max5, costFn, decompose, f);
+  const next = pipe(decomposed, appendAll2(pipe(input2, drop2(index2 + 1))));
+  return foldWeightedDecomposeFold(next, 0, s, cost, dirty, max6, costFn, decompose, f);
 };
 var foldWeightedDecomposeEffect = (options) => suspend6(() => new SinkImpl(foldWeightedDecomposeEffectLoop(options.initial, options.maxCost, options.cost, options.decompose, options.body, 0, false)));
 var foldWeightedEffect = (options) => foldWeightedDecomposeEffect({
   ...options,
-  decompose: (input) => succeed6(of2(input))
+  decompose: (input2) => succeed6(of2(input2))
 });
-var foldWeightedDecomposeEffectLoop = (s, max5, costFn, decompose, f, cost, dirty) => readWith({
-  onInput: (input) => pipe(fromEffect4(foldWeightedDecomposeEffectFold(s, max5, costFn, decompose, f, input, dirty, cost, 0)), flatMap13(([nextS, nextCost, nextDirty, leftovers]) => {
+var foldWeightedDecomposeEffectLoop = (s, max6, costFn, decompose, f, cost, dirty) => readWith({
+  onInput: (input2) => pipe(fromEffect4(foldWeightedDecomposeEffectFold(s, max6, costFn, decompose, f, input2, dirty, cost, 0)), flatMap13(([nextS, nextCost, nextDirty, leftovers]) => {
     if (isNonEmpty(leftovers)) {
       return pipe(write(leftovers), zipRight5(succeedNow(nextS)));
     }
-    if (cost > max5) {
+    if (cost > max6) {
       return succeedNow(nextS);
     }
-    return foldWeightedDecomposeEffectLoop(nextS, max5, costFn, decompose, f, nextCost, nextDirty);
+    return foldWeightedDecomposeEffectLoop(nextS, max6, costFn, decompose, f, nextCost, nextDirty);
   })),
   onFailure: fail10,
   onDone: () => succeedNow(s)
 });
-var foldWeightedDecomposeEffectFold = (s, max5, costFn, decompose, f, input, dirty, cost, index2) => {
-  if (index2 === input.length) {
-    return succeed6([s, cost, dirty, empty2()]);
+var foldWeightedDecomposeEffectFold = (s, max6, costFn, decompose, f, input2, dirty, cost, index2) => {
+  if (index2 === input2.length) {
+    return succeed6([s, cost, dirty, empty3()]);
   }
-  const elem = pipe(input, unsafeGet2(index2));
+  const elem = pipe(input2, unsafeGet2(index2));
   return pipe(costFn(s, elem), map15((newCost) => cost + newCost), flatMap11((total) => {
-    if (total <= max5) {
-      return pipe(f(s, elem), flatMap11((s2) => foldWeightedDecomposeEffectFold(s2, max5, costFn, decompose, f, input, true, total, index2 + 1)));
+    if (total <= max6) {
+      return pipe(f(s, elem), flatMap11((s2) => foldWeightedDecomposeEffectFold(s2, max6, costFn, decompose, f, input2, true, total, index2 + 1)));
     }
     return pipe(decompose(elem), flatMap11((decomposed) => {
       if (decomposed.length <= 1 && !dirty) {
-        return pipe(f(s, elem), map15((s2) => [s2, total, true, pipe(input, drop2(index2 + 1))]));
+        return pipe(f(s, elem), map15((s2) => [s2, total, true, pipe(input2, drop2(index2 + 1))]));
       }
       if (decomposed.length <= 1 && dirty) {
-        return succeed6([s, cost, dirty, pipe(input, drop2(index2))]);
+        return succeed6([s, cost, dirty, pipe(input2, drop2(index2))]);
       }
-      const next = pipe(decomposed, appendAll2(pipe(input, drop2(index2 + 1))));
-      return foldWeightedDecomposeEffectFold(s, max5, costFn, decompose, f, next, dirty, cost, 0);
+      const next = pipe(decomposed, appendAll2(pipe(input2, drop2(index2 + 1))));
+      return foldWeightedDecomposeEffectFold(s, max6, costFn, decompose, f, next, dirty, cost, 0);
     }));
   }));
 };
@@ -37336,7 +37502,7 @@ var flatMap14 = /* @__PURE__ */ dual(2, (self, f) => foldSink(self, {
 }));
 var forEach10 = (f) => {
   const process2 = readWithCause({
-    onInput: (input) => pipe(fromEffect4(forEach9(input, (v) => f(v), {
+    onInput: (input2) => pipe(fromEffect4(forEach9(input2, (v) => f(v), {
       discard: true
     })), flatMap13(() => process2)),
     onFailure: failCause8,
@@ -37346,7 +37512,7 @@ var forEach10 = (f) => {
 };
 var forEachChunk = (f) => {
   const process2 = readWithCause({
-    onInput: (input) => pipe(fromEffect4(f(input)), flatMap13(() => process2)),
+    onInput: (input2) => pipe(fromEffect4(f(input2)), flatMap13(() => process2)),
     onFailure: failCause8,
     onDone: () => unit6
   });
@@ -37354,21 +37520,21 @@ var forEachChunk = (f) => {
 };
 var forEachWhile = (f) => {
   const process2 = readWithCause({
-    onInput: (input) => forEachWhileReader(f, input, 0, input.length, process2),
+    onInput: (input2) => forEachWhileReader(f, input2, 0, input2.length, process2),
     onFailure: failCause8,
     onDone: () => unit6
   });
   return new SinkImpl(process2);
 };
-var forEachWhileReader = (f, input, index2, length3, cont) => {
-  if (index2 === length3) {
+var forEachWhileReader = (f, input2, index2, length4, cont) => {
+  if (index2 === length4) {
     return cont;
   }
-  return pipe(fromEffect4(f(pipe(input, unsafeGet2(index2)))), flatMap13((bool) => bool ? forEachWhileReader(f, input, index2 + 1, length3, cont) : write(pipe(input, drop2(index2)))), catchAll5((error3) => pipe(write(pipe(input, drop2(index2))), zipRight5(fail10(error3)))));
+  return pipe(fromEffect4(f(pipe(input2, unsafeGet2(index2)))), flatMap13((bool) => bool ? forEachWhileReader(f, input2, index2 + 1, length4, cont) : write(pipe(input2, drop2(index2)))), catchAll5((error3) => pipe(write(pipe(input2, drop2(index2))), zipRight5(fail10(error3)))));
 };
 var forEachChunkWhile = (f) => {
   const reader = readWith({
-    onInput: (input) => pipe(fromEffect4(f(input)), flatMap13((cont) => cont ? reader : unit6)),
+    onInput: (input2) => pipe(fromEffect4(f(input2)), flatMap13((cont) => cont ? reader : unit6)),
     onFailure: fail10,
     onDone: () => unit6
   });
@@ -37379,7 +37545,7 @@ var fromEffect5 = (effect3) => new SinkImpl(fromEffect4(effect3));
 var fromPubSub = (pubsub, options) => fromQueue2(pubsub, options);
 var fromPush = (push2) => new SinkImpl(unwrapScoped3(pipe(push2, map15(fromPushPull))));
 var fromPushPull = (push2) => readWith({
-  onInput: (input) => foldChannel(fromEffect4(push2(some2(input))), {
+  onInput: (input2) => foldChannel(fromEffect4(push2(some2(input2))), {
     onFailure: ([either7, leftovers]) => match2(either7, {
       onLeft: (error3) => pipe(write(leftovers), zipRight5(fail10(error3))),
       onRight: (z) => pipe(write(leftovers), zipRight5(succeedNow(z)))
@@ -37395,13 +37561,13 @@ var fromPushPull = (push2) => readWith({
     onSuccess: () => fromEffect4(dieMessage2("BUG: Sink.fromPush - please report an issue at https://github.com/Effect-TS/effect/issues"))
   })
 });
-var fromQueue2 = (queue, options) => options?.shutdown ? unwrapScoped4(map15(acquireRelease2(succeed6(queue), shutdown4), fromQueue2)) : forEachChunk((input) => pipe(offerAll3(queue, input)));
-var head5 = () => fold(none2(), isNone2, (option5, input) => match(option5, {
-  onNone: () => some2(input),
+var fromQueue2 = (queue, options) => options?.shutdown ? unwrapScoped4(map15(acquireRelease2(succeed6(queue), shutdown4), fromQueue2)) : forEachChunk((input2) => pipe(offerAll3(queue, input2)));
+var head5 = () => fold(none2(), isNone2, (option5, input2) => match(option5, {
+  onNone: () => some2(input2),
   onSome: () => option5
 }));
 var ignoreLeftover = (self) => new SinkImpl(drain(toChannel(self)));
-var last4 = () => foldLeftChunks(none2(), (s, input) => orElse(last2(input), () => s));
+var last4 = () => foldLeftChunks(none2(), (s, input2) => orElse(last2(input2), () => s));
 var leftover = (chunk5) => new SinkImpl(suspend5(() => write(chunk5)));
 var map18 = /* @__PURE__ */ dual(2, (self, f) => {
   return new SinkImpl(pipe(toChannel(self), map17(f)));
@@ -37410,7 +37576,7 @@ var mapEffect3 = /* @__PURE__ */ dual(2, (self, f) => new SinkImpl(pipe(toChanne
 var mapError6 = /* @__PURE__ */ dual(2, (self, f) => new SinkImpl(pipe(toChannel(self), mapError5(f))));
 var mapLeftover = /* @__PURE__ */ dual(2, (self, f) => new SinkImpl(pipe(toChannel(self), mapOut(map4(f)))));
 var never4 = /* @__PURE__ */ fromEffect5(never3);
-var orElse10 = /* @__PURE__ */ dual(2, (self, that) => new SinkImpl(pipe(toChannel(self), orElse9(() => toChannel(that())))));
+var orElse9 = /* @__PURE__ */ dual(2, (self, that) => new SinkImpl(pipe(toChannel(self), orElse8(() => toChannel(that())))));
 var provideContext3 = /* @__PURE__ */ dual(2, (self, context11) => new SinkImpl(pipe(toChannel(self), provideContext2(context11))));
 var race3 = /* @__PURE__ */ dual(2, (self, that) => pipe(self, raceBoth(that), map18(merge)));
 var raceBoth = /* @__PURE__ */ dual((args) => isSink(args[1]), (self, that, options) => raceWith3(self, {
@@ -37447,29 +37613,29 @@ var refineOrDieWith = /* @__PURE__ */ dual(3, (self, pf, f) => {
   })));
   return new SinkImpl(newChannel);
 });
-var some5 = (predicate) => fold(false, (bool) => !bool, (acc, input) => acc || predicate(input));
-var splitWhere2 = /* @__PURE__ */ dual(2, (self, f) => {
-  const newChannel = pipe(fromEffect4(make24(empty2())), flatMap13((ref) => pipe(splitWhereSplitter(false, ref, f), pipeToOrFail(toChannel(self)), collectElements, flatMap13(([leftovers, z]) => pipe(fromEffect4(get11(ref)), flatMap13((leftover3) => pipe(write(pipe(leftover3, appendAll2(flatten3(leftovers)))), zipRight5(succeed8(z)))))))));
+var some6 = (predicate) => fold(false, (bool) => !bool, (acc, input2) => acc || predicate(input2));
+var splitWhere3 = /* @__PURE__ */ dual(2, (self, f) => {
+  const newChannel = pipe(fromEffect4(make24(empty3())), flatMap13((ref) => pipe(splitWhereSplitter(false, ref, f), pipeToOrFail(toChannel(self)), collectElements, flatMap13(([leftovers, z]) => pipe(fromEffect4(get11(ref)), flatMap13((leftover3) => pipe(write(pipe(leftover3, appendAll2(flatten3(leftovers)))), zipRight5(succeed8(z)))))))));
   return new SinkImpl(newChannel);
 });
 var splitWhereSplitter = (written, leftovers, f) => readWithCause({
-  onInput: (input) => {
-    if (isEmpty(input)) {
+  onInput: (input2) => {
+    if (isEmpty(input2)) {
       return splitWhereSplitter(written, leftovers, f);
     }
     if (written) {
-      const index3 = indexWhere(input, f);
+      const index3 = indexWhere(input2, f);
       if (index3 === -1) {
-        return zipRight5(write(input), splitWhereSplitter(true, leftovers, f));
+        return zipRight5(write(input2), splitWhereSplitter(true, leftovers, f));
       }
-      const [left4, right4] = splitAt2(input, index3);
+      const [left4, right4] = splitAt2(input2, index3);
       return zipRight5(write(left4), fromEffect4(set6(leftovers, right4)));
     }
-    const index2 = indexWhere(input, f, 1);
+    const index2 = indexWhere(input2, f, 1);
     if (index2 === -1) {
-      return zipRight5(write(input), splitWhereSplitter(true, leftovers, f));
+      return zipRight5(write(input2), splitWhereSplitter(true, leftovers, f));
     }
-    const [left3, right3] = pipe(input, splitAt2(Math.max(index2, 1)));
+    const [left3, right3] = pipe(input2, splitAt2(Math.max(index2, 1)));
     return zipRight5(write(left3), fromEffect4(set6(leftovers, right3)));
   },
   onFailure: failCause8,
@@ -37496,7 +37662,7 @@ var summarized3 = /* @__PURE__ */ dual(3, (self, summary5, f) => {
   return new SinkImpl(newChannel);
 });
 var sync6 = (evaluate2) => new SinkImpl(sync5(evaluate2));
-var take4 = (n) => pipe(foldChunks(empty2(), (chunk5) => chunk5.length < n, (acc, chunk5) => pipe(acc, appendAll2(chunk5))), flatMap14((acc) => {
+var take5 = (n) => pipe(foldChunks(empty3(), (chunk5) => chunk5.length < n, (acc, chunk5) => pipe(acc, appendAll2(chunk5))), flatMap14((acc) => {
   const [taken, leftover3] = pipe(acc, splitAt2(n));
   return new SinkImpl(pipe(write(leftover3), zipRight5(succeedNow(taken))));
 }));
@@ -37566,8 +37732,8 @@ var Both = {
 var Either = {
   _tag: OP_EITHER
 };
-var fromInput2 = (input) => {
-  switch (input) {
+var fromInput2 = (input2) => {
+  switch (input2) {
     case "left":
       return Left;
     case "right":
@@ -37577,7 +37743,7 @@ var fromInput2 = (input) => {
     case "either":
       return Either;
     default:
-      return input;
+      return input2;
   }
 };
 
@@ -37730,9 +37896,9 @@ var make43 = () => pipe(make22(), flatMap11((deferred) => make24(handoffStateEmp
   ref
 })));
 var offer4 = /* @__PURE__ */ dual(2, (self, value3) => {
-  return flatMap11(make22(), (deferred) => flatten9(modify4(self.ref, (state) => pipe(state, handoffStateMatch((notifyConsumer) => [zipRight4(succeed2(notifyConsumer, void 0), _await(deferred)), handoffStateFull(value3, deferred)], (_, notifyProducer) => [flatMap11(_await(notifyProducer), () => pipe(self, offer4(value3))), state])))));
+  return flatMap11(make22(), (deferred) => flatten9(modify5(self.ref, (state) => pipe(state, handoffStateMatch((notifyConsumer) => [zipRight4(succeed2(notifyConsumer, void 0), _await(deferred)), handoffStateFull(value3, deferred)], (_, notifyProducer) => [flatMap11(_await(notifyProducer), () => pipe(self, offer4(value3))), state])))));
 });
-var take5 = (self) => flatMap11(make22(), (deferred) => flatten9(modify4(self.ref, (state) => pipe(state, handoffStateMatch((notifyConsumer) => [flatMap11(_await(notifyConsumer), () => take5(self)), state], (value3, notifyProducer) => [as4(succeed2(notifyProducer, void 0), value3), handoffStateEmpty(deferred)])))));
+var take6 = (self) => flatMap11(make22(), (deferred) => flatten9(modify5(self.ref, (state) => pipe(state, handoffStateMatch((notifyConsumer) => [flatMap11(_await(notifyConsumer), () => take6(self)), state], (value3, notifyProducer) => [as4(succeed2(notifyProducer, void 0), value3), handoffStateEmpty(deferred)])))));
 
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/internal/stream/handoffSignal.js
 var OP_EMIT4 = "Emit";
@@ -37871,14 +38037,14 @@ var DefaultChunkSize = 4096;
 var accumulate = (self) => chunks(accumulateChunks(self));
 var accumulateChunks = (self) => {
   const accumulator = (s) => readWith({
-    onInput: (input) => {
-      const next = appendAll2(s, input);
+    onInput: (input2) => {
+      const next = appendAll2(s, input2);
       return flatMap13(write(next), () => accumulator(next));
     },
     onFailure: fail10,
     onDone: () => unit6
   });
-  return new StreamImpl(pipeTo(toChannel2(self), accumulator(empty2())));
+  return new StreamImpl(pipeTo(toChannel2(self), accumulator(empty3())));
 };
 var acquireRelease3 = (acquire, release) => scoped5(acquireRelease2(acquire, release));
 var aggregate = /* @__PURE__ */ dual(2, (self, sink) => aggregateWithin(self, sink, forever4));
@@ -37887,18 +38053,18 @@ var aggregateWithin = /* @__PURE__ */ dual(3, (self, sink, schedule4) => filterM
   onRight: some2
 })));
 var aggregateWithinEither = /* @__PURE__ */ dual(3, (self, sink, schedule4) => {
-  const layer4 = all5([make43(), make24(ScheduleEnd), make24(empty2()), driver2(schedule4), make24(false), make24(false)]);
+  const layer4 = all5([make43(), make24(ScheduleEnd), make24(empty3()), driver2(schedule4), make24(false), make24(false)]);
   return pipe(fromEffect6(layer4), flatMap15(([handoff, sinkEndReason, sinkLeftovers, scheduleDriver, consumed, endAfterEmit]) => {
     const handoffProducer = readWithCause({
-      onInput: (input) => flatMap13(fromEffect4(pipe(handoff, offer4(emit(input)), when2(() => isNonEmpty(input)))), () => handoffProducer),
+      onInput: (input2) => flatMap13(fromEffect4(pipe(handoff, offer4(emit(input2)), when2(() => isNonEmpty(input2)))), () => handoffProducer),
       onFailure: (cause3) => fromEffect4(offer4(handoff, halt(cause3))),
       onDone: () => fromEffect4(offer4(handoff, end3(UpstreamEnd)))
     });
-    const handoffConsumer = pipe(getAndSet2(sinkLeftovers, empty2()), flatMap11((leftovers) => {
+    const handoffConsumer = pipe(getAndSet2(sinkLeftovers, empty3()), flatMap11((leftovers) => {
       if (isNonEmpty(leftovers)) {
         return pipe(set6(consumed, true), zipRight4(succeed6(pipe(write(leftovers), flatMap13(() => handoffConsumer)))));
       }
-      return pipe(take5(handoff), map15((signal) => {
+      return pipe(take6(handoff), map15((signal) => {
         switch (signal._tag) {
           case OP_EMIT4: {
             return pipe(fromEffect4(set6(consumed, true)), zipRight5(write(signal.elements)), zipRight5(fromEffect4(get11(endAfterEmit))), flatMap13((bool) => bool ? unit6 : handoffConsumer));
@@ -37956,14 +38122,14 @@ var _async = (register, outputBuffer = 16) => asyncOption3((cb) => {
   register(cb);
   return none2();
 }, outputBuffer);
-var asyncEffect3 = (register, outputBuffer = 16) => pipe(acquireRelease2(bounded5(outputBuffer), (queue) => shutdown4(queue)), flatMap11((output) => pipe(runtime3(), flatMap11((runtime4) => pipe(register(make42((k) => pipe(fromPull(k), flatMap11((take9) => offer3(output, take9)), asUnit3, runPromiseExit2(runtime4)).then((exit4) => {
+var asyncEffect3 = (register, outputBuffer = 16) => pipe(acquireRelease2(bounded5(outputBuffer), (queue) => shutdown4(queue)), flatMap11((output) => pipe(runtime3(), flatMap11((runtime4) => pipe(register(make42((k) => pipe(fromPull(k), flatMap11((take10) => offer3(output, take10)), asUnit3, runPromiseExit2(runtime4)).then((exit4) => {
   if (isFailure3(exit4)) {
     if (!isInterrupted2(exit4.cause)) {
       throw squash(exit4.cause);
     }
   }
 }))), map15(() => {
-  const loop3 = pipe(take3(output), flatMap11(done8), match11({
+  const loop3 = pipe(take4(output), flatMap11(done8), match11({
     onFailure: (maybeError) => pipe(fromEffect4(shutdown4(output)), zipRight5(match(maybeError, {
       onNone: () => unit6,
       onSome: fail10
@@ -37972,7 +38138,7 @@ var asyncEffect3 = (register, outputBuffer = 16) => pipe(acquireRelease2(bounded
   }), unwrap);
   return loop3;
 }))))), unwrapScoped3, fromChannel2);
-var asyncInterrupt = (register, outputBuffer = 16) => pipe(acquireRelease2(bounded5(outputBuffer), (queue) => shutdown4(queue)), flatMap11((output) => pipe(runtime3(), flatMap11((runtime4) => pipe(sync3(() => register(make42((k) => pipe(fromPull(k), flatMap11((take9) => offer3(output, take9)), asUnit3, runPromiseExit2(runtime4)).then((exit4) => {
+var asyncInterrupt = (register, outputBuffer = 16) => pipe(acquireRelease2(bounded5(outputBuffer), (queue) => shutdown4(queue)), flatMap11((output) => pipe(runtime3(), flatMap11((runtime4) => pipe(sync3(() => register(make42((k) => pipe(fromPull(k), flatMap11((take10) => offer3(output, take10)), asUnit3, runPromiseExit2(runtime4)).then((exit4) => {
   if (isFailure3(exit4)) {
     if (!isInterrupted2(exit4.cause)) {
       throw squash(exit4.cause);
@@ -37980,7 +38146,7 @@ var asyncInterrupt = (register, outputBuffer = 16) => pipe(acquireRelease2(bound
   }
 })))), map15(match2({
   onLeft: (canceler) => {
-    const loop3 = pipe(take3(output), flatMap11(done8), match11({
+    const loop3 = pipe(take4(output), flatMap11(done8), match11({
       onFailure: (maybeError) => zipRight5(fromEffect4(shutdown4(output)), match(maybeError, {
         onNone: () => unit6,
         onSome: fail10
@@ -37995,28 +38161,28 @@ var asyncOption3 = (register, outputBuffer = 16) => asyncInterrupt((emit2) => ma
   onNone: () => left2(unit5),
   onSome: right2
 }), outputBuffer);
-var asyncScoped = (register, outputBuffer = 16) => pipe(acquireRelease2(bounded5(outputBuffer), (queue) => shutdown4(queue)), flatMap11((output) => pipe(runtime3(), flatMap11((runtime4) => pipe(register(make42((k) => pipe(fromPull(k), flatMap11((take9) => offer3(output, take9)), asUnit3, runPromiseExit2(runtime4)).then((exit4) => {
+var asyncScoped = (register, outputBuffer = 16) => pipe(acquireRelease2(bounded5(outputBuffer), (queue) => shutdown4(queue)), flatMap11((output) => pipe(runtime3(), flatMap11((runtime4) => pipe(register(make42((k) => pipe(fromPull(k), flatMap11((take10) => offer3(output, take10)), asUnit3, runPromiseExit2(runtime4)).then((exit4) => {
   if (isFailure3(exit4)) {
     if (!isInterrupted2(exit4.cause)) {
       throw squash(exit4.cause);
     }
   }
-}))), zipRight4(make24(false)), flatMap11((ref) => pipe(get11(ref), map15((isDone6) => isDone6 ? end5() : pipe(take3(output), flatMap11(done8), onError2(() => pipe(set6(ref, true), zipRight4(shutdown4(output)))))))))))), scoped5, flatMap15(repeatEffectChunkOption));
+}))), zipRight4(make24(false)), flatMap11((ref) => pipe(get11(ref), map15((isDone6) => isDone6 ? end5() : pipe(take4(output), flatMap11(done8), onError2(() => pipe(set6(ref, true), zipRight4(shutdown4(output)))))))))))), scoped5, flatMap15(repeatEffectChunkOption));
 var branchAfter = /* @__PURE__ */ dual(3, (self, n, f) => suspend7(() => {
   const buffering = (acc) => readWith({
-    onInput: (input) => {
-      const nextSize = acc.length + input.length;
+    onInput: (input2) => {
+      const nextSize = acc.length + input2.length;
       if (nextSize >= n) {
-        const [b1, b2] = pipe(input, splitAt2(n - acc.length));
+        const [b1, b2] = pipe(input2, splitAt2(n - acc.length));
         return running3(pipe(acc, appendAll2(b1)), b2);
       }
-      return buffering(pipe(acc, appendAll2(input)));
+      return buffering(pipe(acc, appendAll2(input2)));
     },
     onFailure: fail10,
-    onDone: () => running3(acc, empty2())
+    onDone: () => running3(acc, empty3())
   });
-  const running3 = (prefix, leftover3) => pipeTo(zipRight5(write(leftover3), identityChannel()), toChannel2(f(prefix)));
-  return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(buffering(empty2()))));
+  const running3 = (prefix2, leftover3) => pipeTo(zipRight5(write(leftover3), identityChannel()), toChannel2(f(prefix2)));
+  return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(buffering(empty3()))));
 }));
 var broadcast = /* @__PURE__ */ dual(3, (self, n, maximumLag) => pipe(self, broadcastedQueues(n, maximumLag), map15((tuple2) => tuple2.map((queue) => flattenTake(fromQueue3(queue, {
   shutdown: true
@@ -38036,7 +38202,7 @@ var buffer2 = /* @__PURE__ */ dual(2, (self, options) => {
   }
   const queue = toQueueOfElements(self, options);
   return new StreamImpl(unwrapScoped3(map15(queue, (queue2) => {
-    const process2 = pipe(fromEffect4(take3(queue2)), flatMap13(match8({
+    const process2 = pipe(fromEffect4(take4(queue2)), flatMap13(match8({
       onFailure: (cause3) => pipe(flipCauseOption2(cause3), match({
         onNone: () => unit6,
         onSome: failCause8
@@ -38054,7 +38220,7 @@ var bufferChunks = /* @__PURE__ */ dual(2, (self, options) => {
   }
   const queue = toQueue2(self, options);
   return new StreamImpl(unwrapScoped3(map15(queue, (queue2) => {
-    const process2 = pipe(fromEffect4(take3(queue2)), flatMap13(match16({
+    const process2 = pipe(fromEffect4(take4(queue2)), flatMap13(match16({
       onEnd: () => unit6,
       onFailure: failCause8,
       onSuccess: (value3) => pipe(write(value3), flatMap13(() => process2))
@@ -38083,7 +38249,7 @@ var bufferUnbounded = (self) => {
     strategy: "unbounded"
   });
   return new StreamImpl(unwrapScoped3(map15(queue, (queue2) => {
-    const process2 = pipe(fromEffect4(take3(queue2)), flatMap13(match16({
+    const process2 = pipe(fromEffect4(take4(queue2)), flatMap13(match16({
       onEnd: () => unit6,
       onFailure: failCause8,
       onSuccess: (value3) => flatMap13(write(value3), () => process2)
@@ -38093,15 +38259,15 @@ var bufferUnbounded = (self) => {
 };
 var bufferSignal = (scoped7, bufferChannel) => {
   const producer = (queue, ref) => {
-    const terminate = (take9) => pipe(get11(ref), tap4(_await), zipRight4(make22()), flatMap11((deferred) => pipe(offer3(queue, [take9, deferred]), zipRight4(set6(ref, deferred)), zipRight4(_await(deferred)))), asUnit3, fromEffect4);
+    const terminate = (take10) => pipe(get11(ref), tap4(_await), zipRight4(make22()), flatMap11((deferred) => pipe(offer3(queue, [take10, deferred]), zipRight4(set6(ref, deferred)), zipRight4(_await(deferred)))), asUnit3, fromEffect4);
     return readWithCause({
-      onInput: (input) => pipe(make22(), flatMap11((deferred) => pipe(offer3(queue, [chunk2(input), deferred]), flatMap11((added) => pipe(set6(ref, deferred), when2(() => added))))), asUnit3, fromEffect4, flatMap13(() => producer(queue, ref))),
+      onInput: (input2) => pipe(make22(), flatMap11((deferred) => pipe(offer3(queue, [chunk2(input2), deferred]), flatMap11((added) => pipe(set6(ref, deferred), when2(() => added))))), asUnit3, fromEffect4, flatMap13(() => producer(queue, ref))),
       onFailure: (error3) => terminate(failCause10(error3)),
       onDone: () => terminate(end4)
     });
   };
   const consumer = (queue) => {
-    const process2 = pipe(fromEffect4(take3(queue)), flatMap13(([take9, deferred]) => zipRight5(fromEffect4(succeed2(deferred, void 0)), match16(take9, {
+    const process2 = pipe(fromEffect4(take4(queue)), flatMap13(([take10, deferred]) => zipRight5(fromEffect4(succeed2(deferred, void 0)), match16(take10, {
       onEnd: () => unit6,
       onFailure: failCause8,
       onSuccess: (value3) => pipe(write(value3), flatMap13(() => process2))
@@ -38133,8 +38299,8 @@ var catchTags3 = /* @__PURE__ */ dual(2, (self, cases) => catchAll6(self, (e) =>
 var changes = (self) => pipe(self, changesWith((x, y) => equals(y)(x)));
 var changesWith = /* @__PURE__ */ dual(2, (self, f) => {
   const writer = (last6) => readWithCause({
-    onInput: (input) => {
-      const [newLast, newChunk] = reduce2(input, [last6, empty2()], ([option5, outputs], output) => {
+    onInput: (input2) => {
+      const [newLast, newChunk] = reduce2(input2, [last6, empty3()], ([option5, outputs], output) => {
         if (isSome2(option5) && f(option5.value, output)) {
           return [some2(output), outputs];
         }
@@ -38149,7 +38315,7 @@ var changesWith = /* @__PURE__ */ dual(2, (self, f) => {
 });
 var changesWithEffect = /* @__PURE__ */ dual(2, (self, f) => {
   const writer = (last6) => readWithCause({
-    onInput: (input) => pipe(input, reduce11([last6, empty2()], ([option5, outputs], output) => {
+    onInput: (input2) => pipe(input2, reduce11([last6, empty3()], ([option5, outputs], output) => {
       if (isSome2(option5)) {
         return pipe(f(option5.value, output), map15((bool) => bool ? [some2(output), outputs] : [some2(output), pipe(outputs, append2(output))]));
       }
@@ -38164,8 +38330,8 @@ var chunks = (self) => pipe(self, mapChunks(of2));
 var chunksWith = /* @__PURE__ */ dual(2, (self, f) => flattenChunks(f(chunks(self))));
 var unsome = (effect3) => catchAll3(asSome2(effect3), (o) => o._tag === "None" ? succeedNone2 : fail8(o.value));
 var combine9 = /* @__PURE__ */ dual(4, (self, that, s, f) => {
-  const producer = (handoff, latch) => pipe(fromEffect4(take5(latch)), zipRight5(readWithCause({
-    onInput: (input) => flatMap13(fromEffect4(pipe(handoff, offer4(succeed3(input)))), () => producer(handoff, latch)),
+  const producer = (handoff, latch) => pipe(fromEffect4(take6(latch)), zipRight5(readWithCause({
+    onInput: (input2) => flatMap13(fromEffect4(pipe(handoff, offer4(succeed3(input2)))), () => producer(handoff, latch)),
     onFailure: (cause3) => fromEffect4(offer4(handoff, failCause3(pipe(cause3, map11(some2))))),
     onDone: () => flatMap13(fromEffect4(offer4(handoff, fail5(none2()))), () => producer(handoff, latch))
   })));
@@ -38180,39 +38346,39 @@ var combine9 = /* @__PURE__ */ dual(4, (self, that, s, f) => {
       latchL,
       offer4(void 0),
       // TODO: remove
-      zipRight4(pipe(take5(left3), flatMap11((exit4) => suspend3(() => exit4))))
+      zipRight4(pipe(take6(left3), flatMap11((exit4) => suspend3(() => exit4))))
     );
     const pullRight = pipe(
       latchR,
       offer4(void 0),
       // TODO: remove
-      zipRight4(pipe(take5(right3), flatMap11((exit4) => suspend3(() => exit4))))
+      zipRight4(pipe(take6(right3), flatMap11((exit4) => suspend3(() => exit4))))
     );
     return toChannel2(unfoldEffect(s, (s2) => flatMap11(f(s2, pullLeft, pullRight), unsome)));
   })));
 });
 var combineChunks = /* @__PURE__ */ dual(4, (self, that, s, f) => {
-  const producer = (handoff, latch) => zipRight5(fromEffect4(take5(latch)), readWithCause({
-    onInput: (input) => flatMap13(fromEffect4(pipe(handoff, offer4(chunk2(input)))), () => producer(handoff, latch)),
+  const producer = (handoff, latch) => zipRight5(fromEffect4(take6(latch)), readWithCause({
+    onInput: (input2) => flatMap13(fromEffect4(pipe(handoff, offer4(chunk2(input2)))), () => producer(handoff, latch)),
     onFailure: (cause3) => fromEffect4(offer4(handoff, failCause10(cause3))),
     onDone: () => fromEffect4(offer4(handoff, end4))
   }));
   return new StreamImpl(pipe(all5([make43(), make43(), make43(), make43()]), tap4(([left3, _, latchL]) => pipe(toChannel2(self), pipeTo(producer(left3, latchL)), runScoped, forkScoped2)), tap4(([_, right3, __, latchR]) => pipe(toChannel2(that), pipeTo(producer(right3, latchR)), runScoped, forkScoped2)), map15(([left3, right3, latchL, latchR]) => {
-    const pullLeft = pipe(latchL, offer4(void 0), zipRight4(pipe(take5(left3), flatMap11(done8))));
-    const pullRight = pipe(latchR, offer4(void 0), zipRight4(pipe(take5(right3), flatMap11(done8))));
+    const pullLeft = pipe(latchL, offer4(void 0), zipRight4(pipe(take6(left3), flatMap11(done8))));
+    const pullRight = pipe(latchR, offer4(void 0), zipRight4(pipe(take6(right3), flatMap11(done8))));
     return toChannel2(unfoldChunkEffect(s, (s2) => flatMap11(f(s2, pullLeft, pullRight), unsome)));
   }), unwrapScoped3));
 });
 var concat2 = /* @__PURE__ */ dual(2, (self, that) => new StreamImpl(pipe(toChannel2(self), zipRight5(toChannel2(that)))));
-var concatAll2 = (streams) => suspend7(() => pipe(streams, reduce2(empty31, (x, y) => concat2(y)(x))));
+var concatAll2 = (streams) => suspend7(() => pipe(streams, reduce2(empty32, (x, y) => concat2(y)(x))));
 var cross = /* @__PURE__ */ dual(2, (self, that) => pipe(self, crossWith(that, (a, a2) => [a, a2])));
 var crossLeft = /* @__PURE__ */ dual(2, (self, that) => pipe(self, crossWith(that, (a, _) => a)));
 var crossRight = /* @__PURE__ */ dual(2, (self, that) => flatMap15(self, () => that));
 var crossWith = /* @__PURE__ */ dual(3, (self, that, f) => pipe(self, flatMap15((a) => pipe(that, map20((b) => f(a, b))))));
-var debounce = /* @__PURE__ */ dual(2, (self, duration2) => pipe(make41(), flatMap11((input) => transplant2((grafter) => pipe(make43(), map15((handoff) => {
+var debounce = /* @__PURE__ */ dual(2, (self, duration2) => pipe(make41(), flatMap11((input2) => transplant2((grafter) => pipe(make43(), map15((handoff) => {
   const enqueue = (last6) => pipe(sleep2(duration2), as4(last6), fork3, grafter, map15((fiber) => consumer(previous(fiber))));
   const producer = readWithCause({
-    onInput: (input2) => match(last2(input2), {
+    onInput: (input3) => match(last2(input3), {
       onNone: () => producer,
       onSome: (last6) => flatMap13(fromEffect4(offer4(handoff, emit(of2(last6)))), () => producer)
     }),
@@ -38222,7 +38388,7 @@ var debounce = /* @__PURE__ */ dual(2, (self, duration2) => pipe(make41(), flatM
   const consumer = (state) => {
     switch (state._tag) {
       case OP_NOT_STARTED: {
-        return pipe(take5(handoff), map15((signal) => {
+        return pipe(take6(handoff), map15((signal) => {
           switch (signal._tag) {
             case OP_EMIT4: {
               return unwrap(enqueue(signal.elements));
@@ -38237,7 +38403,7 @@ var debounce = /* @__PURE__ */ dual(2, (self, duration2) => pipe(make41(), flatM
         }), unwrap);
       }
       case OP_PREVIOUS: {
-        return unwrap(raceWith2(join4(state.fiber), take5(handoff), {
+        return unwrap(raceWith2(join4(state.fiber), take6(handoff), {
           onSelfDone: (leftExit, current2) => match8(leftExit, {
             onFailure: (cause3) => pipe(interrupt5(current2), as4(failCause8(cause3))),
             onSuccess: (chunk5) => succeed6(pipe(write(chunk5), flatMap13(() => consumer(current(current2)))))
@@ -38277,7 +38443,7 @@ var debounce = /* @__PURE__ */ dual(2, (self, duration2) => pipe(make41(), flatM
       }
     }
   };
-  const debounceChannel = pipe(fromInput(input), pipeTo(producer), run, forkScoped2, as4(pipe(consumer(notStarted), embedInput(input))), unwrapScoped3);
+  const debounceChannel = pipe(fromInput(input2), pipeTo(producer), run, forkScoped2, as4(pipe(consumer(notStarted), embedInput(input2))), unwrapScoped3);
   return new StreamImpl(pipe(toChannel2(self), pipeTo(debounceChannel)));
 })))), unwrap3));
 var die9 = (defect) => fromEffect6(die6(defect));
@@ -38286,8 +38452,8 @@ var dieMessage4 = (message) => fromEffect6(dieMessage2(message));
 var distributedWith = /* @__PURE__ */ dual(2, (self, options) => pipe(make22(), flatMap11((deferred) => pipe(self, distributedWithDynamic({
   maximumLag: options.maximumLag,
   decide: (a) => flatMap11(_await(deferred), (f) => f(a))
-}), flatMap11((next) => pipe(all5(map4(range(0, options.size - 1), (id2) => map15(next, ([key, queue]) => [[key, id2], queue]))), map15(unsafeFromArray), flatMap11((entries2) => {
-  const [mappings, queues] = reduceRight2(entries2, [/* @__PURE__ */ new Map(), empty2()], ([mappings2, queues2], [mapping, queue]) => [mappings2.set(mapping[0], mapping[1]), pipe(queues2, prepend2(queue))]);
+}), flatMap11((next) => pipe(all5(map4(range2(0, options.size - 1), (id2) => map15(next, ([key, queue]) => [[key, id2], queue]))), map15(unsafeFromArray), flatMap11((entries2) => {
+  const [mappings, queues] = reduceRight2(entries2, [/* @__PURE__ */ new Map(), empty3()], ([mappings2, queues2], [mapping, queue]) => [mappings2.set(mapping[0], mapping[1]), pipe(queues2, prepend2(queue))]);
   return pipe(succeed2(deferred, (a) => map15(options.decide(a), (f) => (key) => pipe(f(mappings.get(key))))), as4(Array.from(queues)));
 })))))));
 var distributedWithDynamicId = {
@@ -38300,7 +38466,7 @@ var newDistributedWithDynamicId = () => {
 };
 var distributedWithDynamic = /* @__PURE__ */ dual(2, (self, options) => distributedWithDynamicCallback(self, options.maximumLag, options.decide, () => unit5));
 var distributedWithDynamicCallback = /* @__PURE__ */ dual(4, (self, maximumLag, decide, done9) => pipe(acquireRelease2(make24(/* @__PURE__ */ new Map()), (ref, _) => pipe(get11(ref), flatMap11((queues) => pipe(queues.values(), forEach9(shutdown4))))), flatMap11((queuesRef) => gen4(function* ($) {
-  const offer5 = (a) => pipe(decide(a), flatMap11((shouldProcess) => pipe(get11(queuesRef), flatMap11((queues) => pipe(queues.entries(), reduce11(empty2(), (acc, [id2, queue]) => {
+  const offer5 = (a) => pipe(decide(a), flatMap11((shouldProcess) => pipe(get11(queuesRef), flatMap11((queues) => pipe(queues.entries(), reduce11(empty3(), (acc, [id2, queue]) => {
     if (shouldProcess(id2)) {
       return pipe(offer3(queue, succeed3(a)), matchCauseEffect2({
         onFailure: (cause3) => (
@@ -38350,10 +38516,10 @@ var drain3 = (self) => new StreamImpl(drain(toChannel2(self)));
 var drainFork = /* @__PURE__ */ dual(2, (self, that) => pipe(fromEffect6(make22()), flatMap15((backgroundDied) => pipe(scoped5(pipe(that, runForEachScoped(() => unit5), catchAllCause3((cause3) => failCause2(backgroundDied, cause3)), forkScoped2)), crossRight(pipe(self, interruptWhenDeferred2(backgroundDied)))))));
 var drop4 = /* @__PURE__ */ dual(2, (self, n) => {
   const loop3 = (r) => readWith({
-    onInput: (input) => {
-      const dropped = pipe(input, drop2(r));
-      const leftover3 = Math.max(0, r - input.length);
-      const more = isEmpty(input) || leftover3 > 0;
+    onInput: (input2) => {
+      const dropped = pipe(input2, drop2(r));
+      const leftover3 = Math.max(0, r - input2.length);
+      const more = isEmpty(input2) || leftover3 > 0;
       if (more) {
         return loop3(leftover3);
       }
@@ -38364,15 +38530,15 @@ var drop4 = /* @__PURE__ */ dual(2, (self, n) => {
   });
   return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(loop3(n))));
 });
-var dropRight2 = /* @__PURE__ */ dual(2, (self, n) => {
+var dropRight3 = /* @__PURE__ */ dual(2, (self, n) => {
   if (n <= 0) {
     return identityStream();
   }
   return suspend7(() => {
     const queue = new RingBuffer(n);
     const reader = readWith({
-      onInput: (input) => {
-        const outputs = pipe(input, filterMap3((elem) => {
+      onInput: (input2) => {
+        const outputs = pipe(input2, filterMap3((elem) => {
           const head7 = queue.head();
           queue.put(elem);
           return head7;
@@ -38385,10 +38551,10 @@ var dropRight2 = /* @__PURE__ */ dual(2, (self, n) => {
     return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(reader)));
   });
 });
-var dropUntil4 = /* @__PURE__ */ dual(2, (self, predicate) => drop4(dropWhile5(self, (a) => !predicate(a)), 1));
+var dropUntil4 = /* @__PURE__ */ dual(2, (self, predicate) => drop4(dropWhile6(self, (a) => !predicate(a)), 1));
 var dropUntilEffect2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const loop3 = readWith({
-    onInput: (input) => pipe(dropUntil2(input, predicate), map15(unsafeFromArray), map15((leftover3) => {
+    onInput: (input2) => pipe(dropUntil2(input2, predicate), map15(unsafeFromArray), map15((leftover3) => {
       const more = isEmpty(leftover3);
       if (more) {
         return suspend5(() => loop3);
@@ -38400,10 +38566,10 @@ var dropUntilEffect2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   });
   return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(loop3)));
 });
-var dropWhile5 = /* @__PURE__ */ dual(2, (self, predicate) => {
+var dropWhile6 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const loop3 = readWith({
-    onInput: (input) => {
-      const output = dropWhile(input, predicate);
+    onInput: (input2) => {
+      const output = dropWhile2(input2, predicate);
       if (isEmpty(output)) {
         return suspend5(() => loop3);
       }
@@ -38416,7 +38582,7 @@ var dropWhile5 = /* @__PURE__ */ dual(2, (self, predicate) => {
 });
 var dropWhileEffect2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const loop3 = readWith({
-    onInput: (input) => pipe(dropWhile3(input, predicate), map15(unsafeFromArray), map15((leftover3) => {
+    onInput: (input2) => pipe(dropWhile4(input2, predicate), map15(unsafeFromArray), map15((leftover3) => {
       const more = isEmpty(leftover3);
       if (more) {
         return suspend5(() => loop3);
@@ -38429,7 +38595,7 @@ var dropWhileEffect2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   return new StreamImpl(pipeToOrFail(toChannel2(self), loop3));
 });
 var either5 = (self) => pipe(self, map20(right2), catchAll6((error3) => make44(left2(error3))));
-var empty31 = /* @__PURE__ */ new StreamImpl(/* @__PURE__ */ write(/* @__PURE__ */ empty2()));
+var empty32 = /* @__PURE__ */ new StreamImpl(/* @__PURE__ */ write(/* @__PURE__ */ empty3()));
 var ensuring6 = /* @__PURE__ */ dual(2, (self, finalizer3) => new StreamImpl(pipe(toChannel2(self), ensuring3(finalizer3))));
 var ensuringWith3 = /* @__PURE__ */ dual(2, (self, finalizer3) => new StreamImpl(ensuringWith(toChannel2(self), finalizer3)));
 var context6 = () => fromEffect6(context3());
@@ -38441,13 +38607,13 @@ var fail12 = (error3) => fromEffectOption(fail8(some2(error3)));
 var failSync7 = (evaluate2) => fromEffectOption(failSync3(() => some2(evaluate2())));
 var failCause12 = (cause3) => fromEffect6(failCause6(cause3));
 var failCauseSync7 = (evaluate2) => fromEffect6(failCauseSync3(evaluate2));
-var filter8 = /* @__PURE__ */ dual(2, (self, predicate) => mapChunks(self, filter2(predicate)));
+var filter9 = /* @__PURE__ */ dual(2, (self, predicate) => mapChunks(self, filter3(predicate)));
 var filterEffect = /* @__PURE__ */ dual(2, (self, f) => {
   const loop3 = (iterator2) => {
     const next = iterator2.next();
     if (next.done) {
       return readWithCause({
-        onInput: (input) => loop3(input[Symbol.iterator]()),
+        onInput: (input2) => loop3(input2[Symbol.iterator]()),
         onFailure: failCause8,
         onDone: succeed8
       });
@@ -38455,7 +38621,7 @@ var filterEffect = /* @__PURE__ */ dual(2, (self, f) => {
       return pipe(f(next.value), map15((bool) => bool ? pipe(write(of2(next.value)), flatMap13(() => loop3(iterator2))) : loop3(iterator2)), unwrap);
     }
   };
-  return new StreamImpl(suspend5(() => pipe(toChannel2(self), pipeTo(loop3(empty2()[Symbol.iterator]())))));
+  return new StreamImpl(suspend5(() => pipe(toChannel2(self), pipeTo(loop3(empty3()[Symbol.iterator]())))));
 });
 var filterMap5 = /* @__PURE__ */ dual(2, (self, pf) => mapChunks(self, filterMap3(pf)));
 var filterMapEffect = /* @__PURE__ */ dual(2, (self, pf) => suspend7(() => {
@@ -38463,7 +38629,7 @@ var filterMapEffect = /* @__PURE__ */ dual(2, (self, pf) => suspend7(() => {
     const next = iterator2.next();
     if (next.done) {
       return readWithCause({
-        onInput: (input) => loop3(input[Symbol.iterator]()),
+        onInput: (input2) => loop3(input2[Symbol.iterator]()),
         onFailure: failCause8,
         onDone: succeed8
       });
@@ -38474,13 +38640,13 @@ var filterMapEffect = /* @__PURE__ */ dual(2, (self, pf) => suspend7(() => {
       }), unwrap);
     }
   };
-  return new StreamImpl(pipe(toChannel2(self), pipeTo(loop3(empty2()[Symbol.iterator]()))));
+  return new StreamImpl(pipe(toChannel2(self), pipeTo(loop3(empty3()[Symbol.iterator]()))));
 }));
 var filterMapWhile3 = /* @__PURE__ */ dual(2, (self, pf) => {
   const loop3 = readWith({
-    onInput: (input) => {
-      const mapped = filterMapWhile2(input, pf);
-      if (mapped.length === input.length) {
+    onInput: (input2) => {
+      const mapped = filterMapWhile2(input2, pf);
+      if (mapped.length === input2.length) {
         return pipe(write(mapped), flatMap13(() => loop3));
       }
       return write(mapped);
@@ -38495,7 +38661,7 @@ var filterMapWhileEffect = /* @__PURE__ */ dual(2, (self, pf) => suspend7(() => 
     const next = iterator2.next();
     if (next.done) {
       return readWithCause({
-        onInput: (input) => loop3(input[Symbol.iterator]()),
+        onInput: (input2) => loop3(input2[Symbol.iterator]()),
         onFailure: failCause8,
         onDone: succeed8
       });
@@ -38506,12 +38672,12 @@ var filterMapWhileEffect = /* @__PURE__ */ dual(2, (self, pf) => suspend7(() => 
       }));
     }
   };
-  return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(loop3(empty2()[Symbol.iterator]()))));
+  return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(loop3(empty3()[Symbol.iterator]()))));
 }));
 var finalizer = (finalizer3) => acquireRelease3(unit5, () => finalizer3);
 var find2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const loop3 = readWith({
-    onInput: (input) => match(findFirst2(input, predicate), {
+    onInput: (input2) => match(findFirst2(input2, predicate), {
       onNone: () => loop3,
       onSome: (n) => write(of2(n))
     }),
@@ -38522,7 +38688,7 @@ var find2 = /* @__PURE__ */ dual(2, (self, predicate) => {
 });
 var findEffect2 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const loop3 = readWith({
-    onInput: (input) => pipe(findFirst6(input, predicate), map15(match({
+    onInput: (input2) => pipe(findFirst6(input2, predicate), map15(match({
       onNone: () => loop3,
       onSome: (n) => write(of2(n))
     })), unwrap),
@@ -38567,7 +38733,7 @@ var flattenEffect = /* @__PURE__ */ dual((args) => isStream(args[0]), (self, opt
 }) : matchConcurrency(options?.concurrency, () => mapEffectSequential(self, identity), (n) => new StreamImpl(pipe(toChannel2(self), concatMap(writeChunk), mapOutEffectPar(identity, n), mapOut(of2)))));
 var flattenExitOption = (self) => {
   const processChunk = (chunk5, cont) => {
-    const [toEmit, rest] = pipe(chunk5, splitWhere((exit4) => !isSuccess2(exit4)));
+    const [toEmit, rest] = pipe(chunk5, splitWhere2((exit4) => !isSuccess2(exit4)));
     const next = pipe(head2(rest), match({
       onNone: () => cont,
       onSome: match8({
@@ -38588,7 +38754,7 @@ var flattenExitOption = (self) => {
   return new StreamImpl(pipe(toChannel2(self), pipeTo(process2)));
 };
 var flattenIterables = (self) => pipe(self, map20(fromIterable3), flattenChunks);
-var flattenTake = (self) => flattenChunks(flattenExitOption(pipe(self, map20((take9) => take9.exit))));
+var flattenTake = (self) => flattenChunks(flattenExitOption(pipe(self, map20((take10) => take10.exit))));
 var forever5 = (self) => new StreamImpl(repeated(toChannel2(self)));
 var fromAsyncIterable = (iterable, onError5) => pipe(acquireRelease2(sync3(() => iterable[Symbol.asyncIterator]()), (iterator2) => iterator2.return ? promise2(async () => iterator2.return()) : unit5), map15((iterator2) => repeatEffectOption(pipe(tryPromise2({
   try: async () => iterator2.next(),
@@ -38613,7 +38779,7 @@ var fromChunkPubSub = (pubsub, options) => {
   const stream2 = flatMap15(scoped5(subscribe2(pubsub)), fromChunkQueue);
   return options?.shutdown ? ensuring6(stream2, shutdown3(pubsub)) : stream2;
 };
-var fromChunkQueue = (queue, options) => pipe(take3(queue), catchAllCause3((cause3) => pipe(isShutdown3(queue), flatMap11((isShutdown4) => isShutdown4 && isInterrupted2(cause3) ? end5() : failCause11(cause3)))), repeatEffectChunkOption, options?.shutdown ? ensuring6(shutdown4(queue)) : identity);
+var fromChunkQueue = (queue, options) => pipe(take4(queue), catchAllCause3((cause3) => pipe(isShutdown3(queue), flatMap11((isShutdown4) => isShutdown4 && isInterrupted2(cause3) ? end5() : failCause11(cause3)))), repeatEffectChunkOption, options?.shutdown ? ensuring6(shutdown4(queue)) : identity);
 var fromChunks = (...chunks3) => pipe(fromIterable12(chunks3), flatMap15(fromChunk));
 var fromEffect6 = (effect3) => pipe(effect3, mapError3(some2), fromEffectOption);
 var fromEffectOption = (effect3) => new StreamImpl(unwrap(match11(effect3, {
@@ -38680,7 +38846,7 @@ var fromReadableStream = (evaluate2, onError5) => unwrapScoped5(map15(acquireRel
 }) => done9 ? fail8(none2()) : succeed6(value3)))));
 var fromReadableStreamByob = (evaluate2, onError5, allocSize = 4096) => unwrapScoped5(map15(acquireRelease2(sync3(() => evaluate2().getReader({
   mode: "byob"
-})), (reader) => promise2(() => reader.cancel())), (reader) => catchAll6(forever5(readChunkStreamByobReader(reader, onError5, allocSize)), (error3) => isTagged(error3, "EOF") ? empty31 : fail12(error3))));
+})), (reader) => promise2(() => reader.cancel())), (reader) => catchAll6(forever5(readChunkStreamByobReader(reader, onError5, allocSize)), (error3) => isTagged(error3, "EOF") ? empty32 : fail12(error3))));
 var readChunkStreamByobReader = (reader, onError5, size15) => {
   const buffer4 = new ArrayBuffer(size15);
   return paginateEffect(0, (offset) => flatMap11(tryPromise2({
@@ -38702,26 +38868,26 @@ var readChunkStreamByobReader = (reader, onError5, size15) => {
 var groupAdjacentBy = /* @__PURE__ */ dual(2, (self, f) => {
   const groupAdjacentByChunk = (state, chunk5) => {
     if (isEmpty(chunk5)) {
-      return [state, empty2()];
+      return [state, empty3()];
     }
     const builder = [];
     let from = 0;
     let until = 0;
     let key = void 0;
-    let previousChunk = empty2();
+    let previousChunk = empty3();
     switch (state._tag) {
       case "Some": {
         const tuple2 = state.value;
         key = tuple2[0];
         let loop3 = true;
         while (loop3 && until < chunk5.length) {
-          const input = unsafeGet2(chunk5, until);
-          const updatedKey = f(input);
+          const input2 = unsafeGet2(chunk5, until);
+          const updatedKey = f(input2);
           if (!equals(key, updatedKey)) {
             const previousChunk2 = tuple2[1];
             const additionalChunk = unsafeFromArray(Array.from(chunk5).slice(from, until));
-            const group3 = appendAll2(previousChunk2, additionalChunk);
-            builder.push([key, group3]);
+            const group4 = appendAll2(previousChunk2, additionalChunk);
+            builder.push([key, group4]);
             key = updatedKey;
             from = until;
             loop3 = false;
@@ -38740,8 +38906,8 @@ var groupAdjacentBy = /* @__PURE__ */ dual(2, (self, f) => {
       }
     }
     while (until < chunk5.length) {
-      const input = unsafeGet2(chunk5, until);
-      const updatedKey = f(input);
+      const input2 = unsafeGet2(chunk5, until);
+      const updatedKey = f(input2);
       if (!equals(key, updatedKey)) {
         builder.push([key, unsafeFromArray(Array.from(chunk5).slice(from, until))]);
         key = updatedKey;
@@ -38754,8 +38920,8 @@ var groupAdjacentBy = /* @__PURE__ */ dual(2, (self, f) => {
     return [some2([key, nonEmptyChunk]), output];
   };
   const groupAdjacent = (state) => readWithCause({
-    onInput: (input) => {
-      const [updatedState, output] = groupAdjacentByChunk(state, input);
+    onInput: (input2) => {
+      const [updatedState, output] = groupAdjacentByChunk(state, input2);
       return isEmpty(output) ? groupAdjacent(updatedState) : flatMap13(write(output), () => groupAdjacent(updatedState));
     },
     onFailure: (cause3) => match(state, {
@@ -38774,7 +38940,7 @@ var groupedWithin = /* @__PURE__ */ dual(3, (self, chunkSize, duration2) => aggr
 var haltWhen = /* @__PURE__ */ dual(2, (self, effect3) => {
   const writer = (fiber) => pipe(poll3(fiber), map15(match({
     onNone: () => readWith({
-      onInput: (input) => flatMap13(write(input), () => writer(fiber)),
+      onInput: (input2) => flatMap13(write(input2), () => writer(fiber)),
       onFailure: fail10,
       onDone: () => unit6
     }),
@@ -38789,7 +38955,7 @@ var haltAfter = /* @__PURE__ */ dual(2, (self, duration2) => pipe(self, haltWhen
 var haltWhenDeferred = /* @__PURE__ */ dual(2, (self, deferred) => {
   const writer = pipe(poll(deferred), map15(match({
     onNone: () => readWith({
-      onInput: (input) => pipe(write(input), flatMap13(() => writer)),
+      onInput: (input2) => pipe(write(input2), flatMap13(() => writer)),
       onFailure: fail10,
       onDone: () => unit6
     }),
@@ -38812,14 +38978,14 @@ var interleaveWith = /* @__PURE__ */ dual(3, (self, that, decider) => {
     const process2 = (leftDone, rightDone) => readWithCause({
       onInput: (bool) => {
         if (bool && !leftDone) {
-          return pipe(fromEffect4(take5(left3)), flatMap13(match16({
+          return pipe(fromEffect4(take6(left3)), flatMap13(match16({
             onEnd: () => rightDone ? unit6 : process2(true, rightDone),
             onFailure: failCause8,
             onSuccess: (chunk5) => pipe(write(chunk5), flatMap13(() => process2(leftDone, rightDone)))
           })));
         }
         if (!bool && !rightDone) {
-          return pipe(fromEffect4(take5(right3)), flatMap13(match16({
+          return pipe(fromEffect4(take6(right3)), flatMap13(match16({
             onEnd: () => leftDone ? unit6 : process2(leftDone, true),
             onFailure: failCause8,
             onSuccess: (chunk5) => pipe(write(chunk5), flatMap13(() => process2(leftDone, rightDone)))
@@ -38833,7 +38999,7 @@ var interleaveWith = /* @__PURE__ */ dual(3, (self, that, decider) => {
     return pipe(toChannel2(decider), concatMap(writeChunk), pipeTo(process2(false, false)));
   }))));
 });
-var intersperse = /* @__PURE__ */ dual(2, (self, element) => new StreamImpl(pipe(toChannel2(self), pipeToOrFail(suspend5(() => {
+var intersperse2 = /* @__PURE__ */ dual(2, (self, element) => new StreamImpl(pipe(toChannel2(self), pipeToOrFail(suspend5(() => {
   const writer = (isFirst) => readWithCause({
     onInput: (chunk5) => {
       const builder = [];
@@ -38858,7 +39024,7 @@ var intersperseAffixes = /* @__PURE__ */ dual(2, (self, {
   end: end6,
   middle,
   start: start3
-}) => pipe(make44(start3), concat2(pipe(self, intersperse(middle))), concat2(make44(end6))));
+}) => pipe(make44(start3), concat2(pipe(self, intersperse2(middle))), concat2(make44(end6))));
 var interruptAfter = /* @__PURE__ */ dual(2, (self, duration2) => pipe(self, interruptWhen2(sleep2(duration2))));
 var interruptWhen2 = /* @__PURE__ */ dual(2, (self, effect3) => new StreamImpl(pipe(toChannel2(self), interruptWhen(effect3))));
 var interruptWhenDeferred2 = /* @__PURE__ */ dual(2, (self, deferred) => new StreamImpl(pipe(toChannel2(self), interruptWhenDeferred(deferred))));
@@ -38867,8 +39033,8 @@ var make44 = (...as11) => fromIterable12(as11);
 var map20 = /* @__PURE__ */ dual(2, (self, f) => new StreamImpl(pipe(toChannel2(self), mapOut(map4(f)))));
 var mapAccum5 = /* @__PURE__ */ dual(3, (self, s, f) => {
   const accumulator = (s2) => readWith({
-    onInput: (input) => {
-      const [nextS, chunk5] = mapAccum2(input, s2, f);
+    onInput: (input2) => {
+      const [nextS, chunk5] = mapAccum2(input2, s2, f);
       return flatMap13(write(chunk5), () => accumulator(nextS));
     },
     onFailure: fail10,
@@ -38878,12 +39044,12 @@ var mapAccum5 = /* @__PURE__ */ dual(3, (self, s, f) => {
 });
 var mapAccumEffect = /* @__PURE__ */ dual(3, (self, s, f) => suspend7(() => {
   const accumulator = (s2) => readWith({
-    onInput: (input) => pipe(suspend3(() => {
+    onInput: (input2) => pipe(suspend3(() => {
       const outputs = [];
       const emit2 = (output) => sync3(() => {
         outputs.push(output);
       });
-      return pipe(input, reduce11(s2, (s3, a) => pipe(f(s3, a), flatMap11(([s4, a2]) => pipe(emit2(a2), as4(s4))))), match11({
+      return pipe(input2, reduce11(s2, (s3, a) => pipe(f(s3, a), flatMap11(([s4, a2]) => pipe(emit2(a2), as4(s4))))), match11({
         onFailure: (error3) => {
           if (outputs.length !== 0) {
             return zipRight5(write(unsafeFromArray(outputs)), fail10(error3));
@@ -38919,7 +39085,7 @@ var mapEffectSequential = /* @__PURE__ */ dual(2, (self, f) => {
       return unwrap(map15(f(value3), (a2) => flatMap13(write(of2(a2)), () => loop3(iterator2))));
     }
   };
-  return new StreamImpl(pipe(toChannel2(self), pipeTo(suspend5(() => loop3(empty2()[Symbol.iterator]())))));
+  return new StreamImpl(pipe(toChannel2(self), pipeTo(suspend5(() => loop3(empty3()[Symbol.iterator]())))));
 });
 var mapEffectPar = /* @__PURE__ */ dual(3, (self, n, f) => new StreamImpl(pipe(toChannel2(self), concatMap(writeChunk), mapOutEffectPar(f, n), mapOut(of2))));
 var mapError7 = /* @__PURE__ */ dual(2, (self, f) => new StreamImpl(pipe(toChannel2(self), mapError5(f))));
@@ -38954,25 +39120,25 @@ var onError3 = /* @__PURE__ */ dual(2, (self, cleanup) => pipe(self, catchAllCau
 var onDone = /* @__PURE__ */ dual(2, (self, cleanup) => new StreamImpl(pipe(toChannel2(self), ensuringWith((exit4) => isSuccess2(exit4) ? cleanup() : unit5))));
 var orDie5 = (self) => pipe(self, orDieWith4(identity));
 var orDieWith4 = /* @__PURE__ */ dual(2, (self, f) => new StreamImpl(pipe(toChannel2(self), orDieWith3(f))));
-var orElse11 = /* @__PURE__ */ dual(2, (self, that) => new StreamImpl(pipe(toChannel2(self), orElse9(() => toChannel2(that())))));
-var orElseEither4 = /* @__PURE__ */ dual(2, (self, that) => pipe(self, map20(left2), orElse11(() => pipe(that(), map20(right2)))));
-var orElseFail3 = /* @__PURE__ */ dual(2, (self, error3) => pipe(self, orElse11(() => failSync7(error3))));
+var orElse10 = /* @__PURE__ */ dual(2, (self, that) => new StreamImpl(pipe(toChannel2(self), orElse8(() => toChannel2(that())))));
+var orElseEither4 = /* @__PURE__ */ dual(2, (self, that) => pipe(self, map20(left2), orElse10(() => pipe(that(), map20(right2)))));
+var orElseFail3 = /* @__PURE__ */ dual(2, (self, error3) => pipe(self, orElse10(() => failSync7(error3))));
 var orElseIfEmpty = /* @__PURE__ */ dual(2, (self, element) => pipe(self, orElseIfEmptyChunk(() => of2(element()))));
 var orElseIfEmptyChunk = /* @__PURE__ */ dual(2, (self, chunk5) => pipe(self, orElseIfEmptyStream(() => new StreamImpl(write(chunk5())))));
 var orElseIfEmptyStream = /* @__PURE__ */ dual(2, (self, stream2) => {
   const writer = readWith({
-    onInput: (input) => {
-      if (isEmpty(input)) {
+    onInput: (input2) => {
+      if (isEmpty(input2)) {
         return suspend5(() => writer);
       }
-      return pipe(write(input), zipRight5(identityChannel()));
+      return pipe(write(input2), zipRight5(identityChannel()));
     },
     onFailure: fail10,
     onDone: () => suspend5(() => toChannel2(stream2()))
   });
   return new StreamImpl(pipe(toChannel2(self), pipeTo(writer)));
 });
-var orElseSucceed3 = /* @__PURE__ */ dual(2, (self, value3) => pipe(self, orElse11(() => sync8(value3))));
+var orElseSucceed3 = /* @__PURE__ */ dual(2, (self, value3) => pipe(self, orElse10(() => sync8(value3))));
 var paginate = (s, f) => paginateChunk(s, (s2) => {
   const page = f(s2);
   return [of2(page[0]), page[1]];
@@ -39022,7 +39188,7 @@ var peel = /* @__PURE__ */ dual(2, (self, sink) => {
         })))), zipRight5(loop3)));
       }
     });
-    const producer = pipe(take5(handoff), map15((signal) => {
+    const producer = pipe(take6(handoff), map15((signal) => {
       switch (signal._tag) {
         case OP_EMIT5: {
           return pipe(write(signal.elements), flatMap13(() => producer));
@@ -39071,18 +39237,18 @@ var provideSomeLayer2 = /* @__PURE__ */ dual(2, (self, layer4) => (
   // @ts-expect-error
   pipe(self, provideLayer(pipe(context4(), merge8(layer4))))
 ));
-var range2 = (min3, max5, chunkSize = DefaultChunkSize) => suspend7(() => {
-  if (min3 > max5) {
-    return empty31;
+var range3 = (min4, max6, chunkSize = DefaultChunkSize) => suspend7(() => {
+  if (min4 > max6) {
+    return empty32;
   }
-  const go = (min4, max6, chunkSize2) => {
-    const remaining = max6 - min4 + 1;
+  const go = (min5, max7, chunkSize2) => {
+    const remaining = max7 - min5 + 1;
     if (remaining > chunkSize2) {
-      return pipe(write(range(min4, min4 + chunkSize2 - 1)), flatMap13(() => go(min4 + chunkSize2, max6, chunkSize2)));
+      return pipe(write(range2(min5, min5 + chunkSize2 - 1)), flatMap13(() => go(min5 + chunkSize2, max7, chunkSize2)));
     }
-    return write(range(min4, min4 + remaining - 1));
+    return write(range2(min5, min5 + remaining - 1));
   };
-  return new StreamImpl(go(min3, max5, chunkSize));
+  return new StreamImpl(go(min4, max6, chunkSize));
 });
 var rechunk = /* @__PURE__ */ dual(2, (self, n) => suspend7(() => {
   const target = Math.max(n, 1);
@@ -39169,14 +39335,14 @@ var repeatElements = /* @__PURE__ */ dual(2, (self, schedule4) => filterMap5(rep
 }), identity));
 var repeatElementsWith = /* @__PURE__ */ dual(3, (self, schedule4, options) => {
   const driver3 = pipe(driver2(schedule4), map15((driver4) => {
-    const feed = (input) => match(head2(input), {
+    const feed = (input2) => match(head2(input2), {
       onNone: () => loop3,
-      onSome: (a) => zipRight5(write(of2(options.onElement(a))), step4(pipe(input, drop2(1)), a))
+      onSome: (a) => zipRight5(write(of2(options.onElement(a))), step4(pipe(input2, drop2(1)), a))
     });
-    const step4 = (input, a) => {
-      const advance = pipe(driver4.next(a), as4(pipe(write(of2(options.onElement(a))), flatMap13(() => step4(input, a)))));
-      const reset = pipe(driver4.last, orDie3, flatMap11((b) => pipe(driver4.reset, map15(() => pipe(write(of2(options.onSchedule(b))), zipRight5(feed(input)))))));
-      return pipe(advance, orElse7(() => reset), unwrap);
+    const step4 = (input2, a) => {
+      const advance = pipe(driver4.next(a), as4(pipe(write(of2(options.onElement(a))), flatMap13(() => step4(input2, a)))));
+      const reset = pipe(driver4.last, orDie3, flatMap11((b) => pipe(driver4.reset, map15(() => pipe(write(of2(options.onSchedule(b))), zipRight5(feed(input2)))))));
+      return pipe(advance, orElse6(() => reset), unwrap);
     };
     const loop3 = readWith({
       onInput: feed,
@@ -39235,7 +39401,7 @@ var runIntoPubSubScoped = /* @__PURE__ */ dual(2, (self, pubsub) => pipe(self, r
 var runIntoQueue = /* @__PURE__ */ dual(2, (self, queue) => pipe(self, runIntoQueueScoped(queue), scoped2));
 var runIntoQueueElementsScoped = /* @__PURE__ */ dual(2, (self, queue) => {
   const writer = readWithCause({
-    onInput: (input) => flatMap13(fromEffect4(offerAll3(queue, map4(input, succeed3))), () => writer),
+    onInput: (input2) => flatMap13(fromEffect4(offerAll3(queue, map4(input2, succeed3))), () => writer),
     onFailure: (cause3) => fromEffect4(offer3(queue, failCause3(map11(cause3, some2)))),
     onDone: () => fromEffect4(offer3(queue, fail5(none2())))
   });
@@ -39243,16 +39409,16 @@ var runIntoQueueElementsScoped = /* @__PURE__ */ dual(2, (self, queue) => {
 });
 var runIntoQueueScoped = /* @__PURE__ */ dual(2, (self, queue) => {
   const writer = readWithCause({
-    onInput: (input) => flatMap13(write(chunk2(input)), () => writer),
+    onInput: (input2) => flatMap13(write(chunk2(input2)), () => writer),
     onFailure: (cause3) => write(failCause10(cause3)),
     onDone: () => write(end4)
   });
-  return pipe(pipeTo(toChannel2(self), writer), mapOutEffect((take9) => offer3(queue, take9)), drain, runScoped, asUnit3);
+  return pipe(pipeTo(toChannel2(self), writer), mapOutEffect((take10) => offer3(queue, take10)), drain, runScoped, asUnit3);
 });
 var runLast = (self) => pipe(self, run3(last4()));
 var runScoped2 = /* @__PURE__ */ dual(2, (self, sink) => pipe(toChannel2(self), pipeToOrFail(toChannel(sink)), drain, runScoped));
 var runSum = (self) => pipe(self, run3(sum2));
-var scan = /* @__PURE__ */ dual(3, (self, s, f) => pipe(self, scanEffect(s, (s2, a) => succeed6(f(s2, a)))));
+var scan2 = /* @__PURE__ */ dual(3, (self, s, f) => pipe(self, scanEffect(s, (s2, a) => succeed6(f(s2, a)))));
 var scanReduce = /* @__PURE__ */ dual(2, (self, f) => pipe(self, scanReduceEffect((a2, a) => succeed6(f(a2, a)))));
 var scanReduceEffect = /* @__PURE__ */ dual(2, (self, f) => pipe(self, mapAccumEffect(none2(), (option5, a) => {
   switch (option5._tag) {
@@ -39283,11 +39449,11 @@ var scheduleWith = /* @__PURE__ */ dual(3, (self, schedule4, options) => {
       onSuccess: () => succeed6(pipe(write(of2(options.onElement(next.value))), flatMap13(() => loop3(driver3, iterator2))))
     }));
   };
-  return new StreamImpl(pipe(fromEffect4(driver2(schedule4)), flatMap13((driver3) => pipe(toChannel2(self), pipeTo(loop3(driver3, empty2()[Symbol.iterator]()))))));
+  return new StreamImpl(pipe(fromEffect4(driver2(schedule4)), flatMap13((driver3) => pipe(toChannel2(self), pipeTo(loop3(driver3, empty3()[Symbol.iterator]()))))));
 });
 var scanEffect = /* @__PURE__ */ dual(3, (self, s, f) => new StreamImpl(pipe(write(of2(s)), flatMap13(() => toChannel2(pipe(self, mapAccumEffect(s, (s2, a) => pipe(f(s2, a), map15((s3) => [s3, s3])))))))));
 var scoped5 = (effect3) => new StreamImpl(ensuring3(scoped4(pipe(effect3, map15(of2))), unit5));
-var some6 = (self) => pipe(self, mapError7(some2), someOrFail(() => none2()));
+var some7 = (self) => pipe(self, mapError7(some2), someOrFail(() => none2()));
 var someOrElse = /* @__PURE__ */ dual(2, (self, fallback) => pipe(self, map20(getOrElse(fallback))));
 var someOrFail = /* @__PURE__ */ dual(2, (self, error3) => mapEffectSequential(self, match({
   onNone: () => failSync3(error3),
@@ -39303,7 +39469,7 @@ var slidingSize = /* @__PURE__ */ dual(3, (self, chunkSize, stepSize) => {
     const emitOnStreamEnd = (queueSize, channelEnd) => {
       if (queueSize < chunkSize) {
         const items = queue.toChunk();
-        const result2 = isEmpty(items) ? empty2() : of2(items);
+        const result2 = isEmpty(items) ? empty3() : of2(items);
         return pipe(write(result2), flatMap13(() => channelEnd));
       }
       const lastEmitIndex = queueSize - (queueSize - chunkSize) % stepSize;
@@ -39311,35 +39477,35 @@ var slidingSize = /* @__PURE__ */ dual(3, (self, chunkSize, stepSize) => {
         return channelEnd;
       }
       const leftovers = queueSize - (lastEmitIndex - chunkSize + stepSize);
-      const lastItems = pipe(queue.toChunk(), takeRight(leftovers));
-      const result = isEmpty(lastItems) ? empty2() : of2(lastItems);
+      const lastItems = pipe(queue.toChunk(), takeRight2(leftovers));
+      const result = isEmpty(lastItems) ? empty3() : of2(lastItems);
       return pipe(write(result), flatMap13(() => channelEnd));
     };
     const reader = (queueSize) => readWithCause({
-      onInput: (input) => flatMap13(write(filterMap3(input, (element, index2) => {
+      onInput: (input2) => flatMap13(write(filterMap3(input2, (element, index2) => {
         queue.put(element);
         const currentIndex = queueSize + index2 + 1;
         if (currentIndex < chunkSize || (currentIndex - chunkSize) % stepSize > 0) {
           return none2();
         }
         return some2(queue.toChunk());
-      })), () => reader(queueSize + input.length)),
+      })), () => reader(queueSize + input2.length)),
       onFailure: (cause3) => emitOnStreamEnd(queueSize, failCause8(cause3)),
       onDone: () => emitOnStreamEnd(queueSize, unit6)
     });
     return pipe(toChannel2(self), pipeTo(reader(0)));
   }));
 });
-var split2 = /* @__PURE__ */ dual(2, (self, predicate) => {
-  const split4 = (leftovers, input) => {
-    const [chunk5, remaining] = pipe(leftovers, appendAll2(input), splitWhere(predicate));
+var split3 = /* @__PURE__ */ dual(2, (self, predicate) => {
+  const split5 = (leftovers, input2) => {
+    const [chunk5, remaining] = pipe(leftovers, appendAll2(input2), splitWhere2(predicate));
     if (isEmpty(chunk5) || isEmpty(remaining)) {
       return loop3(pipe(chunk5, appendAll2(pipe(remaining, drop2(1)))));
     }
-    return pipe(write(of2(chunk5)), flatMap13(() => split4(empty2(), pipe(remaining, drop2(1)))));
+    return pipe(write(of2(chunk5)), flatMap13(() => split5(empty3(), pipe(remaining, drop2(1)))));
   };
   const loop3 = (leftovers) => readWith({
-    onInput: (input) => split4(leftovers, input),
+    onInput: (input2) => split5(leftovers, input2),
     onFailure: fail10,
     onDone: () => {
       if (isEmpty(leftovers)) {
@@ -39348,30 +39514,30 @@ var split2 = /* @__PURE__ */ dual(2, (self, predicate) => {
       if (isNone2(pipe(leftovers, findFirst2(predicate)))) {
         return zipRight5(write(of2(leftovers)), unit6);
       }
-      return zipRight5(split4(empty2(), leftovers), unit6);
+      return zipRight5(split5(empty3(), leftovers), unit6);
     }
   });
-  return new StreamImpl(pipe(toChannel2(self), pipeTo(loop3(empty2()))));
+  return new StreamImpl(pipe(toChannel2(self), pipeTo(loop3(empty3()))));
 });
 var splitOnChunk = /* @__PURE__ */ dual(2, (self, delimiter) => {
   const next = (leftover3, delimiterIndex) => readWithCause({
     onInput: (inputChunk) => {
       let buffer4;
-      const [carry, delimiterCursor] = pipe(inputChunk, reduce2([pipe(leftover3, getOrElse(() => empty2())), delimiterIndex], ([carry2, delimiterCursor2], a) => {
+      const [carry, delimiterCursor] = pipe(inputChunk, reduce2([pipe(leftover3, getOrElse(() => empty3())), delimiterIndex], ([carry2, delimiterCursor2], a) => {
         const concatenated = pipe(carry2, append2(a));
         if (delimiterCursor2 < delimiter.length && equals(a, pipe(delimiter, unsafeGet2(delimiterCursor2)))) {
           if (delimiterCursor2 + 1 === delimiter.length) {
             if (buffer4 === void 0) {
               buffer4 = [];
             }
-            buffer4.push(pipe(concatenated, take(concatenated.length - delimiter.length)));
-            return [empty2(), 0];
+            buffer4.push(pipe(concatenated, take2(concatenated.length - delimiter.length)));
+            return [empty3(), 0];
           }
           return [concatenated, delimiterCursor2 + 1];
         }
         return [concatenated, equals(a, pipe(delimiter, unsafeGet2(0))) ? 1 : 0];
       }));
-      const output = buffer4 === void 0 ? empty2() : unsafeFromArray(buffer4);
+      const output = buffer4 === void 0 ? empty3() : unsafeFromArray(buffer4);
       return flatMap13(write(output), () => next(isNonEmpty(carry) ? some2(carry) : none2(), delimiterCursor));
     },
     onFailure: (cause3) => match(leftover3, {
@@ -39448,8 +39614,8 @@ var splitLines = (self) => suspend7(() => {
     return unsafeFromArray(chunkBuilder);
   };
   const loop3 = readWithCause({
-    onInput: (input) => {
-      const out = splitLinesChunk(input);
+    onInput: (input2) => {
+      const out = splitLinesChunk(input2);
       return isEmpty(out) ? loop3 : flatMap13(write(out), () => loop3);
     },
     onFailure: (cause3) => stringBuilder.length === 0 ? failCause8(cause3) : flatMap13(write(of2(stringBuilder)), () => failCause8(cause3)),
@@ -39460,13 +39626,13 @@ var splitLines = (self) => suspend7(() => {
 var succeed11 = (value3) => fromChunk(of2(value3));
 var sync8 = (evaluate2) => suspend7(() => fromChunk(of2(evaluate2())));
 var suspend7 = (stream2) => new StreamImpl(suspend5(() => toChannel2(stream2())));
-var take6 = /* @__PURE__ */ dual(2, (self, n) => {
+var take7 = /* @__PURE__ */ dual(2, (self, n) => {
   if (!Number.isInteger(n)) {
     return die9(new IllegalArgumentException2(`${n} must be an integer`));
   }
   const loop3 = (n2) => readWith({
-    onInput: (input) => {
-      const taken = pipe(input, take(Math.min(n2, Number.POSITIVE_INFINITY)));
+    onInput: (input2) => {
+      const taken = pipe(input2, take2(Math.min(n2, Number.POSITIVE_INFINITY)));
       const leftover3 = Math.max(0, n2 - taken.length);
       const more = leftover3 > 0;
       if (more) {
@@ -39479,14 +39645,14 @@ var take6 = /* @__PURE__ */ dual(2, (self, n) => {
   });
   return new StreamImpl(pipe(toChannel2(self), pipeToOrFail(0 < n ? loop3(n) : unit6)));
 });
-var takeRight2 = /* @__PURE__ */ dual(2, (self, n) => {
+var takeRight3 = /* @__PURE__ */ dual(2, (self, n) => {
   if (n <= 0) {
-    return empty31;
+    return empty32;
   }
   return new StreamImpl(pipe(succeed6(new RingBuffer(n)), map15((queue) => {
     const reader = readWith({
-      onInput: (input) => {
-        for (const element of input) {
+      onInput: (input2) => {
+        for (const element of input2) {
           queue.put(element);
         }
         return reader;
@@ -39499,9 +39665,9 @@ var takeRight2 = /* @__PURE__ */ dual(2, (self, n) => {
 });
 var takeUntil3 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const loop3 = readWith({
-    onInput: (input) => {
-      const taken = pipe(input, takeWhile((a) => !predicate(a)));
-      const last6 = pipe(input, drop2(taken.length), take(1));
+    onInput: (input2) => {
+      const taken = pipe(input2, takeWhile2((a) => !predicate(a)));
+      const last6 = pipe(input2, drop2(taken.length), take2(1));
       if (isEmpty(last6)) {
         return pipe(write(taken), flatMap13(() => loop3));
       }
@@ -39524,13 +39690,13 @@ var takeUntilEffect = /* @__PURE__ */ dual(2, (self, predicate) => {
     }
     return pipe(predicate(next.value), map15((bool) => bool ? write(of2(next.value)) : pipe(write(of2(next.value)), flatMap13(() => loop3(iterator2)))), unwrap);
   };
-  return new StreamImpl(pipe(toChannel2(self), pipeTo(loop3(empty2()[Symbol.iterator]()))));
+  return new StreamImpl(pipe(toChannel2(self), pipeTo(loop3(empty3()[Symbol.iterator]()))));
 });
-var takeWhile4 = /* @__PURE__ */ dual(2, (self, predicate) => {
+var takeWhile5 = /* @__PURE__ */ dual(2, (self, predicate) => {
   const loop3 = readWith({
-    onInput: (input) => {
-      const taken = pipe(input, takeWhile(predicate));
-      const more = taken.length === input.length;
+    onInput: (input2) => {
+      const taken = pipe(input2, takeWhile2(predicate));
+      const more = taken.length === input2.length;
       if (more) {
         return pipe(write(taken), flatMap13(() => loop3));
       }
@@ -39587,14 +39753,14 @@ var throttleEffect = /* @__PURE__ */ dual(2, (self, options) => {
 });
 var throttleEnforceEffect = (self, cost, units, duration2, burst) => {
   const loop3 = (tokens, timestampMillis) => readWithCause({
-    onInput: (input) => pipe(cost(input), zip6(currentTimeMillis2), map15(([weight, currentTimeMillis3]) => {
+    onInput: (input2) => pipe(cost(input2), zip6(currentTimeMillis2), map15(([weight, currentTimeMillis3]) => {
       const elapsed2 = currentTimeMillis3 - timestampMillis;
       const cycles = elapsed2 / toMillis(duration2);
       const sum4 = tokens + cycles * units;
-      const max5 = units + burst < 0 ? Number.POSITIVE_INFINITY : units + burst;
-      const available = sum4 < 0 ? max5 : Math.min(sum4, max5);
+      const max6 = units + burst < 0 ? Number.POSITIVE_INFINITY : units + burst;
+      const available = sum4 < 0 ? max6 : Math.min(sum4, max6);
       if (weight <= available) {
-        return pipe(write(input), flatMap13(() => loop3(available - weight, currentTimeMillis3)));
+        return pipe(write(input2), flatMap13(() => loop3(available - weight, currentTimeMillis3)));
       }
       return loop3(tokens, timestampMillis);
     }), unwrap),
@@ -39606,19 +39772,19 @@ var throttleEnforceEffect = (self, cost, units, duration2, burst) => {
 };
 var throttleShapeEffect = (self, costFn, units, duration2, burst) => {
   const loop3 = (tokens, timestampMillis) => readWithCause({
-    onInput: (input) => pipe(costFn(input), zip6(currentTimeMillis2), map15(([weight, currentTimeMillis3]) => {
+    onInput: (input2) => pipe(costFn(input2), zip6(currentTimeMillis2), map15(([weight, currentTimeMillis3]) => {
       const elapsed2 = currentTimeMillis3 - timestampMillis;
       const cycles = elapsed2 / toMillis(duration2);
       const sum4 = tokens + cycles * units;
-      const max5 = units + burst < 0 ? Number.POSITIVE_INFINITY : units + burst;
-      const available = sum4 < 0 ? max5 : Math.min(sum4, max5);
+      const max6 = units + burst < 0 ? Number.POSITIVE_INFINITY : units + burst;
+      const available = sum4 < 0 ? max6 : Math.min(sum4, max6);
       const remaining = available - weight;
       const waitCycles = remaining >= 0 ? 0 : -remaining / units;
       const delay3 = millis(Math.max(0, waitCycles * toMillis(duration2)));
       if (greaterThan2(delay3, zero)) {
-        return pipe(fromEffect4(sleep2(delay3)), zipRight5(write(input)), flatMap13(() => loop3(remaining, currentTimeMillis3)));
+        return pipe(fromEffect4(sleep2(delay3)), zipRight5(write(input2)), flatMap13(() => loop3(remaining, currentTimeMillis3)));
       }
-      return flatMap13(write(input), () => loop3(remaining, currentTimeMillis3));
+      return flatMap13(write(input2), () => loop3(remaining, currentTimeMillis3));
     }), unwrap),
     onFailure: failCause8,
     onDone: () => unit6
@@ -39677,7 +39843,7 @@ var toReadableStream = (source) => {
 var transduce = /* @__PURE__ */ dual(2, (self, sink) => {
   const newChannel = suspend5(() => {
     const leftovers = {
-      ref: empty2()
+      ref: empty3()
     };
     const upstreamDone = {
       ref: false
@@ -39686,22 +39852,22 @@ var transduce = /* @__PURE__ */ dual(2, (self, sink) => {
       const leftover3 = leftovers.ref;
       if (isEmpty(leftover3)) {
         return readWith({
-          onInput: (input) => pipe(write(input), flatMap13(() => buffer4)),
+          onInput: (input2) => pipe(write(input2), flatMap13(() => buffer4)),
           onFailure: fail10,
           onDone: succeedNow
         });
       }
-      leftovers.ref = empty2();
+      leftovers.ref = empty3();
       return pipe(writeChunk(leftover3), flatMap13(() => buffer4));
     });
     const concatAndGet = (chunk5) => {
       const leftover3 = leftovers.ref;
-      const concatenated = appendAll2(leftover3, filter2(chunk5, (chunk6) => chunk6.length !== 0));
+      const concatenated = appendAll2(leftover3, filter3(chunk5, (chunk6) => chunk6.length !== 0));
       leftovers.ref = concatenated;
       return concatenated;
     };
     const upstreamMarker = readWith({
-      onInput: (input) => flatMap13(write(input), () => upstreamMarker),
+      onInput: (input2) => flatMap13(write(input2), () => upstreamMarker),
       onFailure: fail10,
       onDone: (done9) => zipRight5(sync5(() => {
         upstreamDone.ref = true;
@@ -39737,8 +39903,8 @@ var unwrapScoped5 = (effect3) => flatten12(scoped5(effect3));
 var updateService3 = /* @__PURE__ */ dual(3, (self, tag2, f) => pipe(self, mapInputContext4((context11) => pipe(context11, add4(tag2, f(pipe(context11, unsafeGet5(tag2))))))));
 var when3 = /* @__PURE__ */ dual(2, (self, test) => pipe(self, whenEffect3(sync3(test))));
 var whenCase = (evaluate2, pf) => whenCaseEffect(pf)(sync3(evaluate2));
-var whenCaseEffect = /* @__PURE__ */ dual(2, (self, pf) => pipe(fromEffect6(self), flatMap15((a) => pipe(pf(a), getOrElse(() => empty31)))));
-var whenEffect3 = /* @__PURE__ */ dual(2, (self, effect3) => pipe(fromEffect6(effect3), flatMap15((bool) => bool ? self : empty31)));
+var whenCaseEffect = /* @__PURE__ */ dual(2, (self, pf) => pipe(fromEffect6(self), flatMap15((a) => pipe(pf(a), getOrElse(() => empty32)))));
+var whenEffect3 = /* @__PURE__ */ dual(2, (self, effect3) => pipe(fromEffect6(effect3), flatMap15((bool) => bool ? self : empty32)));
 var withSpan6 = /* @__PURE__ */ dual(3, (self, name, options) => new StreamImpl(withSpan5(toChannel2(self), name, options)));
 var zip9 = /* @__PURE__ */ dual(2, (self, that) => pipe(self, zipWith11(that, (a, a2) => [a, a2])));
 var zipFlatten = /* @__PURE__ */ dual(2, (self, that) => pipe(self, zipWith11(that, (a, a2) => [...a, a2])));
@@ -40033,21 +40199,21 @@ var zipLatestWith = /* @__PURE__ */ dual(3, (self, that, f) => {
     onSelfDone: (leftDone, rightFiber) => pipe(suspend3(() => leftDone), zipWith7(join4(rightFiber), (l, r) => [l, r, true])),
     onOtherDone: (rightDone, leftFiber) => pipe(suspend3(() => rightDone), zipWith7(join4(leftFiber), (l, r) => [r, l, false]))
   })), flatMap15(([l, r, leftFirst]) => pipe(fromEffect6(make24([unsafeLast(l), unsafeLast(r)])), flatMap15((latest) => pipe(fromChunk(leftFirst ? pipe(r, map4((a2) => f(unsafeLast(l), a2))) : pipe(l, map4((a) => f(a, unsafeLast(r))))), concat2(pipe(repeatEffectOption(left3), mergeEither(repeatEffectOption(right3)), mapEffectSequential(match2({
-    onLeft: (leftChunk) => pipe(modify4(latest, ([_, rightLatest]) => [pipe(leftChunk, map4((a) => f(a, rightLatest))), [unsafeLast(leftChunk), rightLatest]])),
-    onRight: (rightChunk) => pipe(modify4(latest, ([leftLatest, _]) => [pipe(rightChunk, map4((a2) => f(leftLatest, a2))), [leftLatest, unsafeLast(rightChunk)]]))
+    onLeft: (leftChunk) => pipe(modify5(latest, ([_, rightLatest]) => [pipe(leftChunk, map4((a) => f(a, rightLatest))), [unsafeLast(leftChunk), rightLatest]])),
+    onRight: (rightChunk) => pipe(modify5(latest, ([leftLatest, _]) => [pipe(rightChunk, map4((a2) => f(leftLatest, a2))), [leftLatest, unsafeLast(rightChunk)]]))
   })), flatMap15(fromChunk))))))), toPull2)), fromPull2);
 });
 var zipLeft6 = /* @__PURE__ */ dual(2, (self, that) => pipe(self, zipWithChunks(that, (left3, right3) => {
   if (left3.length > right3.length) {
-    return [pipe(left3, take(right3.length)), left2(pipe(left3, take(right3.length)))];
+    return [pipe(left3, take2(right3.length)), left2(pipe(left3, take2(right3.length)))];
   }
   return [left3, right2(pipe(right3, drop2(left3.length)))];
 })));
 var zipRight8 = /* @__PURE__ */ dual(2, (self, that) => pipe(self, zipWithChunks(that, (left3, right3) => {
   if (left3.length > right3.length) {
-    return [right3, left2(pipe(left3, take(right3.length)))];
+    return [right3, left2(pipe(left3, take2(right3.length)))];
   }
-  return [pipe(right3, take(left3.length)), right2(pipe(right3, drop2(left3.length)))];
+  return [pipe(right3, take2(left3.length)), right2(pipe(right3, drop2(left3.length)))];
 })));
 var zipWith11 = /* @__PURE__ */ dual(3, (self, that, f) => pipe(self, zipWithChunks(that, (leftChunk, rightChunk) => zipChunks(leftChunk, rightChunk, f))));
 var zipWithChunks = /* @__PURE__ */ dual(3, (self, that, f) => {
@@ -40127,8 +40293,8 @@ var zipWithChunks = /* @__PURE__ */ dual(3, (self, that, f) => {
 var zipWithIndex = (self) => pipe(self, mapAccum5(0, (index2, a) => [index2 + 1, [a, index2]]));
 var zipWithNext = (self) => {
   const process2 = (last6) => readWithCause({
-    onInput: (input) => {
-      const [newLast, chunk5] = mapAccum2(input, last6, (prev, curr) => [some2(curr), pipe(prev, map((a) => [a, curr]))]);
+    onInput: (input2) => {
+      const [newLast, chunk5] = mapAccum2(input2, last6, (prev, curr) => [some2(curr), pipe(prev, map((a) => [a, curr]))]);
       const output = filterMap3(chunk5, (option5) => isSome2(option5) ? some2([option5.value[0], some2(option5.value[1])]) : none2());
       return flatMap13(write(output), () => process2(newLast));
     },
@@ -40144,9 +40310,9 @@ var zipWithPrevious = (self) => pipe(self, mapAccum5(none2(), (prev, curr) => [s
 var zipWithPreviousAndNext = (self) => pipe(zipWithNext(zipWithPrevious(self)), map20(([[prev, curr], next]) => [prev, curr, pipe(next, map((tuple2) => tuple2[1]))]));
 var zipChunks = (left3, right3, f) => {
   if (left3.length > right3.length) {
-    return [pipe(left3, take(right3.length), zipWith4(right3, f)), left2(pipe(left3, drop2(right3.length)))];
+    return [pipe(left3, take2(right3.length), zipWith4(right3, f)), left2(pipe(left3, drop2(right3.length)))];
   }
-  return [pipe(left3, zipWith4(pipe(right3, take(left3.length)), f)), right2(pipe(right3, drop2(left3.length)))];
+  return [pipe(left3, zipWith4(pipe(right3, take2(left3.length)), f)), right2(pipe(right3, drop2(left3.length)))];
 };
 var Do4 = /* @__PURE__ */ succeed11({});
 var bind4 = /* @__PURE__ */ dual((args) => typeof args[0] !== "string", (self, tag2, f, options) => flatMap15(self, (k) => map20(f(k), (a) => ({
@@ -40179,7 +40345,7 @@ var Config_exports = {};
 __export(Config_exports, {
   ConfigTypeId: () => ConfigTypeId2,
   all: () => all7,
-  array: () => array4,
+  array: () => array5,
   boolean: () => boolean2,
   chunk: () => chunk4,
   date: () => date2,
@@ -40192,10 +40358,10 @@ __export(Config_exports, {
   map: () => map22,
   mapAttempt: () => mapAttempt2,
   mapOrFail: () => mapOrFail2,
-  nested: () => nested4,
+  nested: () => nested3,
   number: () => number4,
   option: () => option4,
-  orElse: () => orElse13,
+  orElse: () => orElse12,
   orElseIf: () => orElseIf2,
   primitive: () => primitive2,
   repeat: () => repeat4,
@@ -40326,13 +40492,13 @@ var boolean = (name) => {
       }
     }
   });
-  return name === void 0 ? config2 : nested3(config2, name);
+  return name === void 0 ? config2 : nested2(config2, name);
 };
-var array3 = (config2, name) => {
+var array4 = (config2, name) => {
   return pipe(chunk3(config2, name), map21(toReadonlyArray));
 };
 var chunk3 = (config2, name) => {
-  return map21(name === void 0 ? repeat3(config2) : nested3(repeat3(config2), name), unsafeFromArray);
+  return map21(name === void 0 ? repeat3(config2) : nested2(repeat3(config2), name), unsafeFromArray);
 };
 var date = (name) => {
   const config2 = primitive("a date property", (text3) => {
@@ -40342,7 +40508,7 @@ var date = (name) => {
     }
     return right2(new Date(result));
   });
-  return name === void 0 ? config2 : nested3(config2, name);
+  return name === void 0 ? config2 : nested2(config2, name);
 };
 var fail13 = (message) => {
   const fail17 = Object.create(proto13);
@@ -40359,7 +40525,7 @@ var number3 = (name) => {
     }
     return right2(result);
   });
-  return name === void 0 ? config2 : nested3(config2, name);
+  return name === void 0 ? config2 : nested2(config2, name);
 };
 var integer = (name) => {
   const config2 = primitive("an integer property", (text3) => {
@@ -40369,7 +40535,7 @@ var integer = (name) => {
     }
     return right2(result);
   });
-  return name === void 0 ? config2 : nested3(config2, name);
+  return name === void 0 ? config2 : nested2(config2, name);
 };
 var logLevel = (name) => {
   const config2 = mapOrFail(string2(), (value3) => {
@@ -40377,7 +40543,7 @@ var logLevel = (name) => {
     const level = allLogLevels.find((level2) => level2.label === label);
     return level === void 0 ? left2(InvalidData([], `Expected a log level but received ${value3}`)) : right2(level);
   });
-  return name === void 0 ? config2 : nested3(config2, name);
+  return name === void 0 ? config2 : nested2(config2, name);
 };
 var map21 = /* @__PURE__ */ dual(2, (self, f) => mapOrFail(self, (a) => right2(f(a))));
 var mapAttempt = /* @__PURE__ */ dual(2, (self, f) => mapOrFail(self, (a) => {
@@ -40394,14 +40560,14 @@ var mapOrFail = /* @__PURE__ */ dual(2, (self, f) => {
   mapOrFail3.mapOrFail = f;
   return mapOrFail3;
 });
-var nested3 = /* @__PURE__ */ dual(2, (self, name) => {
-  const nested6 = Object.create(proto13);
-  nested6._tag = OP_NESTED;
-  nested6.name = name;
-  nested6.config = self;
-  return nested6;
+var nested2 = /* @__PURE__ */ dual(2, (self, name) => {
+  const nested4 = Object.create(proto13);
+  nested4._tag = OP_NESTED;
+  nested4.name = name;
+  nested4.config = self;
+  return nested4;
 });
-var orElse12 = /* @__PURE__ */ dual(2, (self, that) => {
+var orElse11 = /* @__PURE__ */ dual(2, (self, that) => {
   const fallback = Object.create(proto13);
   fallback._tag = OP_FALLBACK;
   fallback.first = self;
@@ -40423,11 +40589,11 @@ var option3 = (self) => {
     if: isMissingDataOnly2
   }));
 };
-var primitive = (description, parse3) => {
+var primitive = (description, parse4) => {
   const primitive3 = Object.create(proto13);
   primitive3._tag = OP_PRIMITIVE;
   primitive3.description = description;
-  primitive3.parse = parse3;
+  primitive3.parse = parse4;
   return primitive3;
 };
 var repeat3 = (self) => {
@@ -40438,15 +40604,15 @@ var repeat3 = (self) => {
 };
 var secret = (name) => {
   const config2 = primitive("a secret property", (text3) => right2(fromString(text3)));
-  return name === void 0 ? config2 : nested3(config2, name);
+  return name === void 0 ? config2 : nested2(config2, name);
 };
 var hashSet2 = (config2, name) => {
   const newConfig = map21(chunk3(config2), fromIterable6);
-  return name === void 0 ? newConfig : nested3(newConfig, name);
+  return name === void 0 ? newConfig : nested2(newConfig, name);
 };
 var string2 = (name) => {
   const config2 = primitive("a text property", right2);
-  return name === void 0 ? config2 : nested3(config2, name);
+  return name === void 0 ? config2 : nested2(config2, name);
 };
 var all6 = (arg) => {
   if (Array.isArray(arg)) {
@@ -40493,7 +40659,7 @@ var hashMap2 = (config2, name) => {
   const table3 = Object.create(proto13);
   table3._tag = OP_HASHMAP;
   table3.valueConfig = config2;
-  return name === void 0 ? table3 : nested3(table3, name);
+  return name === void 0 ? table3 : nested2(table3, name);
 };
 var isConfig = (u) => hasProperty(u, ConfigTypeId);
 var tuple = (tuple2) => {
@@ -40549,7 +40715,7 @@ var zipWith12 = /* @__PURE__ */ dual(3, (self, that, f) => {
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Config.js
 var ConfigTypeId2 = ConfigTypeId;
 var all7 = all6;
-var array4 = array3;
+var array5 = array4;
 var boolean2 = boolean;
 var chunk4 = chunk3;
 var date2 = date;
@@ -40561,8 +40727,8 @@ var isConfig2 = isConfig;
 var map22 = map21;
 var mapAttempt2 = mapAttempt;
 var mapOrFail2 = mapOrFail;
-var nested4 = nested3;
-var orElse13 = orElse12;
+var nested3 = nested2;
+var orElse12 = orElse11;
 var orElseIf2 = orElseIf;
 var option4 = option3;
 var primitive2 = primitive;
@@ -40581,49 +40747,6 @@ var withDescription2 = withDescription;
 var zip11 = zip10;
 var zipWith13 = zipWith12;
 
-// node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/ConfigProvider.js
-var ConfigProvider_exports = {};
-__export(ConfigProvider_exports, {
-  ConfigProvider: () => ConfigProvider,
-  ConfigProviderTypeId: () => ConfigProviderTypeId2,
-  FlatConfigProviderTypeId: () => FlatConfigProviderTypeId2,
-  constantCase: () => constantCase3,
-  fromEnv: () => fromEnv2,
-  fromFlat: () => fromFlat2,
-  fromJson: () => fromJson2,
-  fromMap: () => fromMap2,
-  kebabCase: () => kebabCase3,
-  lowerCase: () => lowerCase3,
-  make: () => make46,
-  makeFlat: () => makeFlat2,
-  mapInputPath: () => mapInputPath2,
-  nested: () => nested5,
-  orElse: () => orElse14,
-  snakeCase: () => snakeCase3,
-  unnested: () => unnested3,
-  upperCase: () => upperCase3,
-  within: () => within2
-});
-var ConfigProviderTypeId2 = ConfigProviderTypeId;
-var FlatConfigProviderTypeId2 = FlatConfigProviderTypeId;
-var ConfigProvider = configProviderTag;
-var make46 = make20;
-var makeFlat2 = makeFlat;
-var fromEnv2 = fromEnv;
-var fromFlat2 = fromFlat;
-var fromJson2 = fromJson;
-var fromMap2 = fromMap;
-var constantCase3 = constantCase2;
-var mapInputPath2 = mapInputPath;
-var kebabCase3 = kebabCase2;
-var lowerCase3 = lowerCase2;
-var nested5 = nested2;
-var orElse14 = orElse4;
-var unnested3 = unnested2;
-var snakeCase3 = snakeCase2;
-var upperCase3 = upperCase2;
-var within2 = within;
-
 // node_modules/.pnpm/effect@2.0.0-next.62/node_modules/effect/dist/esm/Console.js
 var Console_exports = {};
 __export(Console_exports, {
@@ -40638,7 +40761,7 @@ __export(Console_exports, {
   dir: () => dir2,
   dirxml: () => dirxml2,
   error: () => error2,
-  group: () => group2,
+  group: () => group3,
   info: () => info2,
   log: () => log4,
   setConsole: () => setConsole2,
@@ -40664,7 +40787,7 @@ var debug2 = debug;
 var dir2 = dir;
 var dirxml2 = dirxml;
 var error2 = error;
-var group2 = group;
+var group3 = group2;
 var info2 = info;
 var log4 = log2;
 var table2 = table;
@@ -40698,14 +40821,14 @@ var evaluate = /* @__PURE__ */ dual((args) => isGroupBy(args[0]), (self, f, opti
   concurrency: "unbounded",
   bufferSize: options?.bufferSize ?? 16
 }));
-var make47 = (grouped3) => ({
+var make46 = (grouped3) => ({
   [GroupByTypeId]: groupByVariance,
   pipe() {
     return pipeArguments(this, arguments);
   },
   grouped: grouped3
 });
-var groupBy = /* @__PURE__ */ dual((args) => isStream(args[0]), (self, f, options) => make47(unwrapScoped5(gen4(function* ($) {
+var groupBy2 = /* @__PURE__ */ dual((args) => isStream(args[0]), (self, f, options) => make46(unwrapScoped5(gen4(function* ($) {
   const decider = yield* $(make22());
   const output = yield* $(acquireRelease2(bounded5(options?.bufferSize ?? 16), (queue) => shutdown4(queue)));
   const ref = yield* $(make24(/* @__PURE__ */ new Map()));
@@ -40771,16 +40894,16 @@ var MapDequeue = class {
     return isEmpty12(this.dequeue);
   }
   get take() {
-    return pipe(take3(this.dequeue), map15((a) => this.f(a)));
+    return pipe(take4(this.dequeue), map15((a) => this.f(a)));
   }
   get takeAll() {
     return pipe(takeAll2(this.dequeue), map15(map4((a) => this.f(a))));
   }
-  takeUpTo(max5) {
-    return pipe(takeUpTo2(this.dequeue, max5), map15(map4((a) => this.f(a))));
+  takeUpTo(max6) {
+    return pipe(takeUpTo2(this.dequeue, max6), map15(map4((a) => this.f(a))));
   }
-  takeBetween(min3, max5) {
-    return pipe(takeBetween2(this.dequeue, min3, max5), map15(map4((a) => this.f(a))));
+  takeBetween(min4, max6) {
+    return pipe(takeBetween2(this.dequeue, min4, max6), map15(map4((a) => this.f(a))));
   }
   takeN(n) {
     return pipe(takeN2(this.dequeue, n), map15(map4((a) => this.f(a))));
@@ -40794,7 +40917,7 @@ var MapDequeue = class {
 };
 var groupByKey = /* @__PURE__ */ dual((args) => typeof args[0] !== "function", (self, f, options) => {
   const loop3 = (map25, outerQueue) => readWithCause({
-    onInput: (input) => flatMap13(fromEffect4(forEach9(groupByIterable(input, f), ([key, values3]) => {
+    onInput: (input2) => flatMap13(fromEffect4(forEach9(groupByIterable(input2, f), ([key, values3]) => {
       const innerQueue = map25.get(key);
       if (innerQueue === void 0) {
         return pipe(bounded5(options?.bufferSize ?? 16), flatMap11((innerQueue2) => pipe(sync3(() => {
@@ -40810,7 +40933,7 @@ var groupByKey = /* @__PURE__ */ dual((args) => typeof args[0] !== "function", (
       discard: true
     }), zipRight4(offer3(outerQueue, end4)))))
   });
-  return make47(unwrapScoped5(pipe(sync3(() => /* @__PURE__ */ new Map()), flatMap11((map25) => pipe(acquireRelease2(unbounded4(), (queue) => shutdown4(queue)), flatMap11((queue) => pipe(self, toChannel2, pipeTo(loop3(map25, queue)), drain, runScoped, forkScoped2, as4(flattenTake(fromQueue3(queue, {
+  return make46(unwrapScoped5(pipe(sync3(() => /* @__PURE__ */ new Map()), flatMap11((map25) => pipe(acquireRelease2(unbounded4(), (queue) => shutdown4(queue)), flatMap11((queue) => pipe(self, toChannel2, pipeTo(loop3(map25, queue)), drain, runScoped, forkScoped2, as4(flattenTake(fromQueue3(queue, {
     shutdown: true
   }))))))))));
 });
@@ -40895,13 +41018,13 @@ __export(Stream_exports, {
   drain: () => drain4,
   drainFork: () => drainFork2,
   drop: () => drop5,
-  dropRight: () => dropRight3,
+  dropRight: () => dropRight4,
   dropUntil: () => dropUntil5,
   dropUntilEffect: () => dropUntilEffect3,
-  dropWhile: () => dropWhile6,
+  dropWhile: () => dropWhile7,
   dropWhileEffect: () => dropWhileEffect3,
   either: () => either6,
-  empty: () => empty32,
+  empty: () => empty33,
   encodeText: () => encodeText2,
   ensuring: () => ensuring7,
   ensuringWith: () => ensuringWith4,
@@ -40910,7 +41033,7 @@ __export(Stream_exports, {
   failCause: () => failCause13,
   failCauseSync: () => failCauseSync8,
   failSync: () => failSync8,
-  filter: () => filter9,
+  filter: () => filter10,
   filterEffect: () => filterEffect2,
   filterMap: () => filterMap6,
   filterMapEffect: () => filterMapEffect2,
@@ -40945,7 +41068,7 @@ __export(Stream_exports, {
   fromReadableStreamByob: () => fromReadableStreamByob2,
   fromSchedule: () => fromSchedule2,
   groupAdjacentBy: () => groupAdjacentBy2,
-  groupBy: () => groupBy2,
+  groupBy: () => groupBy3,
   groupByKey: () => groupByKey2,
   grouped: () => grouped2,
   groupedWithin: () => groupedWithin2,
@@ -40958,11 +41081,11 @@ __export(Stream_exports, {
   interruptAfter: () => interruptAfter2,
   interruptWhen: () => interruptWhen3,
   interruptWhenDeferred: () => interruptWhenDeferred3,
-  intersperse: () => intersperse2,
+  intersperse: () => intersperse3,
   intersperseAffixes: () => intersperseAffixes2,
   iterate: () => iterate4,
   let: () => let_4,
-  make: () => make48,
+  make: () => make47,
   map: () => map23,
   mapAccum: () => mapAccum6,
   mapAccumEffect: () => mapAccumEffect2,
@@ -40989,7 +41112,7 @@ __export(Stream_exports, {
   onError: () => onError4,
   orDie: () => orDie6,
   orDieWith: () => orDieWith5,
-  orElse: () => orElse15,
+  orElse: () => orElse13,
   orElseEither: () => orElseEither5,
   orElseFail: () => orElseFail4,
   orElseIfEmpty: () => orElseIfEmpty2,
@@ -41013,7 +41136,7 @@ __export(Stream_exports, {
   provideServiceEffect: () => provideServiceEffect4,
   provideServiceStream: () => provideServiceStream2,
   provideSomeLayer: () => provideSomeLayer3,
-  range: () => range3,
+  range: () => range4,
   rechunk: () => rechunk2,
   refineOrDie: () => refineOrDie3,
   refineOrDieWith: () => refineOrDieWith3,
@@ -41056,7 +41179,7 @@ __export(Stream_exports, {
   runLast: () => runLast2,
   runScoped: () => runScoped3,
   runSum: () => runSum2,
-  scan: () => scan2,
+  scan: () => scan3,
   scanEffect: () => scanEffect2,
   scanReduce: () => scanReduce2,
   scanReduceEffect: () => scanReduceEffect2,
@@ -41065,20 +41188,20 @@ __export(Stream_exports, {
   scoped: () => scoped6,
   sliding: () => sliding5,
   slidingSize: () => slidingSize2,
-  some: () => some7,
+  some: () => some8,
   someOrElse: () => someOrElse2,
   someOrFail: () => someOrFail2,
-  split: () => split3,
+  split: () => split4,
   splitLines: () => splitLines2,
   splitOnChunk: () => splitOnChunk2,
   succeed: () => succeed14,
   suspend: () => suspend10,
   sync: () => sync11,
-  take: () => take7,
-  takeRight: () => takeRight3,
+  take: () => take8,
+  takeRight: () => takeRight4,
   takeUntil: () => takeUntil4,
   takeUntilEffect: () => takeUntilEffect2,
-  takeWhile: () => takeWhile5,
+  takeWhile: () => takeWhile6,
   tap: () => tap7,
   tapBoth: () => tapBoth4,
   tapError: () => tapError6,
@@ -41181,13 +41304,13 @@ var distributedWithDynamic2 = distributedWithDynamic;
 var drain4 = drain3;
 var drainFork2 = drainFork;
 var drop5 = drop4;
-var dropRight3 = dropRight2;
+var dropRight4 = dropRight3;
 var dropUntil5 = dropUntil4;
 var dropUntilEffect3 = dropUntilEffect2;
-var dropWhile6 = dropWhile5;
+var dropWhile7 = dropWhile6;
 var dropWhileEffect3 = dropWhileEffect2;
 var either6 = either5;
-var empty32 = empty31;
+var empty33 = empty32;
 var ensuring7 = ensuring6;
 var ensuringWith4 = ensuringWith3;
 var context7 = context6;
@@ -41199,7 +41322,7 @@ var fail15 = fail12;
 var failSync8 = failSync7;
 var failCause13 = failCause12;
 var failCauseSync8 = failCauseSync7;
-var filter9 = filter8;
+var filter10 = filter9;
 var filterEffect2 = filterEffect;
 var filterMap6 = filterMap5;
 var filterMapEffect2 = filterMapEffect;
@@ -41235,7 +41358,7 @@ var fromReadableStream2 = fromReadableStream;
 var fromReadableStreamByob2 = fromReadableStreamByob;
 var fromSchedule2 = fromSchedule;
 var groupAdjacentBy2 = groupAdjacentBy;
-var groupBy2 = groupBy;
+var groupBy3 = groupBy2;
 var groupByKey2 = groupByKey;
 var grouped2 = grouped;
 var groupedWithin2 = groupedWithin;
@@ -41245,13 +41368,13 @@ var haltWhenDeferred2 = haltWhenDeferred;
 var identity3 = identityStream;
 var interleave2 = interleave;
 var interleaveWith2 = interleaveWith;
-var intersperse2 = intersperse;
+var intersperse3 = intersperse2;
 var intersperseAffixes2 = intersperseAffixes;
 var interruptAfter2 = interruptAfter;
 var interruptWhen3 = interruptWhen2;
 var interruptWhenDeferred3 = interruptWhenDeferred2;
 var iterate4 = iterate3;
-var make48 = make44;
+var make47 = make44;
 var map23 = map20;
 var mapAccum6 = mapAccum5;
 var mapAccumEffect2 = mapAccumEffect;
@@ -41277,7 +41400,7 @@ var onError4 = onError3;
 var onDone2 = onDone;
 var orDie6 = orDie5;
 var orDieWith5 = orDieWith4;
-var orElse15 = orElse11;
+var orElse13 = orElse10;
 var orElseEither5 = orElseEither4;
 var orElseFail4 = orElseFail3;
 var orElseIfEmpty2 = orElseIfEmpty;
@@ -41302,7 +41425,7 @@ var provideServiceEffect4 = provideServiceEffect3;
 var provideServiceStream2 = provideServiceStream;
 var mapInputContext5 = mapInputContext4;
 var provideSomeLayer3 = provideSomeLayer2;
-var range3 = range2;
+var range4 = range3;
 var rechunk2 = rechunk;
 var refineOrDie3 = refineOrDie2;
 var refineOrDieWith3 = refineOrDieWith2;
@@ -41345,7 +41468,7 @@ var runIntoQueueScoped2 = runIntoQueueScoped;
 var runLast2 = runLast;
 var runScoped3 = runScoped2;
 var runSum2 = runSum;
-var scan2 = scan;
+var scan3 = scan2;
 var scanEffect2 = scanEffect;
 var scanReduce2 = scanReduce;
 var scanReduceEffect2 = scanReduceEffect;
@@ -41354,20 +41477,20 @@ var scheduleWith2 = scheduleWith;
 var scoped6 = scoped5;
 var sliding5 = sliding4;
 var slidingSize2 = slidingSize;
-var some7 = some6;
+var some8 = some7;
 var someOrElse2 = someOrElse;
 var someOrFail2 = someOrFail;
-var split3 = split2;
+var split4 = split3;
 var splitOnChunk2 = splitOnChunk;
 var splitLines2 = splitLines;
 var succeed14 = succeed11;
 var sync11 = sync8;
 var suspend10 = suspend7;
-var take7 = take6;
-var takeRight3 = takeRight2;
+var take8 = take7;
+var takeRight4 = takeRight3;
 var takeUntil4 = takeUntil3;
 var takeUntilEffect2 = takeUntilEffect;
-var takeWhile5 = takeWhile4;
+var takeWhile6 = takeWhile5;
 var tap7 = tap6;
 var tapBoth4 = tapBoth3;
 var tapError6 = tapError5;
@@ -41434,13 +41557,13 @@ __export(Secret_exports, {
   fromIterable: () => fromIterable15,
   fromString: () => fromString2,
   isSecret: () => isSecret2,
-  make: () => make49,
+  make: () => make48,
   unsafeWipe: () => unsafeWipe2,
   value: () => value2
 });
 var SecretTypeId2 = SecretTypeId;
 var isSecret2 = isSecret;
-var make49 = make45;
+var make48 = make45;
 var fromIterable15 = fromIterable13;
 var fromString2 = fromString;
 var value2 = value;
@@ -41480,11 +41603,11 @@ __export(Sink_exports, {
   drop: () => drop6,
   dropUntil: () => dropUntil6,
   dropUntilEffect: () => dropUntilEffect4,
-  dropWhile: () => dropWhile7,
+  dropWhile: () => dropWhile8,
   dropWhileEffect: () => dropWhileEffect4,
   ensuring: () => ensuring8,
   ensuringWith: () => ensuringWith5,
-  every: () => every7,
+  every: () => every8,
   fail: () => fail16,
   failCause: () => failCause14,
   failCauseSync: () => failCauseSync9,
@@ -41531,21 +41654,21 @@ __export(Sink_exports, {
   mapLeftover: () => mapLeftover2,
   mkString: () => mkString4,
   never: () => never7,
-  orElse: () => orElse16,
+  orElse: () => orElse14,
   provideContext: () => provideContext7,
   race: () => race4,
   raceBoth: () => raceBoth2,
   raceWith: () => raceWith4,
   refineOrDie: () => refineOrDie4,
   refineOrDieWith: () => refineOrDieWith4,
-  some: () => some8,
-  splitWhere: () => splitWhere3,
+  some: () => some9,
+  splitWhere: () => splitWhere4,
   succeed: () => succeed15,
   sum: () => sum3,
   summarized: () => summarized4,
   suspend: () => suspend11,
   sync: () => sync12,
-  take: () => take8,
+  take: () => take9,
   timed: () => timed4,
   toChannel: () => toChannel4,
   unwrap: () => unwrap7,
@@ -41587,7 +41710,7 @@ var drain5 = drain2;
 var drop6 = drop3;
 var dropUntil6 = dropUntil3;
 var dropUntilEffect4 = dropUntilEffect;
-var dropWhile7 = dropWhile4;
+var dropWhile8 = dropWhile5;
 var dropWhileEffect4 = dropWhileEffect;
 var ensuring8 = ensuring4;
 var ensuringWith5 = ensuringWith2;
@@ -41595,7 +41718,7 @@ var context8 = context5;
 var contextWith6 = contextWith3;
 var contextWithEffect6 = contextWithEffect3;
 var contextWithSink2 = contextWithSink;
-var every7 = every6;
+var every8 = every7;
 var fail16 = fail11;
 var failSync9 = failSync6;
 var failCause14 = failCause9;
@@ -41639,21 +41762,21 @@ var mapError9 = mapError6;
 var mapLeftover2 = mapLeftover;
 var mkString4 = mkString;
 var never7 = never4;
-var orElse16 = orElse10;
+var orElse14 = orElse9;
 var provideContext7 = provideContext3;
 var race4 = race3;
 var raceBoth2 = raceBoth;
 var raceWith4 = raceWith3;
 var refineOrDie4 = refineOrDie;
 var refineOrDieWith4 = refineOrDieWith;
-var some8 = some5;
-var splitWhere3 = splitWhere2;
+var some9 = some6;
+var splitWhere4 = splitWhere3;
 var succeed15 = succeed9;
 var sum3 = sum2;
 var summarized4 = summarized3;
 var suspend11 = suspend6;
 var sync12 = sync6;
-var take8 = take4;
+var take9 = take5;
 var timed4 = timed3;
 var unwrap7 = unwrap2;
 var unwrapScoped7 = unwrapScoped4;
@@ -41663,73 +41786,41 @@ var zipLeft8 = zipLeft4;
 var zipRight10 = zipRight6;
 var zipWith15 = zipWith9;
 
-// src/Github.ts
-var import_github = __toESM(require_github());
-var GithubError = class {
-  constructor(reason) {
-    this.reason = reason;
-  }
-  _tag = "GithubError";
-};
-var make50 = ({ token }) => {
-  const api = (0, import_github.getOctokit)(Secret_exports.value(token));
-  const rest = api.rest;
-  const request3 = (f) => Effect_exports.tryPromise({
-    try: () => f(rest),
-    catch: (reason) => new GithubError(reason)
-  });
-  const wrap2 = (f) => (...args) => Effect_exports.map(
-    Effect_exports.tryPromise({
-      try: () => f(rest)(...args),
-      catch: (reason) => new GithubError(reason)
-    }),
-    (_) => _.data
-  );
-  const stream2 = (f) => Stream_exports.paginateChunkEffect(
-    0,
-    (page) => Effect_exports.tryPromise({
-      try: () => f(rest, page),
-      catch: (reason) => new GithubError(reason)
-    }).pipe(
-      Effect_exports.map((_) => [
-        Chunk_exports.unsafeFromArray(_.data),
-        maybeNextPage(page, _.headers.link)
-      ])
-    )
-  );
-  const streamItems = (f) => Stream_exports.paginateChunkEffect(
-    0,
-    (page) => Effect_exports.tryPromise({
-      try: () => f(rest, page),
-      catch: (reason) => new GithubError(reason)
-    }).pipe(
-      Effect_exports.map((_) => [
-        Chunk_exports.unsafeFromArray(_.data.items),
-        maybeNextPage(page, _.headers.link)
-      ])
-    )
-  );
-  return { api, token, request: request3, wrap: wrap2, stream: stream2, streamItems };
-};
-var Github = Context_exports.Tag();
-var layer = (_) => Config_exports.unwrap(_).pipe(Effect_exports.map(make50), Layer_exports.effect(Github));
-var maybeNextPage = (page, linkHeader) => Option_exports.fromNullable(linkHeader).pipe(
-  Option_exports.filter((_) => _.includes(`rel="next"`)),
-  Option_exports.as(page + 1)
-);
+// node_modules/.pnpm/@effect+platform-node@0.39.0_@effect+platform@0.39.0_effect@2.0.0-next.62/node_modules/@effect/platform-node/dist/esm/FileSystem.js
+var FileSystem_exports2 = {};
+__export(FileSystem_exports2, {
+  FileSystem: () => FileSystem,
+  Size: () => Size2,
+  layer: () => layer2
+});
 
-// src/Runner.ts
-var import_github2 = __toESM(require_github());
+// node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/internal/effectify.js
+var effectify = (fn, onError5, onSyncError) => (...args) => async2((resume2) => {
+  try {
+    fn(...args, (err, result) => {
+      if (err) {
+        resume2(fail8(onError5 ? onError5(err, args) : err));
+      } else {
+        resume2(succeed6(result));
+      }
+    });
+  } catch (err) {
+    resume2(onSyncError ? fail8(onSyncError(err, args)) : die6(err));
+  }
+});
+
+// node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/Effectify.js
+var effectify2 = effectify;
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/internal/error.js
 var PlatformErrorTypeId = /* @__PURE__ */ Symbol.for("@effect/platform/Error/PlatformErrorTypeId");
-var make51 = (tag2) => (props) => struct3({
+var make49 = (tag2) => (props) => struct3({
   [PlatformErrorTypeId]: PlatformErrorTypeId,
   _tag: tag2,
   ...props
 });
-var badArgument = /* @__PURE__ */ make51("BadArgument");
-var systemError = /* @__PURE__ */ make51("SystemError");
+var badArgument = /* @__PURE__ */ make49("BadArgument");
+var systemError = /* @__PURE__ */ make49("SystemError");
 
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/Error.js
 var BadArgument = badArgument;
@@ -41738,7 +41829,7 @@ var SystemError = systemError;
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/internal/fileSystem.js
 var tag = /* @__PURE__ */ Tag("@effect/platform/FileSystem");
 var Size = (bytes) => typeof bytes === "bigint" ? bytes : BigInt(bytes);
-var make52 = (impl) => {
+var make50 = (impl) => {
   return tag.of({
     ...impl,
     exists: (path) => pipe(impl.access(path), as4(true), catchTag2("SystemError", (e) => e.reason === "NotFound" ? succeed6(false) : fail8(e))),
@@ -41792,7 +41883,7 @@ var stream = (file, {
 // node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/FileSystem.js
 var Size2 = Size;
 var FileSystem = tag;
-var make53 = make52;
+var make51 = make50;
 var FileTypeId = /* @__PURE__ */ Symbol.for("@effect/platform/FileSystem/File");
 var FileDescriptor = /* @__PURE__ */ nominal();
 
@@ -41832,31 +41923,7 @@ var handleErrnoException = (module, method) => (err, [path]) => {
   });
 };
 
-// node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/internal/effectify.js
-var effectify = (fn, onError5, onSyncError) => (...args) => async2((resume2) => {
-  try {
-    fn(...args, (err, result) => {
-      if (err) {
-        resume2(fail8(onError5 ? onError5(err, args) : err));
-      } else {
-        resume2(succeed6(result));
-      }
-    });
-  } catch (err) {
-    resume2(onSyncError ? fail8(onSyncError(err, args)) : die6(err));
-  }
-});
-
-// node_modules/.pnpm/@effect+platform@0.39.0_@effect+schema@0.56.0_effect@2.0.0-next.62/node_modules/@effect/platform/dist/esm/Effectify.js
-var effectify2 = effectify;
-
-// node_modules/.pnpm/@effect+platform-node@0.39.0_@effect+platform@0.39.0_effect@2.0.0-next.62/node_modules/@effect/platform-node/dist/esm/FileSystem.js
-var FileSystem_exports2 = {};
-__export(FileSystem_exports2, {
-  FileSystem: () => FileSystem,
-  Size: () => Size2,
-  layer: () => layer3
-});
+// node_modules/.pnpm/@effect+platform-node@0.39.0_@effect+platform@0.39.0_effect@2.0.0-next.62/node_modules/@effect/platform-node/dist/esm/internal/fileSystem.js
 var handleBadArgument = (method) => (err) => BadArgument({
   module: "FileSystem",
   method,
@@ -41909,9 +41976,9 @@ var makeDirectory = /* @__PURE__ */ (() => {
 var makeTempDirectoryFactory = (method) => {
   const nodeMkdtemp = effectify2(NFS__namespace.mkdtemp, handleErrnoException("FileSystem", method), handleBadArgument(method));
   return (options) => suspend3(() => {
-    const prefix = options?.prefix ?? "";
+    const prefix2 = options?.prefix ?? "";
     const directory = typeof options?.directory === "string" ? default2__namespace.join(options.directory, ".") : OS__namespace.tmpdir();
-    return nodeMkdtemp(prefix ? default2__namespace.join(directory, prefix) : directory + "/");
+    return nodeMkdtemp(prefix2 ? default2__namespace.join(directory, prefix2) : directory + "/");
   });
 };
 var makeTempDirectory = /* @__PURE__ */ makeTempDirectoryFactory("makeTempDirectory");
@@ -41997,10 +42064,10 @@ var makeFile = /* @__PURE__ */ (() => {
         return some2(dst);
       })));
     }
-    truncate(length3) {
-      return this.semaphore.withPermits(1)(map15(nodeTruncate(this.fd, length3 ? Number(length3) : void 0), () => {
+    truncate(length4) {
+      return this.semaphore.withPermits(1)(map15(nodeTruncate(this.fd, length4 ? Number(length4) : void 0), () => {
         if (!this.append) {
-          const len = BigInt(length3 ?? 0);
+          const len = BigInt(length4 ?? 0);
           if (this.position > len) {
             this.position = len;
           }
@@ -42110,7 +42177,7 @@ var symlink2 = /* @__PURE__ */ (() => {
 })();
 var truncate2 = /* @__PURE__ */ (() => {
   const nodeTruncate = /* @__PURE__ */ effectify2(NFS__namespace.truncate, /* @__PURE__ */ handleErrnoException("FileSystem", "truncate"), /* @__PURE__ */ handleBadArgument("truncate"));
-  return (path, length3) => nodeTruncate(path, length3 !== void 0 ? Number(length3) : void 0);
+  return (path, length4) => nodeTruncate(path, length4 !== void 0 ? Number(length4) : void 0);
 })();
 var utimes2 = /* @__PURE__ */ (() => {
   const nodeUtimes = /* @__PURE__ */ effectify2(NFS__namespace.utimes, /* @__PURE__ */ handleErrnoException("FileSystem", "utime"), /* @__PURE__ */ handleBadArgument("utime"));
@@ -42133,7 +42200,7 @@ var writeFile2 = (path, data, options) => async2((resume2, signal) => {
     resume2(fail8(handleBadArgument("writeFile")(err)));
   }
 });
-var fileSystemImpl = /* @__PURE__ */ make53({
+var fileSystemImpl = /* @__PURE__ */ make51({
   access: access2,
   chmod: chmod2,
   chown: chown2,
@@ -42158,94 +42225,10 @@ var fileSystemImpl = /* @__PURE__ */ make53({
   utimes: utimes2,
   writeFile: writeFile2
 });
-var layer2 = /* @__PURE__ */ succeed7(FileSystem, fileSystemImpl);
+var layer = /* @__PURE__ */ succeed7(FileSystem, fileSystemImpl);
 
 // node_modules/.pnpm/@effect+platform-node@0.39.0_@effect+platform@0.39.0_effect@2.0.0-next.62/node_modules/@effect/platform-node/dist/esm/FileSystem.js
-var layer3 = layer2;
-
-// src/Runner.ts
-var make54 = Effect_exports.gen(function* (_) {
-  const fs = yield* _(FileSystem_exports2.FileSystem);
-  const tmpDir = yield* _(
-    Config_exports.string("RUNNER_TEMP"),
-    Config_exports.withDefault(OS__namespace.tmpdir())
-  );
-  const mkTmpDir = (path) => {
-    const dir3 = default2__namespace.join(tmpDir, path);
-    return fs.remove(dir3, { recursive: true }).pipe(
-      Effect_exports.ignore,
-      Effect_exports.zipRight(fs.makeDirectory(dir3)),
-      Effect_exports.as(dir3)
-    );
-  };
-  const issue = Option_exports.fromNullable(import_github2.context.issue.number).pipe(
-    Option_exports.as(import_github2.context.issue)
-  );
-  const repo = import_github2.context.repo.repo;
-  const owner = import_github2.context.repo.owner;
-  const fullRepo = `${owner}/${repo}`;
-  return { tmpDir, mkTmpDir, issue, repo, owner, fullRepo };
-});
-var RunnerEnv = Context_exports.Tag();
-var RunnerEnvLive = Layer_exports.effect(RunnerEnv, make54).pipe(
-  Layer_exports.provide(FileSystem_exports2.layer)
-);
-
-// src/PullRequests.ts
-var import_github3 = __toESM(require_github());
-var make55 = Effect_exports.gen(function* (_) {
-  const env = yield* _(RunnerEnv);
-  const github = yield* _(Github);
-  const find4 = (options) => github.streamItems(
-    (_2, page) => _2.search.issuesAndPullRequests({
-      page,
-      q: `repo:${options.repo}+base:${options.base}+head:${options.head}+state:open+is:pull-request`
-    })
-  );
-  const findFirst7 = (options) => find4(options).pipe(Stream_exports.run(Sink_exports.head()), Effect_exports.flatten);
-  const create = github.wrap((_2) => _2.pulls.create);
-  const update4 = github.wrap((_2) => _2.pulls.update);
-  const upsert = (options) => Effect_exports.matchEffect(findFirst7(options), {
-    onFailure: () => create({
-      owner: options.owner,
-      repo: options.repo,
-      title: options.title,
-      body: options.body,
-      head: options.head,
-      base: options.base
-    }),
-    onSuccess: (pull) => update4({
-      owner: options.owner,
-      repo: options.repo,
-      pull_number: pull.number,
-      title: options.title,
-      body: options.body,
-      head: options.head,
-      base: options.base
-    })
-  });
-  github.wrap((_2) => _2.pulls.get);
-  const current2 = Effect_exports.fromNullable(import_github3.context.payload.pull_request);
-  const files = (options) => github.stream(
-    (_2, page) => _2.pulls.listFiles({
-      ...options,
-      page
-    })
-  );
-  const currentFiles = env.issue.pipe(
-    Effect_exports.map(
-      (issue) => files({
-        owner: issue.owner,
-        repo: issue.repo,
-        pull_number: issue.number
-      })
-    ),
-    Stream_exports.unwrap
-  );
-  return { find: find4, findFirst: findFirst7, upsert, current: current2, files, currentFiles };
-});
-var PullRequests = Context_exports.Tag("app/PullRequests");
-var PullRequestsLive = Layer_exports.effect(PullRequests, make55);
+var layer2 = layer;
 
 // node_modules/.pnpm/mdast-util-to-string@4.0.0/node_modules/mdast-util-to-string/lib/index.js
 var emptyOptions = {};
@@ -44553,21 +44536,21 @@ function regexCheck(regex) {
 }
 
 // node_modules/.pnpm/micromark-factory-space@2.0.0/node_modules/micromark-factory-space/index.js
-function factorySpace(effects, ok2, type, max5) {
-  const limit = max5 ? max5 - 1 : Number.POSITIVE_INFINITY;
+function factorySpace(effects, ok2, type, max6) {
+  const limit = max6 ? max6 - 1 : Number.POSITIVE_INFINITY;
   let size15 = 0;
   return start3;
   function start3(code) {
     if (markdownSpace(code)) {
       effects.enter(type);
-      return prefix(code);
+      return prefix2(code);
     }
     return ok2(code);
   }
-  function prefix(code) {
+  function prefix2(code) {
     if (markdownSpace(code) && size15++ < limit) {
       effects.consume(code);
-      return prefix;
+      return prefix2;
     }
     effects.exit(type);
     return ok2(code);
@@ -44872,7 +44855,7 @@ var attention = {
 function resolveAllAttention(events, context11) {
   let index2 = -1;
   let open3;
-  let group3;
+  let group4;
   let text3;
   let openingSequence;
   let closingSequence;
@@ -44908,7 +44891,7 @@ function resolveAllAttention(events, context11) {
             start: Object.assign({}, events[open3][1].end),
             end: Object.assign({}, events[index2][1].start)
           };
-          group3 = {
+          group4 = {
             type: use2 > 1 ? "strong" : "emphasis",
             start: Object.assign({}, openingSequence.start),
             end: Object.assign({}, closingSequence.end)
@@ -44923,7 +44906,7 @@ function resolveAllAttention(events, context11) {
             ]);
           }
           nextEvents = push(nextEvents, [
-            ["enter", group3, context11],
+            ["enter", group4, context11],
             ["enter", openingSequence, context11],
             ["exit", openingSequence, context11],
             ["enter", text3, context11]
@@ -44940,7 +44923,7 @@ function resolveAllAttention(events, context11) {
             ["exit", text3, context11],
             ["enter", closingSequence, context11],
             ["exit", closingSequence, context11],
-            ["exit", group3, context11]
+            ["exit", group4, context11]
           ]);
           if (events[index2][1].end.offset - events[index2][1].start.offset) {
             offset = 2;
@@ -45207,7 +45190,7 @@ var characterReference = {
 function tokenizeCharacterReference(effects, ok2, nok) {
   const self = this;
   let size15 = 0;
-  let max5;
+  let max6;
   let test;
   return start3;
   function start3(code) {
@@ -45225,7 +45208,7 @@ function tokenizeCharacterReference(effects, ok2, nok) {
       return numeric;
     }
     effects.enter("characterReferenceValue");
-    max5 = 31;
+    max6 = 31;
     test = asciiAlphanumeric;
     return value3(code);
   }
@@ -45235,12 +45218,12 @@ function tokenizeCharacterReference(effects, ok2, nok) {
       effects.consume(code);
       effects.exit("characterReferenceMarkerHexadecimal");
       effects.enter("characterReferenceValue");
-      max5 = 6;
+      max6 = 6;
       test = asciiHexDigit;
       return value3;
     }
     effects.enter("characterReferenceValue");
-    max5 = 7;
+    max6 = 7;
     test = asciiDigit;
     return value3(code);
   }
@@ -45256,7 +45239,7 @@ function tokenizeCharacterReference(effects, ok2, nok) {
       effects.exit("characterReference");
       return ok2;
     }
-    if (test(code) && size15++ < max5) {
+    if (test(code) && size15++ < max6) {
       effects.consume(code);
       return value3;
     }
@@ -45288,8 +45271,8 @@ function tokenizeCodeFenced(effects, ok2, nok) {
     return beforeSequenceOpen(code);
   }
   function beforeSequenceOpen(code) {
-    const tail2 = self.events[self.events.length - 1];
-    initialPrefix = tail2 && tail2[1].type === "linePrefix" ? tail2[2].sliceSerialize(tail2[1], true).length : 0;
+    const tail3 = self.events[self.events.length - 1];
+    initialPrefix = tail3 && tail3[1].type === "linePrefix" ? tail3[2].sliceSerialize(tail3[1], true).length : 0;
     marker = code;
     effects.enter("codeFenced");
     effects.enter("codeFencedFence");
@@ -45474,8 +45457,8 @@ function tokenizeCodeIndented(effects, ok2, nok) {
     return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code);
   }
   function afterPrefix(code) {
-    const tail2 = self.events[self.events.length - 1];
-    return tail2 && tail2[1].type === "linePrefix" && tail2[2].sliceSerialize(tail2[1], true).length >= 4 ? atBreak(code) : nok(code);
+    const tail3 = self.events[self.events.length - 1];
+    return tail3 && tail3[1].type === "linePrefix" && tail3[2].sliceSerialize(tail3[1], true).length >= 4 ? atBreak(code) : nok(code);
   }
   function atBreak(code) {
     if (code === null) {
@@ -45516,8 +45499,8 @@ function tokenizeFurtherStart(effects, ok2, nok) {
     return factorySpace(effects, afterPrefix, "linePrefix", 4 + 1)(code);
   }
   function afterPrefix(code) {
-    const tail2 = self.events[self.events.length - 1];
-    return tail2 && tail2[1].type === "linePrefix" && tail2[2].sliceSerialize(tail2[1], true).length >= 4 ? ok2(code) : markdownLineEnding(code) ? furtherStart2(code) : nok(code);
+    const tail3 = self.events[self.events.length - 1];
+    return tail3 && tail3[1].type === "linePrefix" && tail3[2].sliceSerialize(tail3[1], true).length >= 4 ? ok2(code) : markdownLineEnding(code) ? furtherStart2(code) : nok(code);
   }
 }
 
@@ -45843,8 +45826,8 @@ function tokenizeContinuation(effects, ok2, nok) {
     if (code === null || markdownLineEnding(code)) {
       return nok(code);
     }
-    const tail2 = self.events[self.events.length - 1];
-    if (!self.parser.constructs.disable.null.includes("codeIndented") && tail2 && tail2[1].type === "linePrefix" && tail2[2].sliceSerialize(tail2[1], true).length >= 4) {
+    const tail3 = self.events[self.events.length - 1];
+    if (!self.parser.constructs.disable.null.includes("codeIndented") && tail3 && tail3[1].type === "linePrefix" && tail3[2].sliceSerialize(tail3[1], true).length >= 4) {
       return ok2(code);
     }
     return effects.interrupt(self.parser.constructs.flow, nok, ok2)(code);
@@ -45852,8 +45835,8 @@ function tokenizeContinuation(effects, ok2, nok) {
 }
 
 // node_modules/.pnpm/micromark-factory-destination@2.0.0/node_modules/micromark-factory-destination/index.js
-function factoryDestination(effects, ok2, nok, type, literalType, literalMarkerType, rawType, stringType, max5) {
-  const limit = max5 || Number.POSITIVE_INFINITY;
+function factoryDestination(effects, ok2, nok, type, literalType, literalMarkerType, rawType, stringType, max6) {
+  const limit = max6 || Number.POSITIVE_INFINITY;
   let balance = 0;
   return start3;
   function start3(code) {
@@ -47123,7 +47106,7 @@ function resolveToLabelEnd(events, context11) {
       close3 = index2;
     }
   }
-  const group3 = {
+  const group4 = {
     type: events[open3][1].type === "labelLink" ? "link" : "image",
     start: Object.assign({}, events[open3][1].start),
     end: Object.assign({}, events[events.length - 1][1].end)
@@ -47139,7 +47122,7 @@ function resolveToLabelEnd(events, context11) {
     end: Object.assign({}, events[close3 - 2][1].start)
   };
   media = [
-    ["enter", group3, context11],
+    ["enter", group4, context11],
     ["enter", label, context11]
   ];
   media = push(media, events.slice(open3 + 1, open3 + offset + 3));
@@ -47159,7 +47142,7 @@ function resolveToLabelEnd(events, context11) {
     ["exit", label, context11]
   ]);
   media = push(media, events.slice(close3 + 1));
-  media = push(media, [["exit", group3, context11]]);
+  media = push(media, [["exit", group4, context11]]);
   splice(events, open3, events.length, media);
   return events;
 }
@@ -47462,8 +47445,8 @@ var indentConstruct = {
 };
 function tokenizeListStart(effects, ok2, nok) {
   const self = this;
-  const tail2 = self.events[self.events.length - 1];
-  let initialSize = tail2 && tail2[1].type === "linePrefix" ? tail2[2].sliceSerialize(tail2[1], true).length : 0;
+  const tail3 = self.events[self.events.length - 1];
+  let initialSize = tail3 && tail3[1].type === "linePrefix" ? tail3[2].sliceSerialize(tail3[1], true).length : 0;
   let size15 = 0;
   return start3;
   function start3(code) {
@@ -47576,8 +47559,8 @@ function tokenizeIndent(effects, ok2, nok) {
     self.containerState.size + 1
   );
   function afterPrefix(code) {
-    const tail2 = self.events[self.events.length - 1];
-    return tail2 && tail2[1].type === "listItemIndent" && tail2[2].sliceSerialize(tail2[1], true).length === self.containerState.size ? ok2(code) : nok(code);
+    const tail3 = self.events[self.events.length - 1];
+    return tail3 && tail3[1].type === "listItemIndent" && tail3[2].sliceSerialize(tail3[1], true).length === self.containerState.size ? ok2(code) : nok(code);
   }
 }
 function tokenizeListEnd(effects) {
@@ -47592,8 +47575,8 @@ function tokenizeListItemPrefixWhitespace(effects, ok2, nok) {
     self.parser.constructs.disable.null.includes("codeIndented") ? void 0 : 4 + 1
   );
   function afterPrefix(code) {
-    const tail2 = self.events[self.events.length - 1];
-    return !markdownSpace(code) && tail2 && tail2[1].type === "listItemPrefixWhitespace" ? ok2(code) : nok(code);
+    const tail3 = self.events[self.events.length - 1];
+    return !markdownSpace(code) && tail3 && tail3[1].type === "listItemPrefixWhitespace" ? ok2(code) : nok(code);
   }
 }
 
@@ -47684,7 +47667,7 @@ function tokenizeSetextUnderline(effects, ok2, nok) {
 }
 
 // node_modules/.pnpm/micromark@4.0.0/node_modules/micromark/lib/initialize/flow.js
-var flow = {
+var flow2 = {
   tokenize: initializeFlow
 };
 function initializeFlow(effects) {
@@ -48191,7 +48174,7 @@ __export(constructs_exports, {
   contentInitial: () => contentInitial,
   disable: () => disable3,
   document: () => document2,
-  flow: () => flow2,
+  flow: () => flow3,
   flowInitial: () => flowInitial,
   insideSpan: () => insideSpan,
   string: () => string5,
@@ -48221,7 +48204,7 @@ var flowInitial = {
   [-1]: codeIndented,
   [32]: codeIndented
 };
-var flow2 = {
+var flow3 = {
   [35]: headingAtx,
   [42]: thematicBreak,
   [45]: [setextUnderline, thematicBreak],
@@ -48260,7 +48243,7 @@ var disable3 = {
 };
 
 // node_modules/.pnpm/micromark@4.0.0/node_modules/micromark/lib/parse.js
-function parse2(options) {
+function parse(options) {
   const settings = options || {};
   const constructs2 = (
     /** @type {FullNormalizedExtension} */
@@ -48272,7 +48255,7 @@ function parse2(options) {
     constructs: constructs2,
     content: create(content),
     document: create(document),
-    flow: create(flow),
+    flow: create(flow2),
     string: create(string4),
     text: create(text)
   };
@@ -48427,7 +48410,7 @@ function fromMarkdown(value3, encoding, options) {
   }
   return compiler(options)(
     postprocess(
-      parse2(options).document().write(preprocess()(value3, encoding, true))
+      parse(options).document().write(preprocess()(value3, encoding, true))
     )
   );
 }
@@ -48554,8 +48537,8 @@ function compiler(options) {
         if (events[index2][0] === "enter") {
           listStack.push(index2);
         } else {
-          const tail2 = listStack.pop();
-          index2 = prepareList(events, tail2, index2);
+          const tail3 = listStack.pop();
+          index2 = prepareList(events, tail3, index2);
         }
       }
     }
@@ -48575,9 +48558,9 @@ function compiler(options) {
       }
     }
     if (context11.tokenStack.length > 0) {
-      const tail2 = context11.tokenStack[context11.tokenStack.length - 1];
-      const handler2 = tail2[1] || defaultOnError;
-      handler2.call(context11, void 0, tail2[0]);
+      const tail3 = context11.tokenStack[context11.tokenStack.length - 1];
+      const handler2 = tail3[1] || defaultOnError;
+      handler2.call(context11, void 0, tail3[0]);
     }
     tree.position = {
       start: point2(
@@ -48601,7 +48584,7 @@ function compiler(options) {
     }
     return tree;
   }
-  function prepareList(events, start3, length3) {
+  function prepareList(events, start3, length4) {
     let index2 = start3 - 1;
     let containerBalance = -1;
     let listSpread = false;
@@ -48609,7 +48592,7 @@ function compiler(options) {
     let lineIndex;
     let firstBlankLineIndex;
     let atMarker;
-    while (++index2 <= length3) {
+    while (++index2 <= length4) {
       const event = events[index2];
       switch (event[1].type) {
         case "listUnordered":
@@ -48671,7 +48654,7 @@ function compiler(options) {
           );
           events.splice(lineIndex || index2, 0, ["exit", listItem2, event[2]]);
           index2++;
-          length3++;
+          length4++;
         }
         if (event[1].type === "listItemPrefix") {
           const item = {
@@ -48684,14 +48667,14 @@ function compiler(options) {
           listItem2 = item;
           events.splice(index2, 0, ["enter", item, event[2]]);
           index2++;
-          length3++;
+          length4++;
           firstBlankLineIndex = void 0;
           atMarker = true;
         }
       }
     }
     events[start3][1]._spread = listSpread;
-    return length3;
+    return length4;
   }
   function opener(create, and) {
     return open3;
@@ -48825,28 +48808,28 @@ function compiler(options) {
   function onenterdata(token) {
     const node2 = this.stack[this.stack.length - 1];
     const siblings = node2.children;
-    let tail2 = siblings[siblings.length - 1];
-    if (!tail2 || tail2.type !== "text") {
-      tail2 = text3();
-      tail2.position = {
+    let tail3 = siblings[siblings.length - 1];
+    if (!tail3 || tail3.type !== "text") {
+      tail3 = text3();
+      tail3.position = {
         start: point2(token.start),
         // @ts-expect-error: we’ll add `end` later.
         end: void 0
       };
-      siblings.push(tail2);
+      siblings.push(tail3);
     }
-    this.stack.push(tail2);
+    this.stack.push(tail3);
   }
   function onexitdata(token) {
-    const tail2 = this.stack.pop();
-    tail2.value += this.sliceSerialize(token);
-    tail2.position.end = point2(token.end);
+    const tail3 = this.stack.pop();
+    tail3.value += this.sliceSerialize(token);
+    tail3.position.end = point2(token.end);
   }
   function onexitlineending(token) {
     const context11 = this.stack[this.stack.length - 1];
     if (this.data.atHardBreak) {
-      const tail2 = context11.children[context11.children.length - 1];
-      tail2.position.end = point2(token.end);
+      const tail3 = context11.children[context11.children.length - 1];
+      tail3.position.end = point2(token.end);
       this.data.atHardBreak = void 0;
       return;
     }
@@ -48961,9 +48944,9 @@ function compiler(options) {
       const result = decodeNamedCharacterReference(data2);
       value3 = result;
     }
-    const tail2 = this.stack.pop();
-    tail2.value += value3;
-    tail2.position.end = point2(token.end);
+    const tail3 = this.stack.pop();
+    tail3.value += value3;
+    tail3.position.end = point2(token.end);
   }
   function onexitautolinkprotocol(token) {
     onexitdata.call(this, token);
@@ -49184,7 +49167,7 @@ function bail(error3) {
 var import_extend = __toESM(require_extend(), 1);
 
 // node_modules/.pnpm/is-plain-obj@4.1.0/node_modules/is-plain-obj/index.js
-function isPlainObject2(value3) {
+function isPlainObject(value3) {
   if (typeof value3 !== "object" || value3 === null) {
     return false;
   }
@@ -49195,9 +49178,9 @@ function isPlainObject2(value3) {
 // node_modules/.pnpm/trough@2.1.0/node_modules/trough/index.js
 function trough() {
   const fns = [];
-  const pipeline = { run: run5, use: use2 };
+  const pipeline = { run: run6, use: use2 };
   return pipeline;
-  function run5(...values3) {
+  function run6(...values3) {
     let middlewareIndex = -1;
     const callback = values3.pop();
     if (typeof callback !== "function") {
@@ -50473,7 +50456,7 @@ var Processor = class _Processor extends CallableInstance {
       } else if (parameters2.length > 0) {
         let [primary, ...rest] = parameters2;
         const currentPrimary = attachers[entryIndex][1];
-        if (isPlainObject2(currentPrimary) && isPlainObject2(primary)) {
+        if (isPlainObject(currentPrimary) && isPlainObject(primary)) {
           primary = (0, import_extend.default)(true, currentPrimary, primary);
         }
         attachers[entryIndex] = [plugin, primary, ...rest];
@@ -50500,7 +50483,7 @@ function assertUnfrozen(name, frozen) {
   }
 }
 function assertNode(node2) {
-  if (!isPlainObject2(node2) || typeof node2.type !== "string") {
+  if (!isPlainObject(node2) || typeof node2.type !== "string") {
     throw new TypeError("Expected node, got `" + node2 + "`");
   }
 }
@@ -50528,52 +50511,341 @@ function isUint8Array2(value3) {
   );
 }
 
-// src/Changesets.ts
-var make56 = Effect_exports.gen(function* (_) {
-  const fs = yield* _(FileSystem);
-  const pulls = yield* _(PullRequests);
-  const current2 = pulls.currentFiles.pipe(
-    Stream_exports.tap(Console_exports.log),
-    Stream_exports.filter(
-      (_2) => _2.status === "added" && _2.filename.startsWith(".changesets/") && _2.filename.endsWith(".md")
-    ),
-    Stream_exports.mapEffect((_2) => fs.readFileString(_2.filename)),
-    Stream_exports.map((_2) => unified3().use(remarkParse).parse(_2))
+// src/Github.ts
+var import_github = __toESM(require_github());
+var GithubError = class {
+  constructor(reason) {
+    this.reason = reason;
+  }
+  _tag = "GithubError";
+};
+var make52 = ({ token }) => {
+  const api = (0, import_github.getOctokit)(Secret_exports.value(token));
+  const rest = api.rest;
+  const request3 = (f) => Effect_exports.tryPromise({
+    try: () => f(rest),
+    catch: (reason) => new GithubError(reason)
+  });
+  const wrap2 = (f) => (...args) => Effect_exports.map(
+    Effect_exports.tryPromise({
+      try: () => f(rest)(...args),
+      catch: (reason) => new GithubError(reason)
+    }),
+    (_) => _.data
   );
-  return { current: current2 };
+  const stream2 = (f) => Stream_exports.paginateChunkEffect(
+    0,
+    (page) => Effect_exports.tryPromise({
+      try: () => f(rest, page),
+      catch: (reason) => new GithubError(reason)
+    }).pipe(
+      Effect_exports.map((_) => [
+        Chunk_exports.unsafeFromArray(_.data),
+        maybeNextPage(page, _.headers.link)
+      ])
+    )
+  );
+  const streamItems = (f) => Stream_exports.paginateChunkEffect(
+    0,
+    (page) => Effect_exports.tryPromise({
+      try: () => f(rest, page),
+      catch: (reason) => new GithubError(reason)
+    }).pipe(
+      Effect_exports.map((_) => [
+        Chunk_exports.unsafeFromArray(_.data.items),
+        maybeNextPage(page, _.headers.link)
+      ])
+    )
+  );
+  return { api, token, request: request3, wrap: wrap2, stream: stream2, streamItems };
+};
+var Github = Context_exports.Tag();
+var layer3 = (_) => Config_exports.unwrap(_).pipe(Effect_exports.map(make52), Layer_exports.effect(Github));
+var maybeNextPage = (page, linkHeader) => Option_exports.fromNullable(linkHeader).pipe(
+  Option_exports.filter((_) => _.includes(`rel="next"`)),
+  Option_exports.as(page + 1)
+);
+
+// src/Runner.ts
+var import_github2 = __toESM(require_github());
+var make53 = Effect_exports.gen(function* (_) {
+  const github = yield* _(Github);
+  const fs = yield* _(FileSystem_exports2.FileSystem);
+  const tmpDir = yield* _(
+    Config_exports.string("RUNNER_TEMP"),
+    Config_exports.withDefault(OS__namespace.tmpdir())
+  );
+  const mkTmpDir = (path) => {
+    const dir3 = default2__namespace.join(tmpDir, path);
+    return fs.remove(dir3, { recursive: true }).pipe(
+      Effect_exports.ignore,
+      Effect_exports.zipRight(fs.makeDirectory(dir3)),
+      Effect_exports.as(dir3)
+    );
+  };
+  const issue = Option_exports.fromNullable(import_github2.context.issue.number).pipe(
+    Option_exports.as(import_github2.context.issue)
+  );
+  const getRepo = github.wrap((_2) => _2.repos.get);
+  const repo = yield* _(getRepo(import_github2.context.repo));
+  return {
+    tmpDir,
+    mkTmpDir,
+    issue,
+    repo,
+    ref: import_github2.context.ref
+  };
 });
-var Changesets = Context_exports.Tag("app/Changesets");
-var ChangesetsLive = Layer_exports.effect(Changesets, make56).pipe(
-  Layer_exports.provide(PullRequestsLive),
-  Layer_exports.provide(layer3),
+var RunnerEnv = Context_exports.Tag();
+var RunnerEnvLive = Layer_exports.effect(RunnerEnv, make53).pipe(
+  Layer_exports.provide(FileSystem_exports2.layer)
+);
+
+// src/PullRequests.ts
+var import_github3 = __toESM(require_github());
+var make54 = Effect_exports.gen(function* (_) {
+  const env = yield* _(RunnerEnv);
+  const github = yield* _(Github);
+  const find4 = (options) => github.streamItems(
+    (_2, page) => _2.search.issuesAndPullRequests({
+      page,
+      q: `repo:${options.repo}+base:${options.base}+head:${options.head}+state:open+is:pull-request`
+    })
+  );
+  const findFirst7 = (options) => find4(options).pipe(Stream_exports.run(Sink_exports.head()), Effect_exports.flatten);
+  const create = github.wrap((_2) => _2.pulls.create);
+  const update4 = github.wrap((_2) => _2.pulls.update);
+  const upsert = (options) => Effect_exports.matchEffect(findFirst7(options), {
+    onFailure: () => create({
+      owner: options.owner,
+      repo: options.repo,
+      title: options.title,
+      body: options.body,
+      head: options.head,
+      base: options.base
+    }),
+    onSuccess: (pull) => update4({
+      owner: options.owner,
+      repo: options.repo,
+      pull_number: pull.number,
+      title: options.title,
+      body: options.body,
+      head: options.head,
+      base: options.base
+    })
+  });
+  const current2 = Effect_exports.fromNullable(import_github3.context.payload.pull_request);
+  const files = (options) => github.stream(
+    (_2, page) => _2.pulls.listFiles({
+      ...options,
+      page
+    })
+  );
+  const currentFiles = env.issue.pipe(
+    Effect_exports.map(
+      (issue) => files({
+        owner: issue.owner,
+        repo: issue.repo,
+        pull_number: issue.number
+      })
+    ),
+    Stream_exports.unwrap
+  );
+  const setCurrentBase = (base) => current2.pipe(
+    Effect_exports.andThen(
+      (pull) => update4({
+        owner: pull.owner,
+        repo: pull.repo,
+        pull_number: pull.number,
+        base
+      })
+    )
+  );
+  const comment = github.wrap((_2) => _2.issues.createComment);
+  const currentComment = (body) => Effect_exports.flatMap(
+    current2,
+    (pull) => comment({
+      owner: pull.owner,
+      repo: pull.repo,
+      issue_number: pull.number,
+      body
+    })
+  );
+  return {
+    find: find4,
+    findFirst: findFirst7,
+    upsert,
+    current: current2,
+    files,
+    currentFiles,
+    setCurrentBase,
+    currentComment
+  };
+});
+var PullRequests = Context_exports.Tag("app/PullRequests");
+var PullRequestsLive = Layer_exports.effect(PullRequests, make54).pipe(
   Layer_exports.provide(RunnerEnvLive)
 );
 
+// src/Changesets.ts
+var make55 = Effect_exports.gen(function* (_) {
+  const fs = yield* _(FileSystem);
+  const pulls = yield* _(PullRequests);
+  const current2 = (packages2) => pulls.currentFiles.pipe(
+    Stream_exports.filter(
+      (_2) => _2.status === "added" && _2.filename.startsWith(".changeset/") && _2.filename.endsWith(".md")
+    ),
+    Stream_exports.mapEffect((_2) => fs.readFileString(_2.filename)),
+    Stream_exports.flatMap((_2) => Stream_exports.fromIterable(parse3(_2))),
+    packages2.length > 0 ? Stream_exports.filter(([pkg]) => packages2.includes(pkg)) : identity
+  );
+  const currentTypes = (packages2) => current2(packages2).pipe(
+    Stream_exports.filter((_2) => _2[1] === "minor" || _2[1] === "major"),
+    Stream_exports.map(([, type]) => type),
+    Stream_exports.runCollect,
+    Effect_exports.map(ReadonlyArray_exports.dedupe)
+  );
+  const currentMaxType = (packages2) => currentTypes(packages2).pipe(
+    Effect_exports.map((types) => {
+      if (types.includes("major")) {
+        return Option_exports.some("major");
+      } else if (types.includes("minor")) {
+        return Option_exports.some("minor");
+      } else if (types.includes("patch")) {
+        return Option_exports.some("patch");
+      }
+      return Option_exports.none();
+    })
+  );
+  return { current: current2, currentTypes, currentMaxType };
+});
+var Changesets = Context_exports.Tag("app/Changesets");
+var ChangesetsLive = Layer_exports.effect(Changesets, make55).pipe(
+  Layer_exports.provide(PullRequestsLive),
+  Layer_exports.provide(layer2),
+  Layer_exports.provide(RunnerEnvLive)
+);
+var ChangeRegex = /"(.+?)":\s*(patch|minor|major)/g;
+var parse3 = (content3) => {
+  const root = unified3().use(remarkParse).parse(content3);
+  return ReadonlyArray_exports.findFirst(
+    root.children,
+    (_) => _.type === "heading"
+  ).pipe(
+    Option_exports.flatMap(
+      (_) => ReadonlyArray_exports.findFirst(
+        _.children,
+        (_2) => _2.type === "text"
+      )
+    ),
+    Option_exports.map(
+      (_) => [..._.value.matchAll(ChangeRegex)].map(
+        ([, pkg, type]) => [pkg, type]
+      )
+    ),
+    Option_exports.getOrElse(() => [])
+  );
+};
+
 // src/utils/config.ts
+var nonEmptyString = (name) => Config_exports.string(name).pipe(
+  Config_exports.mapOrFail((_) => {
+    const trimmed = _.trim();
+    return trimmed !== "" ? Either_exports.right(trimmed) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
+  })
+);
 var nonEmptySecret = (name) => Config_exports.secret(name).pipe(
   Config_exports.mapOrFail((_) => {
     const trimmed = Secret_exports.fromString(Secret_exports.value(_).trim());
     return Secret_exports.value(trimmed) !== "" ? Either_exports.right(trimmed) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
   })
 );
+var input = (name) => Config_exports.nested(nonEmptyString(name), "input");
 var inputSecret = (name) => Config_exports.nested(nonEmptySecret(name), "input");
 
+// src/Config.ts
+var baseBranch = input("base_branch").pipe(
+  Effect_exports.orElse(() => Effect_exports.map(RunnerEnv, (_) => _.repo.default_branch))
+);
+var prefix = Config_exports.withDefault(input("branch_prefix"), "next");
+var packages = Config_exports.array(
+  input("packages")
+).pipe(Config_exports.withDefault([]));
+
+// src/UpdateBase.ts
+var run5 = Effect_exports.gen(function* (_) {
+  const changesets = yield* _(Changesets);
+  const pulls = yield* _(PullRequests);
+  const pull = yield* _(pulls.current);
+  const packages2 = yield* _(packages);
+  const changeTypeOption = yield* _(
+    changesets.currentMaxType(packages2),
+    Effect_exports.map(Option_exports.filter((_2) => _2 !== "patch"))
+  );
+  if (Option_exports.isNone(changeTypeOption)) {
+    return yield* _(Console_exports.log("Not a minor or major change"));
+  }
+  const changeType = changeTypeOption.value;
+  const prefix2 = yield* _(prefix);
+  const targetBase = `${prefix2}-${changeType}`;
+  const currentBase = pull.base.ref;
+  if (currentBase === targetBase) {
+    return yield* _(Console_exports.log("No update needed"));
+  }
+  if (changeType === "major") {
+    yield* _(ensureBranchFor("minor"));
+  }
+  yield* _(ensureBranchFor(changeType));
+  yield* _(pulls.setCurrentBase(targetBase));
+  yield* _(Console_exports.log(`Updated base to ${targetBase}`));
+});
+var getBranch = (branch) => Effect_exports.gen(function* (_) {
+  const env = yield* _(RunnerEnv);
+  const github = yield* _(Github);
+  const getBranch2 = github.wrap((_2) => _2.repos.getBranch);
+  return yield* _(
+    getBranch2({
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
+      branch
+    })
+  );
+});
+var getDefaultBranch = Effect_exports.flatMap(baseBranch, getBranch);
+var ensureBranchFor = (changeType) => Effect_exports.gen(function* (_) {
+  const env = yield* _(RunnerEnv);
+  const github = yield* _(Github);
+  const prefix2 = yield* _(prefix);
+  const baseBranch2 = changeType === "minor" ? yield* _(getDefaultBranch) : yield* _(getBranch(`${prefix2}-minor`));
+  const sha = baseBranch2.commit.sha;
+  const ref = `${prefix2}-${changeType}`;
+  const createBranch = github.wrap((_2) => _2.git.createRef);
+  const create = createBranch({
+    owner: env.repo.owner.login,
+    repo: env.repo.name,
+    ref: `refs/heads/${ref}`,
+    sha
+  });
+  yield* _(
+    getBranch(ref),
+    Effect_exports.catchIf(
+      (e) => e.reason.status === 404,
+      (_2) => create
+    )
+  );
+});
+
 // src/index.ts
-var GithubLive = layer({
+var GithubLive = layer3({
   token: inputSecret("github_token")
 });
-var main = Effect_exports.gen(function* (_) {
-  const changesets = yield* _(Changesets);
-  yield* _(changesets.current, Stream_exports.runForEach(Console_exports.log));
-}).pipe(
+var main = run5.pipe(
+  Effect_exports.catchTags({
+    NoSuchElementException: () => Console_exports.log("Pull request not found")
+  }),
   Effect_exports.provide(
-    ChangesetsLive.pipe(
-      Layer_exports.provide(GithubLive),
-      Layer_exports.provide(
-        Layer_exports.setConfigProvider(
-          ConfigProvider_exports.fromEnv().pipe(ConfigProvider_exports.constantCase)
-        )
-      )
+    Layer_exports.mergeAll(ChangesetsLive, PullRequestsLive, RunnerEnvLive).pipe(
+      Layer_exports.provideMerge(GithubLive)
     )
   )
 );

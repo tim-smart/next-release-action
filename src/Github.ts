@@ -1,5 +1,5 @@
 import { getOctokit } from "@actions/github"
-import type { OctokitResponse } from "@octokit/types"
+import type { OctokitResponse, RequestError } from "@octokit/types"
 import {
   Chunk,
   Config,
@@ -17,7 +17,7 @@ export interface GithubOptions {
 
 export class GithubError {
   readonly _tag = "GithubError"
-  constructor(readonly reason: unknown) {}
+  constructor(readonly reason: RequestError) {}
 }
 
 const make = ({ token }: GithubOptions) => {
@@ -29,7 +29,7 @@ const make = ({ token }: GithubOptions) => {
   const request = <A>(f: (_: Endpoints) => Promise<A>) =>
     Effect.tryPromise({
       try: () => f(rest),
-      catch: reason => new GithubError(reason),
+      catch: reason => new GithubError(reason as any),
     })
 
   const wrap =
@@ -40,7 +40,7 @@ const make = ({ token }: GithubOptions) => {
       Effect.map(
         Effect.tryPromise({
           try: () => f(rest)(...args),
-          catch: reason => new GithubError(reason),
+          catch: reason => new GithubError(reason as any),
         }),
         _ => _.data,
       )
@@ -51,7 +51,7 @@ const make = ({ token }: GithubOptions) => {
     Stream.paginateChunkEffect(0, page =>
       Effect.tryPromise({
         try: () => f(rest, page),
-        catch: reason => new GithubError(reason),
+        catch: reason => new GithubError(reason as any),
       }).pipe(
         Effect.map(_ => [
           Chunk.unsafeFromArray(_.data),
@@ -69,7 +69,7 @@ const make = ({ token }: GithubOptions) => {
     Stream.paginateChunkEffect(0, page =>
       Effect.tryPromise({
         try: () => f(rest, page),
-        catch: reason => new GithubError(reason),
+        catch: reason => new GithubError(reason as any),
       }).pipe(
         Effect.map(_ => [
           Chunk.unsafeFromArray(_.data.items),
