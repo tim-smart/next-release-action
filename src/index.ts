@@ -39,6 +39,7 @@ const main = Effect.gen(function* (_) {
     `refs/heads/${prefix}-minor`,
   ]
 
+  console.log(context.payload)
   if (Option.isNone(env.issue) && env.ref === `refs/heads/${baseBranch}`) {
     yield* _(EnsureBranches.run)
   } else if (eligibleBranches.includes(env.ref)) {
