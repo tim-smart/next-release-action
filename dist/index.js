@@ -51278,6 +51278,7 @@ var run5 = Effect_exports.gen(function* (_) {
   const changeType = changeTypeOption.value;
   const targetBase = `${prefix2}-${changeType}`;
   const currentBase = pull.base.ref;
+  console.log(targetBase, currentBase);
   if (currentBase === targetBase) {
     return yield* _(Console_exports.log("No update needed"));
   }
