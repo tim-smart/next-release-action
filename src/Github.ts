@@ -45,40 +45,27 @@ const make = ({ token }: GithubOptions) => {
         _ => _.data,
       )
 
+  const streamWith = <A, B>(
+    f: (_: Endpoints, page: number) => Promise<OctokitResponse<A>>,
+    g: (_: A) => ReadonlyArray<B>,
+  ) =>
+    Stream.paginateChunkEffect(0, page =>
+      Effect.tryPromise({
+        try: () => f(rest, page),
+        catch: reason => new GithubError(reason as any),
+      }).pipe(
+        Effect.map(_ => [
+          Chunk.unsafeFromArray(g(_.data)),
+          maybeNextPage(page, _.headers.link),
+        ]),
+      ),
+    )
+
   const stream = <A>(
     f: (_: Endpoints, page: number) => Promise<OctokitResponse<A[]>>,
-  ) =>
-    Stream.paginateChunkEffect(0, page =>
-      Effect.tryPromise({
-        try: () => f(rest, page),
-        catch: reason => new GithubError(reason as any),
-      }).pipe(
-        Effect.map(_ => [
-          Chunk.unsafeFromArray(_.data),
-          maybeNextPage(page, _.headers.link),
-        ]),
-      ),
-    )
+  ) => streamWith(f, _ => _)
 
-  const streamItems = <A>(
-    f: (
-      _: Endpoints,
-      page: number,
-    ) => Promise<OctokitResponse<{ readonly items: A[] }>>,
-  ) =>
-    Stream.paginateChunkEffect(0, page =>
-      Effect.tryPromise({
-        try: () => f(rest, page),
-        catch: reason => new GithubError(reason as any),
-      }).pipe(
-        Effect.map(_ => [
-          Chunk.unsafeFromArray(_.data.items),
-          maybeNextPage(page, _.headers.link),
-        ]),
-      ),
-    )
-
-  return { api, token, request, wrap, stream, streamItems } as const
+  return { api, token, request, wrap, stream, streamWith } as const
 }
 
 export interface Github extends ReturnType<typeof make> {}
