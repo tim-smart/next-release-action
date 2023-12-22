@@ -51009,6 +51009,7 @@ var make54 = Effect_exports.gen(function* (_) {
   );
   const getRepo = github.wrap((_2) => _2.repos.get);
   const repo = yield* _(getRepo(import_github2.context.repo));
+  console.log(import_github2.context);
   return {
     tmpDir,
     mkTmpDir,

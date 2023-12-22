@@ -30,6 +30,8 @@ export const make = Effect.gen(function* (_) {
   const getRepo = github.wrap(_ => _.repos.get)
   const repo = yield* _(getRepo(context.repo))
 
+  console.log(context)
+
   return {
     tmpDir,
     mkTmpDir,
