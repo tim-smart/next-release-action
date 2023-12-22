@@ -40,7 +40,7 @@ const main = Effect.gen(function* (_) {
 
   if (env.ref === `refs/heads/${baseBranch}`) {
     yield* _(EnsureBranches.run)
-  } else if (!eligibleBranches.includes(env.ref)) {
+  } else if (eligibleBranches.includes(env.ref)) {
     yield* _(ReleasePull.run)
   } else {
     yield* _(

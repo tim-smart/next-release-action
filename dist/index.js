@@ -51245,7 +51245,6 @@ var run5 = Effect_exports.gen(function* (_) {
   const pulls = yield* _(PullRequests);
   const pull = yield* _(pulls.current);
   const prefix2 = yield* _(prefix);
-  console.log(pull.head);
   if (pull.head.ref.startsWith(`${prefix2}-`)) {
     return yield* _(new NoPullRequest());
   }
@@ -51367,7 +51366,7 @@ var main = Effect_exports.gen(function* (_) {
   ];
   if (env.ref === `refs/heads/${baseBranch2}`) {
     yield* _(run7);
-  } else if (!eligibleBranches.includes(env.ref)) {
+  } else if (eligibleBranches.includes(env.ref)) {
     yield* _(run6);
   } else {
     yield* _(
