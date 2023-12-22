@@ -1,34 +1,48 @@
-import { Context, Effect, Layer, Sink, Stream } from "effect"
+import {
+  Chunk,
+  Context,
+  Effect,
+  Layer,
+  Order,
+  ReadonlyArray,
+  Sink,
+  Stream,
+  pipe,
+} from "effect"
 import { Github } from "./Github"
 import { RunnerEnv, RunnerEnvLive } from "./Runner"
 import { context } from "@actions/github"
+import { number } from "effect/Equivalence"
 
 const make = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
   const github = yield* _(Github)
-  const find = (options: {
-    readonly repo: string
-    readonly base: string
-    readonly head: string
-  }) =>
-    github.streamItems((_, page) =>
-      _.search.issuesAndPullRequests({
-        page,
-        q: `repo:${options.repo}+base:${options.base}+head:${options.head}+state:open+is:pull-request`,
-      }),
+  const find = (options: { readonly base: string; readonly head: string }) =>
+    github.streamWith(
+      (_, page) =>
+        _.search.issuesAndPullRequests({
+          page,
+          q: `repo:${env.repo.full_name}+base:${options.base}+head:${options.head}+state:open+is:pr`,
+        }),
+      _ => _.items,
     )
   const findFirst = (options: {
-    readonly repo: string
     readonly base: string
     readonly head: string
   }) => find(options).pipe(Stream.run(Sink.head()), Effect.flatten)
 
   const create = github.wrap(_ => _.pulls.create)
-  const update = github.wrap(_ => _.pulls.update)
+  const update_ = github.wrap(_ => _.pulls.update)
+  const update = (
+    options: Omit<Parameters<typeof update_>[0], "owner" | "repo">,
+  ) =>
+    update_({
+      ...options,
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
+    } as any)
 
   const upsert = (options: {
-    readonly owner: string
-    readonly repo: string
     readonly base: string
     readonly head: string
     readonly title: string
@@ -37,8 +51,8 @@ const make = Effect.gen(function* (_) {
     Effect.matchEffect(findFirst(options), {
       onFailure: () =>
         create({
-          owner: options.owner,
-          repo: options.repo,
+          owner: env.repo.owner.login,
+          repo: env.repo.name,
           title: options.title,
           body: options.body,
           head: options.head,
@@ -46,8 +60,6 @@ const make = Effect.gen(function* (_) {
         }),
       onSuccess: pull =>
         update({
-          owner: options.owner,
-          repo: options.repo,
           pull_number: pull.number,
           title: options.title,
           body: options.body,
@@ -85,8 +97,6 @@ const make = Effect.gen(function* (_) {
     current.pipe(
       Effect.andThen(pull =>
         update({
-          owner: pull.owner,
-          repo: pull.repo,
           pull_number: pull.number,
           base,
         }),
@@ -104,15 +114,62 @@ const make = Effect.gen(function* (_) {
       }),
     )
 
+  const listCommits = github.wrap(_ => _.pulls.listCommits)
+  const commits = (number: number) =>
+    listCommits({
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
+      pull_number: number,
+    })
+  const currentCommits = Effect.flatMap(current, pull =>
+    listCommits({
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
+      pull_number: pull.number,
+    }),
+  )
+
+  const listForCommit = github.wrap(
+    _ => _.repos.listPullRequestsAssociatedWithCommit,
+  )
+  const forCommit = (sha: string) =>
+    listForCommit({
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
+      commit_sha: sha,
+    })
+  const related = (number: number) =>
+    commits(number).pipe(
+      Effect.map(commits =>
+        Stream.fromIterable(commits).pipe(
+          Stream.mapEffect(commit => forCommit(commit.sha)),
+        ),
+      ),
+      Stream.unwrap,
+      Stream.flatMap(pulls => Stream.fromIterable(pulls)),
+      Stream.filter(pull => pull.number !== number),
+      Stream.runCollect,
+      Effect.map(pulls =>
+        pipe(
+          pulls,
+          ReadonlyArray.dedupeWith((a, b) => a.number === b.number),
+          ReadonlyArray.sort(Order.struct({ number: Order.number })),
+        ),
+      ),
+    )
+
   return {
     find,
     findFirst,
     upsert,
+    update,
     current,
     files,
     currentFiles,
     setCurrentBase,
     currentComment,
+    currentCommits,
+    related,
   } as const
 })
 
