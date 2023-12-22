@@ -9,6 +9,7 @@ import { inputSecret } from "./utils/config"
 import * as ReleasePull from "./ReleasePull"
 import * as Config from "./Config"
 import * as EnsureBranches from "./EnsureBranches"
+import { context } from "@actions/github"
 
 // // Setup the Git client layer
 // const GitLive = Git.layer({
@@ -38,11 +39,8 @@ const main = Effect.gen(function* (_) {
     `refs/heads/${prefix}-minor`,
   ]
 
-  if (Option.isSome(env.comment)) {
-    if (env.comment.value.body === "/approve") {
-      yield* _(UpdateBase.run)
-    }
-  } else if (env.ref === `refs/heads/${baseBranch}`) {
+  console.log(context)
+  if (env.ref === `refs/heads/${baseBranch}`) {
     yield* _(EnsureBranches.run)
   } else if (eligibleBranches.includes(env.ref)) {
     yield* _(ReleasePull.run)

@@ -3,12 +3,6 @@ import { Changesets } from "./Changesets"
 import * as Config from "./Config"
 import { NoPullRequest, PullRequests } from "./PullRequests"
 
-export class ApprovalNeeded extends Data.TaggedError("ApprovalNeeded") {
-  toString(): string {
-    return "A maintainer needs to comment with `/approve`"
-  }
-}
-
 export const run = Effect.gen(function* (_) {
   const pulls = yield* _(PullRequests)
   const pull = yield* _(pulls.current)
@@ -39,9 +33,4 @@ export const run = Effect.gen(function* (_) {
 
   yield* _(pulls.setCurrentBase(targetBase))
   yield* _(Console.log(`Updated base to ${targetBase}`))
-}).pipe(
-  Effect.catchIf(
-    error => error._tag === "GithubError" && error.reason.status === 403,
-    () => new ApprovalNeeded(),
-  ),
-)
+})
