@@ -1,5 +1,5 @@
 import { getOctokit } from "@actions/github"
-import type { OctokitResponse } from "@octokit/types"
+import type { OctokitResponse, RequestError } from "@octokit/types"
 import {
   Chunk,
   Config,
@@ -17,7 +17,7 @@ export interface GithubOptions {
 
 export class GithubError {
   readonly _tag = "GithubError"
-  constructor(readonly reason: unknown) {}
+  constructor(readonly reason: RequestError) {}
 }
 
 const make = ({ token }: GithubOptions) => {
@@ -29,7 +29,7 @@ const make = ({ token }: GithubOptions) => {
   const request = <A>(f: (_: Endpoints) => Promise<A>) =>
     Effect.tryPromise({
       try: () => f(rest),
-      catch: reason => new GithubError(reason),
+      catch: reason => new GithubError(reason as any),
     })
 
   const wrap =
@@ -40,27 +40,32 @@ const make = ({ token }: GithubOptions) => {
       Effect.map(
         Effect.tryPromise({
           try: () => f(rest)(...args),
-          catch: reason => new GithubError(reason),
+          catch: reason => new GithubError(reason as any),
         }),
         _ => _.data,
       )
 
-  const stream = <A>(
-    f: (_: Endpoints, page: number) => Promise<OctokitResponse<A[]>>,
+  const streamWith = <A, B>(
+    f: (_: Endpoints, page: number) => Promise<OctokitResponse<A>>,
+    g: (_: A) => ReadonlyArray<B>,
   ) =>
     Stream.paginateChunkEffect(0, page =>
       Effect.tryPromise({
         try: () => f(rest, page),
-        catch: reason => new GithubError(reason),
+        catch: reason => new GithubError(reason as any),
       }).pipe(
         Effect.map(_ => [
-          Chunk.fromIterable(_.data),
+          Chunk.unsafeFromArray(g(_.data)),
           maybeNextPage(page, _.headers.link),
         ]),
       ),
     )
 
-  return { api, token, request, wrap, stream } as const
+  const stream = <A>(
+    f: (_: Endpoints, page: number) => Promise<OctokitResponse<A[]>>,
+  ) => streamWith(f, _ => _)
+
+  return { api, token, request, wrap, stream, streamWith } as const
 }
 
 export interface Github extends ReturnType<typeof make> {}

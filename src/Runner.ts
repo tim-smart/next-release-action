@@ -3,8 +3,10 @@ import * as Path from "node:path"
 import { context } from "@actions/github"
 import { Config, Context, Effect, Layer, Option } from "effect"
 import { FileSystem } from "@effect/platform-node"
+import { Github } from "./Github"
 
 export const make = Effect.gen(function* (_) {
+  const github = yield* _(Github)
   const fs = yield* _(FileSystem.FileSystem)
   const tmpDir = yield* _(
     Config.string("RUNNER_TEMP"),
@@ -25,8 +27,16 @@ export const make = Effect.gen(function* (_) {
   const issue = Option.fromNullable(context.issue.number).pipe(
     Option.as(context.issue),
   )
+  const getRepo = github.wrap(_ => _.repos.get)
+  const repo = yield* _(getRepo(context.repo))
 
-  return { tmpDir, mkTmpDir, issue } as const
+  return {
+    tmpDir,
+    mkTmpDir,
+    issue,
+    repo,
+    ref: context.ref,
+  } as const
 })
 
 export interface RunnerEnv extends Effect.Effect.Success<typeof make> {}
