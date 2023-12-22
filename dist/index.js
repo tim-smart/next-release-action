@@ -51123,7 +51123,14 @@ var nonEmptyString = (name) => Config_exports.string(name).pipe(
     return trimmed !== "" ? Either_exports.right(trimmed) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
   })
 );
+var nonEmptySecret = (name) => Config_exports.secret(name).pipe(
+  Config_exports.mapOrFail((_) => {
+    const trimmed = Secret_exports.fromString(Secret_exports.value(_).trim());
+    return Secret_exports.value(trimmed) !== "" ? Either_exports.right(trimmed) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
+  })
+);
 var input = (name) => Config_exports.nested(nonEmptyString(name), "input");
+var inputSecret = (name) => Config_exports.nested(nonEmptySecret(name), "input");
 
 // src/Config.ts
 var baseBranch = input("base_branch").pipe(
@@ -51242,7 +51249,7 @@ ${listItems}`;
 
 // src/index.ts
 var GithubLive = layer3({
-  token: Config_exports.secret("GITHUB_TOKEN")
+  token: inputSecret("github_token")
 });
 var main = run5.pipe(
   Effect_exports.catchTag("NoSuchElementException", () => run6),

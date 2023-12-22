@@ -1,5 +1,5 @@
 import { runMain } from "@effect/platform-node/Runtime"
-import { Config, Console, Effect, Layer } from "effect"
+import { Console, Effect, Layer } from "effect"
 import { ChangesetsLive } from "./Changesets"
 import * as Github from "./Github"
 import { PullRequestsLive } from "./PullRequests"
@@ -19,7 +19,7 @@ import * as ReleasePull from "./ReleasePull"
 
 // Setup the Github API
 const GithubLive = Github.layer({
-  token: Config.secret("GITHUB_TOKEN"),
+  token: inputSecret("github_token"),
 })
 
 const main = UpdateBase.run.pipe(
