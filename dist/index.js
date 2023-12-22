@@ -50844,6 +50844,9 @@ function isUint8Array2(value3) {
   );
 }
 
+// src/PullRequests.ts
+var import_github3 = __toESM(require_github());
+
 // src/Github.ts
 var import_github = __toESM(require_github());
 var GithubError = class {
@@ -50924,7 +50927,6 @@ var RunnerEnvLive = Layer_exports.effect(RunnerEnv, make53).pipe(
 );
 
 // src/PullRequests.ts
-var import_github3 = __toESM(require_github());
 var make54 = Effect_exports.gen(function* (_) {
   const env = yield* _(RunnerEnv);
   const github = yield* _(Github);

@@ -1,5 +1,5 @@
+import { context } from "@actions/github"
 import {
-  Chunk,
   Context,
   Effect,
   Layer,
@@ -11,8 +11,6 @@ import {
 } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv, RunnerEnvLive } from "./Runner"
-import { context } from "@actions/github"
-import { number } from "effect/Equivalence"
 
 const make = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
