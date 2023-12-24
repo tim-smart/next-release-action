@@ -10,12 +10,12 @@ export const run = Effect.gen(function* (_) {
   const base = yield* _(Config.baseBranch)
   const prefix = yield* _(Config.prefix)
 
-  yield* _(git.run(_ => _.fetch("origin").checkout(base)))
+  const head = yield* _(git.run(_ => _.revparse(["HEAD"])))
 
   yield* _(
     git.run(_ =>
-      _.checkout(`origin/${prefix}-minor`)
-        .rebase([`origin/${base}`])
+      _.checkout(`${prefix}-minor`)
+        .rebase([head])
         .push("origin", `${prefix}-minor`, ["--force"]),
     ),
     Effect.catchAllCause(Effect.log),
