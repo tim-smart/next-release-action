@@ -56023,10 +56023,7 @@ var make57 = ({ simpleGit: opts = {}, userName, userEmail }) => {
     const git = simpleGit(dir3, opts);
     const run8 = (f) => Effect_exports.tryPromise({
       try: () => f(git),
-      catch: (error3) => {
-        console.log(error3);
-        return new GitError2(error3);
-      }
+      catch: (error3) => new GitError2(error3)
     });
     yield* _(
       run8(
@@ -56050,12 +56047,12 @@ var run7 = Effect_exports.gen(function* (_) {
   const prefix2 = yield* _(prefix);
   yield* _(
     git.run(
-      (_2) => _2.checkout(`${prefix2}-minor`).rebase([base]).push("origin", `${prefix2}-minor`, ["--force"])
+      (_2) => _2.checkout(`origin/${prefix2}-minor`).rebase([`origin/${base}`]).push("origin", `${prefix2}-minor`, ["--force"])
     )
   );
   yield* _(
     git.run(
-      (_2) => _2.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push("origin", `${prefix2}-major`, ["--force"])
+      (_2) => _2.checkout(`origin/${prefix2}-major`).rebase([`origin/${prefix2}-minor`]).push("origin", `${prefix2}-major`, ["--force"])
     )
   );
 });
