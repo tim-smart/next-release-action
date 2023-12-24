@@ -56044,11 +56044,13 @@ var run7 = Effect_exports.gen(function* (_) {
     Effect_exports.flatMap((_2) => _2.open("."))
   );
   const prefix2 = yield* _(prefix);
-  yield* _(git.run((_2) => _2.fetch("origin")));
+  const base = yield* _(baseBranch);
+  yield* _(git.run((_2) => _2.fetch("origin").checkout(base)));
   const head7 = yield* _(git.run((_2) => _2.revparse(["HEAD"])));
+  console.log("HEAD", head7);
   yield* _(
     git.run(
-      (_2) => _2.checkout(`${prefix2}-minor`).raw(["rebase", head7]).push("origin", `${prefix2}-minor`, ["--force"])
+      (_2) => _2.checkout(`${prefix2}-minor`).rebase([base]).push("origin", `${prefix2}-minor`, ["--force"])
     ),
     Effect_exports.catchAllCause(Effect_exports.log)
   );

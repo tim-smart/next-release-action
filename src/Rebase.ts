@@ -8,14 +8,16 @@ export const run = Effect.gen(function* (_) {
     Effect.flatMap(_ => _.open(".")),
   )
   const prefix = yield* _(Config.prefix)
+  const base = yield* _(Config.baseBranch)
 
-  yield* _(git.run(_ => _.fetch("origin")))
+  yield* _(git.run(_ => _.fetch("origin").checkout(base)))
   const head = yield* _(git.run(_ => _.revparse(["HEAD"])))
+  console.log("HEAD", head)
 
   yield* _(
     git.run(_ =>
       _.checkout(`${prefix}-minor`)
-        .raw(["rebase", head])
+        .rebase([base])
         .push("origin", `${prefix}-minor`, ["--force"]),
     ),
     Effect.catchAllCause(Effect.log),
