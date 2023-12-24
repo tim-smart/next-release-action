@@ -10,7 +10,7 @@ export const run = Effect.gen(function* (_) {
   const base = yield* _(Config.baseBranch)
   const prefix = yield* _(Config.prefix)
 
-  yield* _(git.run(_ => _.fetch("origin")))
+  yield* _(git.run(_ => _.fetch("origin").checkout(base)))
 
   yield* _(
     git.run(_ =>

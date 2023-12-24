@@ -56045,7 +56045,7 @@ var run7 = Effect_exports.gen(function* (_) {
   );
   const base = yield* _(baseBranch);
   const prefix2 = yield* _(prefix);
-  yield* _(git.run((_2) => _2.fetch("origin")));
+  yield* _(git.run((_2) => _2.fetch("origin").checkout(base)));
   yield* _(
     git.run(
       (_2) => _2.checkout(`${prefix2}-minor`).rebase([base]).push("origin", `${prefix2}-minor`, ["--force"])
