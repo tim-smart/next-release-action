@@ -29,6 +29,7 @@ export const make = Effect.gen(function* (_) {
   )
   const repo = context.payload.repository!
   const comment = Option.fromNullable(context.payload.comment)
+  const pull = Option.fromNullable(context.payload.pull_request)
 
   return {
     tmpDir,
@@ -36,6 +37,7 @@ export const make = Effect.gen(function* (_) {
     issue,
     repo,
     comment,
+    pull,
     ref: context.ref,
   } as const
 })
