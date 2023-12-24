@@ -70,7 +70,8 @@ const make = Effect.gen(function* (_) {
     })
 
   const getPull = github.wrap(_ => _.pulls.get)
-  const current = env.issue.pipe(
+  const current = yield* _(
+    env.issue,
     Effect.flatMap(issue =>
       getPull({
         owner: env.repo.owner.login,
@@ -79,6 +80,7 @@ const make = Effect.gen(function* (_) {
       }),
     ),
     Effect.mapError(() => new NoPullRequest()),
+    Effect.cached,
   )
 
   const files = (options: {
@@ -125,21 +127,6 @@ const make = Effect.gen(function* (_) {
       }),
     )
 
-  const listCommits = github.wrap(_ => _.pulls.listCommits)
-  const commits = (number: number) =>
-    listCommits({
-      owner: env.repo.owner.login,
-      repo: env.repo.name,
-      pull_number: number,
-    })
-  const currentCommits = Effect.flatMap(current, pull =>
-    listCommits({
-      owner: env.repo.owner.login,
-      repo: env.repo.name,
-      pull_number: pull.number,
-    }),
-  )
-
   const listForCommit = github.wrap(
     _ => _.repos.listPullRequestsAssociatedWithCommit,
   )
@@ -149,25 +136,6 @@ const make = Effect.gen(function* (_) {
       repo: env.repo.name,
       commit_sha: sha,
     })
-  const related = (number: number) =>
-    commits(number).pipe(
-      Effect.map(commits =>
-        Stream.fromIterable(commits).pipe(
-          Stream.mapEffect(commit => forCommit(commit.sha)),
-        ),
-      ),
-      Stream.unwrap,
-      Stream.flatMap(pulls => Stream.fromIterable(pulls)),
-      Stream.filter(pull => pull.number !== number),
-      Stream.runCollect,
-      Effect.map(pulls =>
-        pipe(
-          pulls,
-          ReadonlyArray.dedupeWith((a, b) => a.number === b.number),
-          ReadonlyArray.sort(Order.struct({ number: Order.number })),
-        ),
-      ),
-    )
 
   return {
     find,
@@ -179,8 +147,7 @@ const make = Effect.gen(function* (_) {
     currentFiles,
     setCurrentBase,
     currentComment,
-    currentCommits,
-    related,
+    forCommit,
   } as const
 })
 
