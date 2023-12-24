@@ -3,11 +3,7 @@ import * as SG from "simple-git"
 
 export class GitError extends Data.TaggedError("GitError")<{
   readonly error: SG.GitError
-}> {
-  toString(): string {
-    return this.error.toString()
-  }
-}
+}> {}
 
 export interface GitConfig extends Partial<SG.SimpleGitOptions> {
   simpleGit?: Partial<SG.SimpleGitOptions>

@@ -56004,9 +56004,6 @@ var simpleGit = gitInstanceFactory;
 
 // src/Git.ts
 var GitError2 = class extends Data_exports.TaggedError("GitError") {
-  toString() {
-    return this.error.toString();
-  }
 };
 var GitRepo = Context_exports.Tag();
 var make57 = ({ simpleGit: opts = {}, userName, userEmail }) => {
@@ -56094,6 +56091,7 @@ var main = Effect_exports.gen(function* (_) {
   }
 }).pipe(
   Effect_exports.tapErrorTag("GithubError", (error3) => Console_exports.error(error3.reason)),
+  Effect_exports.tapErrorTag("GitError", (error3) => Console_exports.error(error3.error)),
   Effect_exports.provide(
     Layer_exports.mergeAll(
       ChangesetsLive,
