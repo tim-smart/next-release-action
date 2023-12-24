@@ -56048,13 +56048,13 @@ var run7 = Effect_exports.gen(function* (_) {
   yield* _(git.run((_2) => _2.fetch("origin").checkout(base)));
   yield* _(
     git.run(
-      (_2) => _2.checkout(`${prefix2}-minor`).rebase([base]).push("origin", `${prefix2}-major`, ["--force"])
+      (_2) => _2.checkout(`${prefix2}-minor`).rebase([base]).push(["--force"])
     ),
     Effect_exports.catchAllCause(Effect_exports.log)
   );
   yield* _(
     git.run(
-      (_2) => _2.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push("origin", `${prefix2}-major`, ["--force"])
+      (_2) => _2.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
     ),
     Effect_exports.catchAllCause(Effect_exports.log)
   );

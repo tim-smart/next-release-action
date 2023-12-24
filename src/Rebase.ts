@@ -14,9 +14,7 @@ export const run = Effect.gen(function* (_) {
 
   yield* _(
     git.run(_ =>
-      _.checkout(`${prefix}-minor`)
-        .rebase([base])
-        .push("origin", `${prefix}-major`, ["--force"]),
+      _.checkout(`${prefix}-minor`).rebase([base]).push(["--force"]),
     ),
     Effect.catchAllCause(Effect.log),
   )
@@ -25,7 +23,7 @@ export const run = Effect.gen(function* (_) {
     git.run(_ =>
       _.checkout(`${prefix}-major`)
         .rebase([`${prefix}-minor`])
-        .push("origin", `${prefix}-major`, ["--force"]),
+        .push(["--force"]),
     ),
     Effect.catchAllCause(Effect.log),
   )
