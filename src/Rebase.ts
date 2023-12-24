@@ -18,13 +18,15 @@ export const run = Effect.gen(function* (_) {
         .rebase([base])
         .push("origin", `${prefix}-minor`, ["--force"]),
     ),
+    Effect.catchAllCause(Effect.log),
   )
 
   yield* _(
     git.run(_ =>
-      _.checkout(`origin/${prefix}-major`)
-        .rebase([`origin/${prefix}-minor`])
+      _.checkout(`${prefix}-major`)
+        .rebase([`${prefix}-minor`])
         .push("origin", `${prefix}-major`, ["--force"]),
     ),
+    Effect.catchAllCause(Effect.log),
   )
 })
