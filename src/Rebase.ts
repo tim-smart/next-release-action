@@ -7,9 +7,9 @@ export const run = Effect.gen(function* (_) {
     Git,
     Effect.flatMap(_ => _.open(".")),
   )
-  const base = yield* _(Config.baseBranch)
   const prefix = yield* _(Config.prefix)
 
+  yield* _(git.run(_ => _.fetch("origin")))
   const head = yield* _(git.run(_ => _.revparse(["HEAD"])))
 
   yield* _(

@@ -56043,8 +56043,8 @@ var run7 = Effect_exports.gen(function* (_) {
     Git2,
     Effect_exports.flatMap((_2) => _2.open("."))
   );
-  yield* _(baseBranch);
   const prefix2 = yield* _(prefix);
+  yield* _(git.run((_2) => _2.fetch("origin")));
   const head7 = yield* _(git.run((_2) => _2.revparse(["HEAD"])));
   yield* _(
     git.run(
