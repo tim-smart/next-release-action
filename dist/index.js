@@ -56020,7 +56020,10 @@ var make57 = ({ simpleGit: opts = {}, userName, userEmail }) => {
     const git = simpleGit(dir3, opts);
     const run8 = (f) => Effect_exports.tryPromise({
       try: () => f(git),
-      catch: (error3) => new GitError2(error3)
+      catch: (error3) => {
+        console.log(error3);
+        return new GitError2(error3);
+      }
     });
     yield* _(
       run8(
