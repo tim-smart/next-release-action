@@ -1,7 +1,7 @@
-import { Console, Effect, Stream } from "effect"
-import { RunnerEnv } from "./Runner"
+import { Effect, Order, ReadonlyArray, Stream, pipe } from "effect"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
+import { RunnerEnv } from "./Runner"
 import { Github } from "./Github"
 
 export const run = Effect.gen(function* (_) {
@@ -13,7 +13,7 @@ export const run = Effect.gen(function* (_) {
   ]
 
   if (!eligibleBranches.includes(env.ref)) {
-    return yield* _(Console.log("Not a release branch"))
+    return
   }
 
   const head = env.ref.replace("refs/heads/", "")
@@ -22,29 +22,58 @@ export const run = Effect.gen(function* (_) {
     : yield* _(Config.baseBranch)
   const changeType = head.endsWith("-major") ? "major" : "minor"
   const pulls = yield* _(PullRequests)
-  const pull = yield* _(
+  const body = yield* _(pullBody(base, head))
+  yield* _(
     pulls.upsert({
       head,
       base,
       title: `Release queue: ${changeType}`,
-      body: "",
-    }),
-  )
-  const body = yield* _(pullBody(pull.number))
-  yield* _(
-    pulls.update({
-      pull_number: pull.number,
       body,
     }),
   )
 })
 
-const pullBody = (number: number) =>
+const pullBody = (base: string, head: string) =>
   Effect.gen(function* (_) {
-    const pulls = yield* _(PullRequests)
-    const related = yield* _(pulls.related(number))
+    const related = yield* _(
+      diffPulls(base, head),
+      Stream.runCollect,
+      Effect.map(pulls =>
+        pipe(
+          pulls,
+          ReadonlyArray.dedupeWith((a, b) => a.number === b.number),
+          ReadonlyArray.sort(Order.struct({ number: Order.number })),
+        ),
+      ),
+    )
 
     const listItems = related.map(pull => `- #${pull.number}`).join("\n")
 
     return `Contains the following pull requests:\n\n${listItems}`
   })
+
+const diffPulls = (base: string, head: string) =>
+  Effect.gen(function* (_) {
+    const pulls = yield* _(PullRequests)
+    return diffCommits(base, head).pipe(
+      Stream.mapEffect(commit => pulls.forCommit(commit.sha)),
+      Stream.flattenIterables,
+    )
+  }).pipe(Stream.unwrap)
+
+const diffCommits = (base: string, head: string) =>
+  Effect.gen(function* (_) {
+    const env = yield* _(RunnerEnv)
+    const github = yield* _(Github)
+    return github.streamWith(
+      (_, page) =>
+        _.repos.compareCommits({
+          owner: env.repo.owner.login,
+          repo: env.repo.name,
+          base: base,
+          head,
+          page,
+        }),
+      _ => _.commits,
+    )
+  }).pipe(Stream.unwrap)

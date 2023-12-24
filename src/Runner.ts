@@ -27,14 +27,15 @@ export const make = Effect.gen(function* (_) {
   const issue = Option.fromNullable(context.issue.number).pipe(
     Option.as(context.issue),
   )
-  const getRepo = github.wrap(_ => _.repos.get)
-  const repo = yield* _(getRepo(context.repo))
+  const repo = context.payload.repository!
+  const comment = Option.fromNullable(context.payload.comment)
 
   return {
     tmpDir,
     mkTmpDir,
     issue,
     repo,
+    comment,
     ref: context.ref,
   } as const
 })

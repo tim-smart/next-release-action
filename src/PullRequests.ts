@@ -1,6 +1,7 @@
 import { context } from "@actions/github"
 import {
   Context,
+  Data,
   Effect,
   Layer,
   Order,
@@ -11,6 +12,8 @@ import {
 } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv, RunnerEnvLive } from "./Runner"
+
+export class NoPullRequest extends Data.TaggedError("NoPullRequest") {}
 
 const make = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
@@ -66,7 +69,19 @@ const make = Effect.gen(function* (_) {
         }),
     })
 
-  const current = Effect.fromNullable(context.payload.pull_request)
+  const getPull = github.wrap(_ => _.pulls.get)
+  const current = yield* _(
+    env.issue,
+    Effect.flatMap(issue =>
+      getPull({
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
+        pull_number: issue.number,
+      }),
+    ),
+    Effect.mapError(() => new NoPullRequest()),
+    Effect.cached,
+  )
 
   const files = (options: {
     readonly owner: string
@@ -80,11 +95,11 @@ const make = Effect.gen(function* (_) {
       }),
     )
 
-  const currentFiles = env.issue.pipe(
+  const currentFiles = current.pipe(
     Effect.map(issue =>
       files({
-        owner: issue.owner,
-        repo: issue.repo,
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
         pull_number: issue.number,
       }),
     ),
@@ -105,27 +120,12 @@ const make = Effect.gen(function* (_) {
   const currentComment = (body: string) =>
     Effect.flatMap(current, pull =>
       comment({
-        owner: pull.owner,
-        repo: pull.repo,
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
         issue_number: pull.number,
         body,
       }),
     )
-
-  const listCommits = github.wrap(_ => _.pulls.listCommits)
-  const commits = (number: number) =>
-    listCommits({
-      owner: env.repo.owner.login,
-      repo: env.repo.name,
-      pull_number: number,
-    })
-  const currentCommits = Effect.flatMap(current, pull =>
-    listCommits({
-      owner: env.repo.owner.login,
-      repo: env.repo.name,
-      pull_number: pull.number,
-    }),
-  )
 
   const listForCommit = github.wrap(
     _ => _.repos.listPullRequestsAssociatedWithCommit,
@@ -136,25 +136,6 @@ const make = Effect.gen(function* (_) {
       repo: env.repo.name,
       commit_sha: sha,
     })
-  const related = (number: number) =>
-    commits(number).pipe(
-      Effect.map(commits =>
-        Stream.fromIterable(commits).pipe(
-          Stream.mapEffect(commit => forCommit(commit.sha)),
-        ),
-      ),
-      Stream.unwrap,
-      Stream.flatMap(pulls => Stream.fromIterable(pulls)),
-      Stream.filter(pull => pull.number !== number),
-      Stream.runCollect,
-      Effect.map(pulls =>
-        pipe(
-          pulls,
-          ReadonlyArray.dedupeWith((a, b) => a.number === b.number),
-          ReadonlyArray.sort(Order.struct({ number: Order.number })),
-        ),
-      ),
-    )
 
   return {
     find,
@@ -166,8 +147,7 @@ const make = Effect.gen(function* (_) {
     currentFiles,
     setCurrentBase,
     currentComment,
-    currentCommits,
-    related,
+    forCommit,
   } as const
 })
 
