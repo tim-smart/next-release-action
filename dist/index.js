@@ -56004,6 +56004,9 @@ var simpleGit = gitInstanceFactory;
 
 // src/Git.ts
 var GitError2 = class extends Data_exports.TaggedError("GitError") {
+  get message() {
+    return this.error.message;
+  }
 };
 var GitRepo = Context_exports.Tag();
 var make57 = ({ simpleGit: opts = {}, userName, userEmail }) => {
