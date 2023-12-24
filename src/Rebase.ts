@@ -15,13 +15,10 @@ export const run = Effect.gen(function* (_) {
   console.log("HEAD", head)
 
   yield* _(
-    git.run(_ =>
-      _.checkout(`${prefix}-minor`)
-        .rebase([base])
-        .push("origin", `${prefix}-minor`, ["--force"]),
-    ),
+    git.run(_ => _.checkout(`${prefix}-minor`)),
     Effect.catchAllCause(Effect.log),
   )
+  console.log("HEAD", yield* _(git.run(_ => _.revparse(["HEAD"]))))
 
   yield* _(
     git.run(_ =>

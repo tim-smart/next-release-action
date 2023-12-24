@@ -56049,11 +56049,10 @@ var run7 = Effect_exports.gen(function* (_) {
   const head7 = yield* _(git.run((_2) => _2.revparse(["HEAD"])));
   console.log("HEAD", head7);
   yield* _(
-    git.run(
-      (_2) => _2.checkout(`${prefix2}-minor`).rebase([base]).push("origin", `${prefix2}-minor`, ["--force"])
-    ),
+    git.run((_2) => _2.checkout(`${prefix2}-minor`)),
     Effect_exports.catchAllCause(Effect_exports.log)
   );
+  console.log("HEAD", yield* _(git.run((_2) => _2.revparse(["HEAD"]))));
   yield* _(
     git.run(
       (_2) => _2.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push("origin", `${prefix2}-major`, ["--force"])
