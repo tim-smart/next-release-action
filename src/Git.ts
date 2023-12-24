@@ -4,8 +4,8 @@ import * as SG from "simple-git"
 export class GitError extends Data.TaggedError("GitError")<{
   readonly error: SG.GitError
 }> {
-  get message(): string {
-    return this.error.message
+  toString(): string {
+    return this.error.toString()
   }
 }
 
@@ -44,7 +44,10 @@ const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
       const run = <A>(f: (git: SG.SimpleGit) => Promise<A>) =>
         Effect.tryPromise({
           try: () => f(git),
-          catch: error => new GitError(error as any),
+          catch: error => {
+            console.log(error)
+            return new GitError(error as any)
+          },
         })
 
       yield* _(
