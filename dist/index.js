@@ -56050,6 +56050,7 @@ var run7 = Effect_exports.gen(function* (_) {
   console.log("HEAD", head7);
   yield* _(
     git.run((_2) => _2.checkout(`${prefix2}-minor`)),
+    Effect_exports.andThen(git.run((_2) => _2.rebase([base]))),
     Effect_exports.catchAllCause(Effect_exports.log)
   );
   console.log("HEAD", yield* _(git.run((_2) => _2.revparse(["HEAD"]))));

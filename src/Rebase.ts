@@ -16,6 +16,7 @@ export const run = Effect.gen(function* (_) {
 
   yield* _(
     git.run(_ => _.checkout(`${prefix}-minor`)),
+    Effect.andThen(git.run(_ => _.rebase([base]))),
     Effect.catchAllCause(Effect.log),
   )
   console.log("HEAD", yield* _(git.run(_ => _.revparse(["HEAD"]))))
