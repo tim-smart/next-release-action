@@ -44,10 +44,7 @@ const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
       const run = <A>(f: (git: SG.SimpleGit) => Promise<A>) =>
         Effect.tryPromise({
           try: () => f(git),
-          catch: error => {
-            console.log(error)
-            return new GitError(error as any)
-          },
+          catch: error => new GitError(error as any),
         })
 
       yield* _(
