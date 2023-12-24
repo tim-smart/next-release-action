@@ -1,7 +1,6 @@
 ---
-"@effect/platform-node": minor
 "@effect/platform-bun": minor
-"@effect/platform": minor
+"effect": major
 ---
 
 rename server FormData module to Multipart
