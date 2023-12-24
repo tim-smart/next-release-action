@@ -3,7 +3,11 @@ import * as SG from "simple-git"
 
 export class GitError extends Data.TaggedError("GitError")<{
   readonly error: SG.GitError
-}> {}
+}> {
+  get message() {
+    return this.error.message
+  }
+}
 
 export interface GitConfig extends Partial<SG.SimpleGitOptions> {
   simpleGit?: Partial<SG.SimpleGitOptions>
@@ -26,7 +30,7 @@ const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
       yield* _(
         Effect.tryPromise({
           try: () => SG.simpleGit(opts).clone(url, dir),
-          catch: error => new GitError(error as any),
+          catch: error => new GitError({ error: error as any }),
         }),
       )
 
@@ -40,10 +44,7 @@ const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
       const run = <A>(f: (git: SG.SimpleGit) => Promise<A>) =>
         Effect.tryPromise({
           try: () => f(git),
-          catch: error => {
-            console.log(error)
-            return new GitError(error as any)
-          },
+          catch: error => new GitError({ error: error as any }),
         })
 
       yield* _(

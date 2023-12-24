@@ -51,7 +51,6 @@ const main = Effect.gen(function* (_) {
   }
 }).pipe(
   Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),
-  Effect.tapErrorTag("GitError", error => Console.error(error.error)),
   Effect.provide(
     Layer.mergeAll(
       ChangesetsLive,
