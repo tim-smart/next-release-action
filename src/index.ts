@@ -33,8 +33,8 @@ const main = Effect.gen(function* (_) {
   const baseBranch = yield* _(ActionConfig.baseBranch)
   const prefix = yield* _(ActionConfig.prefix)
   const eligibleBranches = [
-    `refs/heads/${prefix}-major`,
-    `refs/heads/${prefix}-minor`,
+    `${prefix}-major`,
+    `${prefix}-minor`,
   ]
 
   if (eligibleBranches.includes(env.ref)) {
