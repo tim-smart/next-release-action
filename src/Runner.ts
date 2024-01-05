@@ -3,10 +3,8 @@ import * as Path from "node:path"
 import { context } from "@actions/github"
 import { Config, Context, Effect, Layer, Option } from "effect"
 import { FileSystem } from "@effect/platform-node"
-import { Github } from "./Github"
 
 export const make = Effect.gen(function* (_) {
-  const github = yield* _(Github)
   const fs = yield* _(FileSystem.FileSystem)
   const tmpDir = yield* _(
     Config.string("RUNNER_TEMP"),
@@ -31,6 +29,12 @@ export const make = Effect.gen(function* (_) {
   const comment = Option.fromNullable(context.payload.comment)
   const pull = Option.fromNullable(context.payload.pull_request)
 
+  const ref = yield* _(
+    Config.string("GITHUB_HEAD_REF").pipe(
+      Config.orElse(() => Config.string("GITHUB_REF_NAME")),
+    ),
+  )
+
   return {
     tmpDir,
     mkTmpDir,
@@ -38,7 +42,7 @@ export const make = Effect.gen(function* (_) {
     repo,
     comment,
     pull,
-    ref: context.ref,
+    ref,
   } as const
 })
 

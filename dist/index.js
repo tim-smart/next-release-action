@@ -51718,7 +51718,6 @@ var maybeNextPage = (page, linkHeader) => Option_exports.fromNullable(linkHeader
 // src/Runner.ts
 var import_github2 = __toESM(require_github());
 var make54 = Effect_exports.gen(function* (_) {
-  yield* _(Github);
   const fs = yield* _(FileSystem_exports2.FileSystem);
   const tmpDir = yield* _(
     Config_exports.string("RUNNER_TEMP"),
@@ -51738,6 +51737,11 @@ var make54 = Effect_exports.gen(function* (_) {
   const repo = import_github2.context.payload.repository;
   const comment = Option_exports.fromNullable(import_github2.context.payload.comment);
   const pull = Option_exports.fromNullable(import_github2.context.payload.pull_request);
+  const ref = yield* _(
+    Config_exports.string("GITHUB_HEAD_REF").pipe(
+      Config_exports.orElse(() => Config_exports.string("GITHUB_REF_NAME"))
+    )
+  );
   return {
     tmpDir,
     mkTmpDir,
@@ -51745,7 +51749,7 @@ var make54 = Effect_exports.gen(function* (_) {
     repo,
     comment,
     pull,
-    ref: import_github2.context.ref
+    ref
   };
 });
 var RunnerEnv = Context_exports.Tag();
