@@ -32,10 +32,7 @@ const main = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
   const baseBranch = yield* _(ActionConfig.baseBranch)
   const prefix = yield* _(ActionConfig.prefix)
-  const eligibleBranches = [
-    `${prefix}-major`,
-    `${prefix}-minor`,
-  ]
+  const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
 
   if (eligibleBranches.includes(env.ref)) {
     yield* _(ReleasePull.run)
@@ -46,7 +43,7 @@ const main = Effect.gen(function* (_) {
         NoPullRequest: () => Console.log("No pull request found"),
       }),
     )
-  } else if (env.ref === `refs/heads/${baseBranch}`) {
+  } else if (env.ref === baseBranch) {
     yield* _(Rebase.run)
   }
 }).pipe(

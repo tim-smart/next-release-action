@@ -56083,10 +56083,7 @@ var main = Effect_exports.gen(function* (_) {
   const env = yield* _(RunnerEnv);
   const baseBranch2 = yield* _(baseBranch);
   const prefix2 = yield* _(prefix);
-  const eligibleBranches = [
-    `${prefix2}-major`,
-    `${prefix2}-minor`
-  ];
+  const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
   if (eligibleBranches.includes(env.ref)) {
     yield* _(run6);
   } else if (Option_exports.isSome(env.pull)) {
@@ -56096,7 +56093,7 @@ var main = Effect_exports.gen(function* (_) {
         NoPullRequest: () => Console_exports.log("No pull request found")
       })
     );
-  } else if (env.ref === `refs/heads/${baseBranch2}`) {
+  } else if (env.ref === baseBranch2) {
     yield* _(run7);
   }
 }).pipe(
