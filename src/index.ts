@@ -36,6 +36,7 @@ const main = Effect.gen(function* (_) {
   console.log({
     baseBranch,
     env,
+    process: process.env,
   })
 
   if (eligibleBranches.includes(env.ref)) {
