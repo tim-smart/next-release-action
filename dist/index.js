@@ -56084,6 +56084,10 @@ var main = Effect_exports.gen(function* (_) {
   const baseBranch2 = yield* _(baseBranch);
   const prefix2 = yield* _(prefix);
   const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
+  console.log({
+    baseBranch: baseBranch2,
+    env
+  });
   if (eligibleBranches.includes(env.ref)) {
     yield* _(run6);
   } else if (Option_exports.isSome(env.pull)) {
