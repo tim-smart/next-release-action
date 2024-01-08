@@ -3,6 +3,7 @@ import * as Path from "node:path"
 import { context } from "@actions/github"
 import { Config, Context, Effect, Layer, Option } from "effect"
 import { FileSystem } from "@effect/platform-node"
+import { nonEmptyString } from "./utils/config"
 
 export const make = Effect.gen(function* (_) {
   const fs = yield* _(FileSystem.FileSystem)
@@ -30,8 +31,8 @@ export const make = Effect.gen(function* (_) {
   const pull = Option.fromNullable(context.payload.pull_request)
 
   const ref = yield* _(
-    Config.string("GITHUB_HEAD_REF").pipe(
-      Config.orElse(() => Config.string("GITHUB_REF_NAME")),
+    nonEmptyString("GITHUB_HEAD_REF").pipe(
+      Config.orElse(() => nonEmptyString("GITHUB_REF_NAME")),
     ),
   )
 

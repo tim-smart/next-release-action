@@ -51717,6 +51717,24 @@ var maybeNextPage = (page, linkHeader) => Option_exports.fromNullable(linkHeader
 
 // src/Runner.ts
 var import_github2 = __toESM(require_github());
+
+// src/utils/config.ts
+var nonEmptyString = (name) => Config_exports.string(name).pipe(
+  Config_exports.mapOrFail((_) => {
+    const trimmed2 = _.trim();
+    return trimmed2 !== "" ? Either_exports.right(trimmed2) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
+  })
+);
+var nonEmptySecret = (name) => Config_exports.secret(name).pipe(
+  Config_exports.mapOrFail((_) => {
+    const trimmed2 = Secret_exports.fromString(Secret_exports.value(_).trim());
+    return Secret_exports.value(trimmed2) !== "" ? Either_exports.right(trimmed2) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
+  })
+);
+var input = (name) => Config_exports.nested(nonEmptyString(name), "input");
+var inputSecret = (name) => Config_exports.nested(nonEmptySecret(name), "input");
+
+// src/Runner.ts
 var make54 = Effect_exports.gen(function* (_) {
   const fs = yield* _(FileSystem_exports2.FileSystem);
   const tmpDir = yield* _(
@@ -51738,8 +51756,8 @@ var make54 = Effect_exports.gen(function* (_) {
   const comment = Option_exports.fromNullable(import_github2.context.payload.comment);
   const pull = Option_exports.fromNullable(import_github2.context.payload.pull_request);
   const ref = yield* _(
-    Config_exports.string("GITHUB_HEAD_REF").pipe(
-      Config_exports.orElse(() => Config_exports.string("GITHUB_REF_NAME"))
+    nonEmptyString("GITHUB_HEAD_REF").pipe(
+      Config_exports.orElse(() => nonEmptyString("GITHUB_REF_NAME"))
     )
   );
   return {
@@ -51927,22 +51945,6 @@ var parse3 = (content3) => {
     Option_exports.getOrElse(() => [])
   );
 };
-
-// src/utils/config.ts
-var nonEmptyString = (name) => Config_exports.string(name).pipe(
-  Config_exports.mapOrFail((_) => {
-    const trimmed2 = _.trim();
-    return trimmed2 !== "" ? Either_exports.right(trimmed2) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
-  })
-);
-var nonEmptySecret = (name) => Config_exports.secret(name).pipe(
-  Config_exports.mapOrFail((_) => {
-    const trimmed2 = Secret_exports.fromString(Secret_exports.value(_).trim());
-    return Secret_exports.value(trimmed2) !== "" ? Either_exports.right(trimmed2) : Either_exports.left(ConfigError_exports.MissingData([], "must not be empty"));
-  })
-);
-var input = (name) => Config_exports.nested(nonEmptyString(name), "input");
-var inputSecret = (name) => Config_exports.nested(nonEmptySecret(name), "input");
 
 // src/Config.ts
 var baseBranch = input("base_branch").pipe(
@@ -56084,11 +56086,6 @@ var main = Effect_exports.gen(function* (_) {
   const baseBranch2 = yield* _(baseBranch);
   const prefix2 = yield* _(prefix);
   const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
-  console.log({
-    baseBranch: baseBranch2,
-    env,
-    process: process.env
-  });
   if (eligibleBranches.includes(env.ref)) {
     yield* _(run6);
   } else if (Option_exports.isSome(env.pull)) {
