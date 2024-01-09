@@ -52027,14 +52027,11 @@ var ensureBranchFor = (changeType) => Effect_exports.gen(function* (_) {
 var run6 = Effect_exports.gen(function* (_) {
   const env = yield* _(RunnerEnv);
   const prefix2 = yield* _(prefix);
-  const eligibleBranches = [
-    `refs/heads/${prefix2}-major`,
-    `refs/heads/${prefix2}-minor`
-  ];
+  const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
   if (!eligibleBranches.includes(env.ref)) {
     return;
   }
-  const head7 = env.ref.replace("refs/heads/", "");
+  const head7 = env.ref;
   const base = head7.endsWith("-major") ? `${prefix2}-minor` : yield* _(baseBranch);
   const changeType = head7.endsWith("-major") ? "major" : "minor";
   const pulls = yield* _(PullRequests);

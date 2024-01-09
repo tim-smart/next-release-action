@@ -7,16 +7,13 @@ import { Github } from "./Github"
 export const run = Effect.gen(function* (_) {
   const env = yield* _(RunnerEnv)
   const prefix = yield* _(Config.prefix)
-  const eligibleBranches = [
-    `refs/heads/${prefix}-major`,
-    `refs/heads/${prefix}-minor`,
-  ]
+  const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
 
   if (!eligibleBranches.includes(env.ref)) {
     return
   }
 
-  const head = env.ref.replace("refs/heads/", "")
+  const head = env.ref
   const base = head.endsWith("-major")
     ? `${prefix}-minor`
     : yield* _(Config.baseBranch)
