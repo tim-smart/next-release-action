@@ -56086,6 +56086,15 @@ var main = Effect_exports.gen(function* (_) {
   const baseBranch2 = yield* _(baseBranch);
   const prefix2 = yield* _(prefix);
   const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
+  yield* _(
+    Effect_exports.log("Running"),
+    Effect_exports.annotateLogs({
+      baseBranch: baseBranch2,
+      ref: env.ref,
+      isPR: Option_exports.isSome(env.pull),
+      eligibleBranches
+    })
+  );
   if (eligibleBranches.includes(env.ref)) {
     yield* _(run6);
   } else if (Option_exports.isSome(env.pull)) {

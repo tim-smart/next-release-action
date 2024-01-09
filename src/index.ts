@@ -34,6 +34,16 @@ const main = Effect.gen(function* (_) {
   const prefix = yield* _(ActionConfig.prefix)
   const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
 
+  yield* _(
+    Effect.log("Running"),
+    Effect.annotateLogs({
+      baseBranch,
+      ref: env.ref,
+      isPR: Option.isSome(env.pull),
+      eligibleBranches,
+    }),
+  )
+
   if (eligibleBranches.includes(env.ref)) {
     yield* _(ReleasePull.run)
   } else if (Option.isSome(env.pull)) {
