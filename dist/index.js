@@ -51863,11 +51863,36 @@ var make55 = Effect_exports.gen(function* (_) {
   const listForCommit = github.wrap(
     (_2) => _2.repos.listPullRequestsAssociatedWithCommit
   );
-  const forCommit = (sha) => listForCommit({
+  const getCommit = github.wrap((_2) => _2.repos.getCommit);
+  const fromCommitMessage = (sha) => getCommit({
     owner: env.repo.owner.login,
     repo: env.repo.name,
-    commit_sha: sha
-  });
+    ref: sha
+  }).pipe(
+    Effect_exports.flatMap(
+      (commit) => Effect_exports.partition(
+        commit.commit.message.matchAll(/#(\d+)/g),
+        ([, number5]) => getPull({
+          owner: env.repo.owner.login,
+          repo: env.repo.name,
+          pull_number: Number(number5)
+        }),
+        { concurrency: 3 }
+      )
+    ),
+    Effect_exports.map(([, pulls]) => pulls)
+  );
+  const forCommit = (sha) => Effect_exports.all(
+    [
+      listForCommit({
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
+        commit_sha: sha
+      }),
+      fromCommitMessage(sha)
+    ],
+    { concurrency: "unbounded" }
+  ).pipe(Effect_exports.map((_2) => _2.flat()));
   return {
     find: find4,
     findFirst: findFirst7,
@@ -52064,9 +52089,11 @@ ${listItems}`;
 });
 var diffPulls = (base, head7) => Effect_exports.gen(function* (_) {
   const pulls = yield* _(PullRequests);
+  const current2 = yield* _(pulls.current);
   return diffCommits(base, head7).pipe(
     Stream_exports.mapEffect((commit) => pulls.forCommit(commit.sha)),
-    Stream_exports.flattenIterables
+    Stream_exports.flattenIterables,
+    Stream_exports.filter((_2) => _2.number !== current2.number)
   );
 }).pipe(Stream_exports.unwrap);
 var diffCommits = (base, head7) => Effect_exports.gen(function* (_) {
