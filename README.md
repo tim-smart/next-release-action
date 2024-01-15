@@ -1,11 +1,3 @@
-# Github Action template using effect-ts
+# next-release-action
 
-## Usage
-
-1. Install deps with `pnpm install`, and restart your IDE Typescript server.
-
-2. Implement your program in `src/main.ts`
-
-3. Package with `pnpm package`
-
-4. Deploy to Github action marketplace
+Maintains the release queue for the Effect monorepo.
