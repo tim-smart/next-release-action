@@ -52,11 +52,15 @@ const pullBody = (base: string, head: string) =>
 const diffPulls = (base: string, head: string) =>
   Effect.gen(function* (_) {
     const pulls = yield* _(PullRequests)
-    const current = yield* _(pulls.current)
+    const currentNumber = yield* _(
+      pulls.current,
+      Effect.map(_ => _.number),
+      Effect.orElseSucceed(() => 0),
+    )
     return diffCommits(base, head).pipe(
       Stream.mapEffect(commit => pulls.forCommit(commit.sha)),
       Stream.flattenIterables,
-      Stream.filter(_ => _.number !== current.number),
+      Stream.filter(_ => _.number !== currentNumber),
     )
   }).pipe(Stream.unwrap)
 

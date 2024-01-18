@@ -52089,11 +52089,15 @@ ${listItems}`;
 });
 var diffPulls = (base, head7) => Effect_exports.gen(function* (_) {
   const pulls = yield* _(PullRequests);
-  const current2 = yield* _(pulls.current);
+  const currentNumber = yield* _(
+    pulls.current,
+    Effect_exports.map((_2) => _2.number),
+    Effect_exports.orElseSucceed(() => 0)
+  );
   return diffCommits(base, head7).pipe(
     Stream_exports.mapEffect((commit) => pulls.forCommit(commit.sha)),
     Stream_exports.flattenIterables,
-    Stream_exports.filter((_2) => _2.number !== current2.number)
+    Stream_exports.filter((_2) => _2.number !== currentNumber)
   );
 }).pipe(Stream_exports.unwrap);
 var diffCommits = (base, head7) => Effect_exports.gen(function* (_) {
