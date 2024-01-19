@@ -51850,6 +51850,16 @@ var make55 = Effect_exports.gen(function* (_) {
       })
     )
   );
+  const addLabels = github.wrap((_2) => _2.issues.addLabels);
+  const addCurrentLabels = (labels) => Effect_exports.andThen(
+    current2,
+    (pull) => addLabels({
+      owner: env.repo.owner.login,
+      repo: env.repo.name,
+      issue_number: pull.number,
+      labels
+    })
+  );
   const comment = github.wrap((_2) => _2.issues.createComment);
   const currentComment = (body) => Effect_exports.flatMap(
     current2,
@@ -51902,6 +51912,7 @@ var make55 = Effect_exports.gen(function* (_) {
     files,
     currentFiles,
     setCurrentBase,
+    addCurrentLabels,
     currentComment,
     forCommit
   };
@@ -52010,6 +52021,7 @@ var run5 = Effect_exports.gen(function* (_) {
   }
   yield* _(ensureBranchFor(changeType));
   yield* _(pulls.setCurrentBase(targetBase));
+  yield* _(pulls.addCurrentLabels([targetBase]));
   yield* _(Console_exports.log(`Updated base to ${targetBase}`));
 });
 var getBranch = (branch) => Effect_exports.gen(function* (_) {

@@ -116,6 +116,17 @@ const make = Effect.gen(function* (_) {
       ),
     )
 
+  const addLabels = github.wrap(_ => _.issues.addLabels)
+  const addCurrentLabels = (labels: Array<string>) =>
+    Effect.andThen(current, pull =>
+      addLabels({
+        owner: env.repo.owner.login,
+        repo: env.repo.name,
+        issue_number: pull.number,
+        labels,
+      }),
+    )
+
   const comment = github.wrap(_ => _.issues.createComment)
   const currentComment = (body: string) =>
     Effect.flatMap(current, pull =>
@@ -173,6 +184,7 @@ const make = Effect.gen(function* (_) {
     files,
     currentFiles,
     setCurrentBase,
+    addCurrentLabels,
     currentComment,
     forCommit,
   } as const

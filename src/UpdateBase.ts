@@ -38,6 +38,7 @@ export const run = Effect.gen(function* (_) {
   yield* _(ensureBranchFor(changeType))
 
   yield* _(pulls.setCurrentBase(targetBase))
+  yield* _(pulls.addCurrentLabels([targetBase]))
   yield* _(Console.log(`Updated base to ${targetBase}`))
 })
 
