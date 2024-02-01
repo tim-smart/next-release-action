@@ -138,11 +138,8 @@ const make = Effect.gen(function* (_) {
       }),
     )
 
-  const listForCommit = github.wrap(
-    _ => _.repos.listPullRequestsAssociatedWithCommit,
-  )
   const getCommit = github.wrap(_ => _.repos.getCommit)
-  const fromCommitMessage = (sha: string) =>
+  const forCommit = (sha: string) =>
     getCommit({
       owner: env.repo.owner.login,
       repo: env.repo.name,
@@ -162,18 +159,6 @@ const make = Effect.gen(function* (_) {
       ),
       Effect.map(([, pulls]) => pulls),
     )
-  const forCommit = (sha: string) =>
-    Effect.all(
-      [
-        listForCommit({
-          owner: env.repo.owner.login,
-          repo: env.repo.name,
-          commit_sha: sha,
-        }),
-        fromCommitMessage(sha),
-      ],
-      { concurrency: "unbounded" },
-    ).pipe(Effect.map(_ => _.flat()))
 
   return {
     find,

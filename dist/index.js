@@ -51870,11 +51870,8 @@ var make55 = Effect_exports.gen(function* (_) {
       body
     })
   );
-  const listForCommit = github.wrap(
-    (_2) => _2.repos.listPullRequestsAssociatedWithCommit
-  );
   const getCommit = github.wrap((_2) => _2.repos.getCommit);
-  const fromCommitMessage = (sha) => getCommit({
+  const forCommit = (sha) => getCommit({
     owner: env.repo.owner.login,
     repo: env.repo.name,
     ref: sha
@@ -51892,17 +51889,6 @@ var make55 = Effect_exports.gen(function* (_) {
     ),
     Effect_exports.map(([, pulls]) => pulls)
   );
-  const forCommit = (sha) => Effect_exports.all(
-    [
-      listForCommit({
-        owner: env.repo.owner.login,
-        repo: env.repo.name,
-        commit_sha: sha
-      }),
-      fromCommitMessage(sha)
-    ],
-    { concurrency: "unbounded" }
-  ).pipe(Effect_exports.map((_2) => _2.flat()));
   return {
     find: find4,
     findFirst: findFirst7,
