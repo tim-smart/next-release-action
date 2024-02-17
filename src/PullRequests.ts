@@ -1,15 +1,4 @@
-import { context } from "@actions/github"
-import {
-  Context,
-  Data,
-  Effect,
-  Layer,
-  Order,
-  ReadonlyArray,
-  Sink,
-  Stream,
-  pipe,
-} from "effect"
+import { Context, Data, Effect, Layer, Sink, Stream } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv, RunnerEnvLive } from "./Runner"
 
