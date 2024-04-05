@@ -9,6 +9,7 @@ import {
   Layer,
   Option,
   Stream,
+  Schedule,
 } from "effect"
 
 export interface GithubOptions {
@@ -30,7 +31,18 @@ const make = ({ token }: GithubOptions) => {
     Effect.tryPromise({
       try: () => f(rest),
       catch: reason => new GithubError(reason as any),
-    })
+    }).pipe(
+      Effect.retry({
+        while: err =>
+          err.reason.status === 403 ||
+          err.reason.status === 429 ||
+          err.reason.status >= 500,
+        schedule: Schedule.exponential(1000).pipe(
+          Schedule.union(Schedule.spaced(60000)),
+          Schedule.intersect(Schedule.recurs(10)),
+        ),
+      }),
+    )
 
   const wrap =
     <A, Args extends any[]>(
@@ -38,10 +50,7 @@ const make = ({ token }: GithubOptions) => {
     ) =>
     (...args: Args) =>
       Effect.map(
-        Effect.tryPromise({
-          try: () => f(rest)(...args),
-          catch: reason => new GithubError(reason as any),
-        }),
+        request(rest => f(rest)(...args)),
         _ => _.data,
       )
 
@@ -50,10 +59,7 @@ const make = ({ token }: GithubOptions) => {
     g: (_: A) => ReadonlyArray<B>,
   ) =>
     Stream.paginateChunkEffect(0, page =>
-      Effect.tryPromise({
-        try: () => f(rest, page),
-        catch: reason => new GithubError(reason as any),
-      }).pipe(
+      request(rest => f(rest, page)).pipe(
         Effect.map(_ => [
           Chunk.unsafeFromArray(g(_.data)),
           maybeNextPage(page, _.headers.link),
