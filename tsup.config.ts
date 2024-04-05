@@ -5,6 +5,6 @@ export default defineConfig({
   outDir: "dist",
   clean: true,
   sourcemap: true,
-  noExternal: [/.*/],
+  external: ["@parcel/watcher"],
   treeshake: "smallest",
 })

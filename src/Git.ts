@@ -15,14 +15,17 @@ export interface GitConfig extends Partial<SG.SimpleGitOptions> {
   userEmail: string
 }
 
-export interface GitRepo {
+export interface GitRepoService {
   readonly path: string
   readonly git: SG.SimpleGit
   readonly run: <A>(
     f: (git: SG.SimpleGit) => Promise<A>,
-  ) => Effect.Effect<never, GitError, A>
+  ) => Effect.Effect<A, GitError>
 }
-export const GitRepo = Context.Tag<GitRepo>()
+export class GitRepo extends Context.Tag("app/GitRepo")<
+  GitRepo,
+  GitRepoService
+>() {}
 
 const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
   const clone = (url: string, dir: string) =>
@@ -59,7 +62,10 @@ const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
   return { clone, open } as const
 }
 
-export interface Git extends ReturnType<typeof make> {}
-export const Git = Context.Tag<Git>()
-export const layer = (_: Config.Config.Wrap<GitConfig>) =>
-  Config.unwrap(_).pipe(Effect.map(make), Layer.effect(Git))
+export class Git extends Context.Tag("app/Git")<
+  Git,
+  ReturnType<typeof make>
+>() {
+  static layer = (_: Config.Config.Wrap<GitConfig>) =>
+    Config.unwrap(_).pipe(Effect.map(make), Layer.effect(Git))
+}

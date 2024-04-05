@@ -1,14 +1,14 @@
-import { runMain } from "@effect/platform-node/Runtime"
+import { runMain } from "@effect/platform-node/NodeRuntime"
 import { Config, ConfigProvider, Console, Effect, Layer, Option } from "effect"
 import { ChangesetsLive } from "./Changesets"
-import * as Github from "./Github"
-import { PullRequestsLive } from "./PullRequests"
-import { RunnerEnv, RunnerEnvLive } from "./Runner"
+import { Github } from "./Github"
+import { PullRequests } from "./PullRequests"
+import { RunnerEnv } from "./Runner"
 import * as UpdateBase from "./UpdateBase"
 import { inputSecret, nonEmptyString } from "./utils/config"
 import * as ReleasePull from "./ReleasePull"
 import * as ActionConfig from "./Config"
-import * as Git from "./Git"
+import { Git } from "./Git"
 import * as Rebase from "./Rebase"
 
 const GithubLive = Github.layer({
@@ -61,8 +61,8 @@ const main = Effect.gen(function* (_) {
   Effect.provide(
     Layer.mergeAll(
       ChangesetsLive,
-      PullRequestsLive,
-      RunnerEnvLive,
+      PullRequests.Live,
+      RunnerEnv.Live,
       GitLive,
     ).pipe(Layer.provideMerge(GithubLive), Layer.provide(ConfigLive)),
   ),

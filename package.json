@@ -9,25 +9,25 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@actions/core": "^1.10.1",
     "@actions/github": "^6.0.0",
-    "@effect/platform-node": "^0.39.0",
-    "@effect/schema": "^0.56.0",
-    "dotenv": "^16.3.1",
-    "effect": "2.0.0-next.62",
+    "@effect/platform": "^0.48.24",
+    "@effect/platform-node": "^0.45.26",
+    "@effect/schema": "^0.64.18",
+    "dotenv": "^16.4.5",
+    "effect": "2.4.17",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
-    "simple-git": "^3.21.0",
-    "unified": "^11.0.4"
-  },
-  "devDependencies": {
-    "@octokit/types": "^12.4.0",
+    "simple-git": "^3.24.0",
+    "unified": "^11.0.4",
+    "@octokit/types": "^13.1.0",
     "@types/mdast": "^4.0.3",
-    "@types/node": "^20.10.5",
-    "prettier": "^3.1.1",
-    "tsup": "^8.0.1",
-    "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.12.4",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.4"
   }
 }

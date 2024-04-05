@@ -1,6 +1,6 @@
 import { Context, Data, Effect, Layer, Sink, Stream } from "effect"
 import { Github } from "./Github"
-import { RunnerEnv, RunnerEnvLive } from "./Runner"
+import { RunnerEnv } from "./Runner"
 
 export class NoPullRequest extends Data.TaggedError("NoPullRequest") {}
 
@@ -164,13 +164,11 @@ const make = Effect.gen(function* (_) {
   } as const
 })
 
-export interface PullRequests {
-  readonly _: unique symbol
-}
-export const PullRequests = Context.Tag<
+export class PullRequests extends Context.Tag("app/PullRequests")<
   PullRequests,
   Effect.Effect.Success<typeof make>
->("app/PullRequests")
-export const PullRequestsLive = Layer.effect(PullRequests, make).pipe(
-  Layer.provide(RunnerEnvLive),
-)
+>() {
+  static Live = Layer.effect(PullRequests, make).pipe(
+    Layer.provide(RunnerEnv.Live),
+  )
+}

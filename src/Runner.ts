@@ -2,11 +2,12 @@ import * as OS from "node:os"
 import * as Path from "node:path"
 import { context } from "@actions/github"
 import { Config, Context, Effect, Layer, Option } from "effect"
-import { FileSystem } from "@effect/platform-node"
+import { FileSystem } from "@effect/platform/FileSystem"
+import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem"
 import { nonEmptyString } from "./utils/config"
 
 export const make = Effect.gen(function* (_) {
-  const fs = yield* _(FileSystem.FileSystem)
+  const fs = yield* _(FileSystem)
   const tmpDir = yield* _(
     Config.string("RUNNER_TEMP"),
     Config.withDefault(OS.tmpdir()),
@@ -47,8 +48,11 @@ export const make = Effect.gen(function* (_) {
   } as const
 })
 
-export interface RunnerEnv extends Effect.Effect.Success<typeof make> {}
-export const RunnerEnv = Context.Tag<RunnerEnv>()
-export const RunnerEnvLive = Layer.effect(RunnerEnv, make).pipe(
-  Layer.provide(FileSystem.layer),
-)
+export class RunnerEnv extends Context.Tag("app/RunnerEnv")<
+  RunnerEnv,
+  Effect.Effect.Success<typeof make>
+>() {
+  static Live = Layer.effect(RunnerEnv, make).pipe(
+    Layer.provide(NodeFileSystem.layer),
+  )
+}

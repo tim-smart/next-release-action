@@ -1,4 +1,5 @@
-import * as FileSystem from "@effect/platform-node/FileSystem"
+import * as FileSystem from "@effect/platform/FileSystem"
+import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem"
 import {
   Context,
   Effect,
@@ -11,8 +12,8 @@ import {
 import type * as AST from "mdast"
 import remarkParse from "remark-parse"
 import { unified } from "unified"
-import { PullRequests, PullRequestsLive } from "./PullRequests"
-import { RunnerEnvLive } from "./Runner"
+import { PullRequests } from "./PullRequests"
+import { RunnerEnv } from "./Runner"
 
 const make = Effect.gen(function* (_) {
   const fs = yield* _(FileSystem.FileSystem)
@@ -61,14 +62,14 @@ const make = Effect.gen(function* (_) {
 export interface Changesets {
   readonly _: unique symbol
 }
-export const Changesets = Context.Tag<
+export const Changesets = Context.GenericTag<
   Changesets,
   Effect.Effect.Success<typeof make>
 >("app/Changesets")
 export const ChangesetsLive = Layer.effect(Changesets, make).pipe(
-  Layer.provide(PullRequestsLive),
-  Layer.provide(FileSystem.layer),
-  Layer.provide(RunnerEnvLive),
+  Layer.provide(PullRequests.Live),
+  Layer.provide(NodeFileSystem.layer),
+  Layer.provide(RunnerEnv.Live),
 )
 
 //

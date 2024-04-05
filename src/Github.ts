@@ -68,10 +68,13 @@ const make = ({ token }: GithubOptions) => {
   return { api, token, request, wrap, stream, streamWith } as const
 }
 
-export interface Github extends ReturnType<typeof make> {}
-export const Github = Context.Tag<Github>()
-export const layer = (_: Config.Config.Wrap<GithubOptions>) =>
-  Config.unwrap(_).pipe(Effect.map(make), Layer.effect(Github))
+export class Github extends Context.Tag("app/Github")<
+  Github,
+  ReturnType<typeof make>
+>() {
+  static layer = (_: Config.Config.Wrap<GithubOptions>) =>
+    Config.unwrap(_).pipe(Effect.map(make), Layer.effect(Github))
+}
 
 const maybeNextPage = (page: number, linkHeader?: string) =>
   Option.fromNullable(linkHeader).pipe(
