@@ -75855,19 +75855,8 @@ var run8 = Effect_exports.gen(function* (_) {
     Git2,
     Effect_exports.flatMap((_2) => _2.open("."))
   );
-  const pulls = yield* _(PullRequests);
   const prefix2 = yield* _(prefix);
   const base = yield* _(baseBranch);
-  const minorPull = yield* _(
-    pulls.findFirst({
-      base,
-      head: `${prefix2}-minor`
-    }),
-    Effect_exports.optionFromOptional
-  );
-  if (Option_exports.isSome(minorPull)) {
-    return;
-  }
   yield* _(git.run((_2) => _2.fetch("origin").checkout(base)));
   yield* _(
     git.run(
@@ -75875,16 +75864,6 @@ var run8 = Effect_exports.gen(function* (_) {
     ),
     Effect_exports.catchAllCause(Effect_exports.log)
   );
-  const majorPull = yield* _(
-    pulls.findFirst({
-      base,
-      head: `${prefix2}-major`
-    }),
-    Effect_exports.optionFromOptional
-  );
-  if (Option_exports.isSome(majorPull)) {
-    return;
-  }
   yield* _(
     git.run(
       (_2) => _2.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
