@@ -28,14 +28,13 @@ const ConfigLive = ConfigProvider.fromEnv().pipe(
   Layer.setConfigProvider,
 )
 
-const main = Effect.gen(function* (_) {
-  const env = yield* _(RunnerEnv)
-  const baseBranch = yield* _(ActionConfig.baseBranch)
-  const prefix = yield* _(ActionConfig.prefix)
+const main = Effect.gen(function* () {
+  const env = yield* RunnerEnv
+  const baseBranch = yield* ActionConfig.baseBranch
+  const prefix = yield* ActionConfig.prefix
   const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
 
-  yield* _(
-    Effect.log("Running"),
+  yield Effect.log("Running").pipe(
     Effect.annotateLogs({
       baseBranch,
       ref: env.ref,
@@ -45,16 +44,15 @@ const main = Effect.gen(function* (_) {
   )
 
   if (eligibleBranches.includes(env.ref)) {
-    yield* _(ReleasePull.run)
+    yield ReleasePull.run
   } else if (Option.isSome(env.pull)) {
-    yield* _(
-      UpdateBase.run,
+    yield UpdateBase.run.pipe(
       Effect.catchTags({
         NoPullRequest: () => Console.log("No pull request found"),
       }),
     )
   } else if (env.ref === baseBranch) {
-    yield* _(Rebase.run)
+    yield Rebase.run
   }
 }).pipe(
   Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),

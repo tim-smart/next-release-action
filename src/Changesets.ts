@@ -1,23 +1,15 @@
 import * as FileSystem from "@effect/platform/FileSystem"
 import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem"
-import {
-  Context,
-  Effect,
-  Layer,
-  Option,
-  ReadonlyArray,
-  Stream,
-  identity,
-} from "effect"
+import { Context, Effect, Layer, Option, Array, Stream, identity } from "effect"
 import type * as AST from "mdast"
 import remarkParse from "remark-parse"
 import { unified } from "unified"
 import { PullRequests } from "./PullRequests"
 import { RunnerEnv } from "./Runner"
 
-const make = Effect.gen(function* (_) {
-  const fs = yield* _(FileSystem.FileSystem)
-  const pulls = yield* _(PullRequests)
+const make = Effect.gen(function* () {
+  const fs = yield* FileSystem.FileSystem
+  const pulls = yield* PullRequests
 
   const current = (packages: ReadonlyArray<string>) =>
     pulls.currentFiles.pipe(
@@ -39,7 +31,7 @@ const make = Effect.gen(function* (_) {
       Stream.filter(_ => _[1] === "minor" || _[1] === "major"),
       Stream.map(([, type]) => type),
       Stream.runCollect,
-      Effect.map(ReadonlyArray.dedupe),
+      Effect.map(Array.dedupe),
     )
 
   const currentMaxType = (packages: ReadonlyArray<string>) =>
@@ -79,17 +71,14 @@ const ChangeRegex = /"(.+?)":\s*(patch|minor|major)/g
 type Change = [pkg: string, type: ChangeType]
 type ChangeType = "patch" | "minor" | "major"
 
-const parse = (content: string): ReadonlyArray<Change> => {
+const parse = (content: string): Array<Change> => {
   const root = unified().use(remarkParse).parse(content)
-  return ReadonlyArray.findFirst(
+  return Array.findFirst(
     root.children,
     (_): _ is AST.Heading => _.type === "heading",
   ).pipe(
     Option.flatMap(_ =>
-      ReadonlyArray.findFirst(
-        _.children,
-        (_): _ is AST.Text => _.type === "text",
-      ),
+      Array.findFirst(_.children, (_): _ is AST.Text => _.type === "text"),
     ),
     Option.map(_ =>
       [..._.value.matchAll(ChangeRegex)].map(

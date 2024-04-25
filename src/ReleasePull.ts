@@ -1,12 +1,12 @@
-import { Effect, Order, ReadonlyArray, Stream, pipe } from "effect"
+import { Effect, Order, Array, Stream, pipe } from "effect"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
 import { RunnerEnv } from "./Runner"
 import { Github } from "./Github"
 
-export const run = Effect.gen(function* (_) {
-  const env = yield* _(RunnerEnv)
-  const prefix = yield* _(Config.prefix)
+export const run = Effect.gen(function* () {
+  const env = yield* RunnerEnv
+  const prefix = yield* Config.prefix
   const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
 
   if (!eligibleBranches.includes(env.ref)) {
@@ -16,30 +16,27 @@ export const run = Effect.gen(function* (_) {
   const head = env.ref
   const base = head.endsWith("-major")
     ? `${prefix}-minor`
-    : yield* _(Config.baseBranch)
+    : yield* Config.baseBranch
   const changeType = head.endsWith("-major") ? "major" : "minor"
-  const pulls = yield* _(PullRequests)
-  const body = yield* _(pullBody(base, head))
-  yield* _(
-    pulls.upsert({
-      head,
-      base,
-      title: `Release queue: ${changeType}`,
-      body,
-    }),
-  )
+  const pulls = yield* PullRequests
+  const body = yield* pullBody(base, head)
+  yield pulls.upsert({
+    head,
+    base,
+    title: `Release queue: ${changeType}`,
+    body,
+  })
 })
 
 const pullBody = (base: string, head: string) =>
-  Effect.gen(function* (_) {
-    const related = yield* _(
-      diffPulls(base, head),
+  Effect.gen(function* () {
+    const related = yield* diffPulls(base, head).pipe(
       Stream.runCollect,
       Effect.map(pulls =>
         pipe(
           pulls,
-          ReadonlyArray.dedupeWith((a, b) => a.number === b.number),
-          ReadonlyArray.sort(Order.struct({ number: Order.number })),
+          Array.dedupeWith((a, b) => a.number === b.number),
+          Array.sort(Order.struct({ number: Order.number })),
         ),
       ),
     )
@@ -50,10 +47,9 @@ const pullBody = (base: string, head: string) =>
   })
 
 const diffPulls = (base: string, head: string) =>
-  Effect.gen(function* (_) {
-    const pulls = yield* _(PullRequests)
-    const currentNumber = yield* _(
-      pulls.current,
+  Effect.gen(function* () {
+    const pulls = yield* PullRequests
+    const currentNumber = yield* pulls.current.pipe(
       Effect.map(_ => _.number),
       Effect.orElseSucceed(() => 0),
     )
@@ -65,9 +61,9 @@ const diffPulls = (base: string, head: string) =>
   }).pipe(Stream.unwrap)
 
 const diffCommits = (base: string, head: string) =>
-  Effect.gen(function* (_) {
-    const env = yield* _(RunnerEnv)
-    const github = yield* _(Github)
+  Effect.gen(function* () {
+    const env = yield* RunnerEnv
+    const github = yield* Github
     return github.streamWith(
       (_, page) =>
         _.repos.compareCommits({

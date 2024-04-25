@@ -4,9 +4,9 @@ import { RunnerEnv } from "./Runner"
 
 export class NoPullRequest extends Data.TaggedError("NoPullRequest") {}
 
-const make = Effect.gen(function* (_) {
-  const env = yield* _(RunnerEnv)
-  const github = yield* _(Github)
+const make = Effect.gen(function* () {
+  const env = yield* RunnerEnv
+  const github = yield* Github
   const find = (options: { readonly base: string; readonly head: string }) =>
     github.streamWith(
       (_, page) =>
@@ -59,8 +59,7 @@ const make = Effect.gen(function* (_) {
     })
 
   const getPull = github.wrap(_ => _.pulls.get)
-  const current = yield* _(
-    env.issue,
+  const current = yield* env.issue.pipe(
     Effect.flatMap(issue =>
       getPull({
         owner: env.repo.owner.login,

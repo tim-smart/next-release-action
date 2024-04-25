@@ -29,19 +29,17 @@ export class GitRepo extends Context.Tag("app/GitRepo")<
 
 const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
   const clone = (url: string, dir: string) =>
-    Effect.gen(function* (_) {
-      yield* _(
-        Effect.tryPromise({
-          try: () => SG.simpleGit(opts).clone(url, dir),
-          catch: error => new GitError({ error: error as any }),
-        }),
-      )
+    Effect.gen(function* () {
+      yield Effect.tryPromise({
+        try: () => SG.simpleGit(opts).clone(url, dir),
+        catch: error => new GitError({ error: error as any }),
+      })
 
-      return yield* _(open(dir))
+      return yield* open(dir)
     })
 
   const open = (dir: string) =>
-    Effect.gen(function* (_) {
+    Effect.gen(function* () {
       const git = SG.simpleGit(dir, opts)
 
       const run = <A>(f: (git: SG.SimpleGit) => Promise<A>) =>
@@ -50,10 +48,8 @@ const make = ({ simpleGit: opts = {}, userName, userEmail }: GitConfig) => {
           catch: error => new GitError({ error: error as any }),
         })
 
-      yield* _(
-        run(_ =>
-          _.addConfig("user.name", userName).addConfig("user.email", userEmail),
-        ),
+      yield run(_ =>
+        _.addConfig("user.name", userName).addConfig("user.email", userEmail),
       )
 
       return GitRepo.of({ git, run, path: dir })

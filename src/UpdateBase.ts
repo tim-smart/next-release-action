@@ -5,23 +5,24 @@ import { NoPullRequest, PullRequests } from "./PullRequests"
 import { Github } from "./Github"
 import { RunnerEnv } from "./Runner"
 
-export const run = Effect.gen(function* (_) {
-  const pulls = yield* _(PullRequests)
-  const pull = yield* _(pulls.current)
-  const prefix = yield* _(Config.prefix)
+export const run = Effect.gen(function* () {
+  const pulls = yield* PullRequests
+  const pull = yield* pulls.current
+  const prefix = yield* Config.prefix
 
   if (pull.head.ref.startsWith(`${prefix}-`)) {
-    return yield* _(new NoPullRequest())
+    return yield new NoPullRequest()
   }
 
-  const changesets = yield* _(Changesets)
-  const packages = yield* _(Config.packages)
-  const changeTypeOption = yield* _(
-    changesets.currentMaxType(packages),
-    Effect.map(Option.filter((_): _ is "major" | "minor" => _ !== "patch")),
-  )
+  const changesets = yield* Changesets
+  const packages = yield* Config.packages
+  const changeTypeOption = yield* changesets
+    .currentMaxType(packages)
+    .pipe(
+      Effect.map(Option.filter((_): _ is "major" | "minor" => _ !== "patch")),
+    )
   if (Option.isNone(changeTypeOption)) {
-    return yield* _(Console.log("Not a minor or major change"))
+    return yield* Console.log("Not a minor or major change")
   }
 
   const changeType = changeTypeOption.value
@@ -29,17 +30,17 @@ export const run = Effect.gen(function* (_) {
   const currentBase = pull.base.ref as string
 
   if (currentBase === targetBase) {
-    return yield* _(Console.log("No update needed"))
+    return yield* Console.log("No update needed")
   }
 
   if (changeType === "major") {
-    yield* _(ensureBranchFor("minor"))
+    yield ensureBranchFor("minor")
   }
-  yield* _(ensureBranchFor(changeType))
+  yield ensureBranchFor(changeType)
 
-  yield* _(pulls.setCurrentBase(targetBase))
-  yield* _(pulls.addCurrentLabels([targetBase]))
-  yield* _(Console.log(`Updated base to ${targetBase}`))
+  yield pulls.setCurrentBase(targetBase)
+  yield pulls.addCurrentLabels([targetBase])
+  yield Console.log(`Updated base to ${targetBase}`)
 })
 
 const getBranch = (branch: string) =>

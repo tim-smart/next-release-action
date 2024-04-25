@@ -6,10 +6,9 @@ import { FileSystem } from "@effect/platform/FileSystem"
 import * as NodeFileSystem from "@effect/platform-node/NodeFileSystem"
 import { nonEmptyString } from "./utils/config"
 
-export const make = Effect.gen(function* (_) {
-  const fs = yield* _(FileSystem)
-  const tmpDir = yield* _(
-    Config.string("RUNNER_TEMP"),
+export const make = Effect.gen(function* () {
+  const fs = yield* FileSystem
+  const tmpDir = yield* Config.string("RUNNER_TEMP").pipe(
     Config.withDefault(OS.tmpdir()),
   )
 
@@ -31,10 +30,8 @@ export const make = Effect.gen(function* (_) {
   const comment = Option.fromNullable(context.payload.comment)
   const pull = Option.fromNullable(context.payload.pull_request)
 
-  const ref = yield* _(
-    nonEmptyString("GITHUB_HEAD_REF").pipe(
-      Config.orElse(() => nonEmptyString("GITHUB_REF_NAME")),
-    ),
+  const ref = yield* nonEmptyString("GITHUB_HEAD_REF").pipe(
+    Config.orElse(() => nonEmptyString("GITHUB_REF_NAME")),
   )
 
   return {
