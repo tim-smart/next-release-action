@@ -9,10 +9,12 @@ export const run = Effect.gen(function* () {
 
   yield git.run(_ => _.fetch("origin").checkout(base))
 
+  yield Effect.log(`rebasing ${prefix}-minor on ${base}`)
   yield git
     .run(_ => _.checkout(`${prefix}-minor`).rebase([base]).push(["--force"]))
     .pipe(Effect.catchAllCause(Effect.log))
 
+  yield Effect.log(`rebasing ${prefix}-major on ${prefix}-minor`)
   yield git
     .run(_ =>
       _.checkout(`${prefix}-major`)
