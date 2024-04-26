@@ -75800,7 +75800,11 @@ var run8 = Effect_exports.gen(function* () {
   const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
   const prefix2 = yield* prefix;
   const base = yield* baseBranch;
-  yield git.run((_) => _.fetch("origin").checkout(base));
+  yield Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
+  yield git.run(
+    (_) => _.fetch("origin").checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
+  ).pipe(Effect_exports.catchAllCause(Effect_exports.log));
+  yield git.run((_) => _.checkout(base));
   yield Effect_exports.log(`rebasing ${prefix2}-minor on ${base}`);
   yield git.run((_) => _.checkout(`${prefix2}-minor`).rebase([base]).push(["--force"])).pipe(Effect_exports.catchAllCause(Effect_exports.log));
   yield Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
@@ -75838,6 +75842,7 @@ var main = Effect_exports.gen(function* () {
     })
   );
   if (eligibleBranches.includes(env.ref)) {
+    yield run8;
     yield run7;
   } else if (Option_exports.isSome(env.pull)) {
     yield run6.pipe(

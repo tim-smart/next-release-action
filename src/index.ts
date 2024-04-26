@@ -44,6 +44,7 @@ const main = Effect.gen(function* () {
   )
 
   if (eligibleBranches.includes(env.ref)) {
+    yield Rebase.run
     yield ReleasePull.run
   } else if (Option.isSome(env.pull)) {
     yield UpdateBase.run.pipe(

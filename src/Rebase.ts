@@ -7,7 +7,17 @@ export const run = Effect.gen(function* () {
   const prefix = yield* Config.prefix
   const base = yield* Config.baseBranch
 
-  yield git.run(_ => _.fetch("origin").checkout(base))
+  yield Effect.log(`rebasing ${prefix}-major on ${prefix}-minor`)
+  yield git
+    .run(_ =>
+      _.fetch("origin")
+        .checkout(`${prefix}-major`)
+        .rebase([`${prefix}-minor`])
+        .push(["--force"]),
+    )
+    .pipe(Effect.catchAllCause(Effect.log))
+
+  yield git.run(_ => _.checkout(base))
 
   yield Effect.log(`rebasing ${prefix}-minor on ${base}`)
   yield git
