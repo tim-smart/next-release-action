@@ -75802,11 +75802,12 @@ var run8 = Effect_exports.gen(function* () {
   const base = yield* baseBranch;
   yield Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
   yield git.run(
-    (_) => _.fetch("origin").checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
+    (_) => _.fetch("origin").checkout(`${prefix2}-minor`).checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
   ).pipe(Effect_exports.catchAllCause(Effect_exports.log));
-  yield git.run((_) => _.checkout(base));
   yield Effect_exports.log(`rebasing ${prefix2}-minor on ${base}`);
-  yield git.run((_) => _.checkout(`${prefix2}-minor`).rebase([base]).push(["--force"])).pipe(Effect_exports.catchAllCause(Effect_exports.log));
+  yield git.run(
+    (_) => _.checkout(base).checkout(`${prefix2}-minor`).rebase([base]).push(["--force"])
+  ).pipe(Effect_exports.catchAllCause(Effect_exports.log));
   yield Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
   yield git.run(
     (_) => _.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
