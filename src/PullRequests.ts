@@ -7,15 +7,32 @@ export class NoPullRequest extends Data.TaggedError("NoPullRequest") {}
 const make = Effect.gen(function* () {
   const env = yield* RunnerEnv
   const github = yield* Github
-  const find = (options: { readonly base: string; readonly head: string }) =>
-    github.streamWith(
-      (_, page) =>
-        _.search.issuesAndPullRequests({
-          page,
-          q: `repo:${env.repo.full_name}+base:${options.base}+head:${options.head}+state:open+is:pr`,
-        }),
-      _ => _.items,
-    )
+  const get = github.wrap(_ => _.pulls.get)
+  const find = (options: { readonly base: string; readonly head?: string }) =>
+    github
+      .streamWith(
+        (_, page) =>
+          _.search.issuesAndPullRequests({
+            page,
+            q: [
+              `repo:${env.repo.full_name}`,
+              `base:${options.base}`,
+              ...(options.head ? [`head:${options.head}`] : []),
+              `state:open`,
+              `is:pr`,
+            ].join("+"),
+          }),
+        _ => _.items,
+      )
+      .pipe(
+        Stream.mapEffect(issue =>
+          get({
+            owner: env.repo.owner.login,
+            repo: env.repo.name,
+            pull_number: issue.number,
+          }),
+        ),
+      )
   const findFirst = (options: {
     readonly base: string
     readonly head: string

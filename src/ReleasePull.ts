@@ -20,7 +20,7 @@ export const run = Effect.gen(function* () {
   const changeType = head.endsWith("-major") ? "major" : "minor"
   const pulls = yield* PullRequests
   const body = yield* pullBody(base, head)
-  yield pulls.upsert({
+  yield* pulls.upsert({
     head,
     base,
     title: `Release queue: ${changeType}`,

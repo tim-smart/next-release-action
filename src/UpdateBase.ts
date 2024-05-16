@@ -11,7 +11,7 @@ export const run = Effect.gen(function* () {
   const prefix = yield* Config.prefix
 
   if (pull.head.ref.startsWith(`${prefix}-`)) {
-    return yield new NoPullRequest()
+    return yield* new NoPullRequest()
   }
 
   const changesets = yield* Changesets
@@ -34,13 +34,13 @@ export const run = Effect.gen(function* () {
   }
 
   if (changeType === "major") {
-    yield ensureBranchFor("minor")
+    yield* ensureBranchFor("minor")
   }
-  yield ensureBranchFor(changeType)
+  yield* ensureBranchFor(changeType)
 
-  yield pulls.setCurrentBase(targetBase)
-  yield pulls.addCurrentLabels([targetBase])
-  yield Console.log(`Updated base to ${targetBase}`)
+  yield* pulls.setCurrentBase(targetBase)
+  yield* pulls.addCurrentLabels([targetBase])
+  yield* Console.log(`Updated base to ${targetBase}`)
 })
 
 const getBranch = (branch: string) =>

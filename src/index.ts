@@ -34,7 +34,7 @@ const main = Effect.gen(function* () {
   const prefix = yield* ActionConfig.prefix
   const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
 
-  yield Effect.log("Running").pipe(
+  yield* Effect.log("Running").pipe(
     Effect.annotateLogs({
       baseBranch,
       ref: env.ref,
@@ -44,16 +44,16 @@ const main = Effect.gen(function* () {
   )
 
   if (eligibleBranches.includes(env.ref)) {
-    yield Rebase.run
-    yield ReleasePull.run
+    yield* Rebase.run
+    yield* ReleasePull.run
   } else if (Option.isSome(env.pull)) {
-    yield UpdateBase.run.pipe(
+    yield* UpdateBase.run.pipe(
       Effect.catchTags({
         NoPullRequest: () => Console.log("No pull request found"),
       }),
     )
   } else if (env.ref === baseBranch) {
-    yield Rebase.run
+    yield* Rebase.run
   }
 }).pipe(
   Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),
