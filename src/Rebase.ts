@@ -48,7 +48,7 @@ export const run = Effect.gen(function* () {
       Effect.gen(function* (_) {
         yield* Effect.log(`rebasing #${pull.number} on ${prefix}-minor`)
         yield* gh
-          .cli("pr", "checkout", pull.number.toString())
+          .cli("pr", "checkout", "--force", pull.number.toString())
           .pipe(Command.exitCode)
         yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
@@ -60,7 +60,7 @@ export const run = Effect.gen(function* () {
       Effect.gen(function* (_) {
         yield* Effect.log(`rebasing #${pull.number} on ${prefix}-major`)
         yield* gh
-          .cli("pr", "checkout", pull.number.toString())
+          .cli("pr", "checkout", "--force", pull.number.toString())
           .pipe(Command.exitCode)
         yield* git.run(_ => _.rebase([`${prefix}-major`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
