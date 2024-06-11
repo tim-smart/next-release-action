@@ -45,13 +45,13 @@ export const run = Effect.gen(function* () {
     Stream.runForEach(pull =>
       Effect.gen(function* (_) {
         yield* Effect.log(`rebasing #${pull.number} on ${prefix}-minor`)
-        const stdout = yield* Command.make(
+        const exitCode = yield* Command.make(
           "gh",
           "pr",
           "checkout",
           pull.number.toString(),
-        ).pipe(Command.string())
-        console.log(stdout)
+        ).pipe(Command.exitCode)
+        yield* Effect.log(exitCode)
         yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),
