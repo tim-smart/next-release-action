@@ -47,11 +47,10 @@ export const run = Effect.gen(function* () {
     Stream.runForEach(pull =>
       Effect.gen(function* (_) {
         yield* Effect.log(`rebasing #${pull.number} on ${prefix}-minor`)
-        const output = yield* gh
+        yield* gh
           .cli("pr", "checkout", pull.number.toString())
-          .pipe(Command.string())
-        yield* Effect.log(output)
-        // yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
+          .pipe(Command.exitCode)
+        yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),
   )
@@ -60,12 +59,9 @@ export const run = Effect.gen(function* () {
     Stream.runForEach(pull =>
       Effect.gen(function* (_) {
         yield* Effect.log(`rebasing #${pull.number} on ${prefix}-major`)
-        yield* Command.make(
-          "gh",
-          "pr",
-          "checkout",
-          pull.number.toString(),
-        ).pipe(Command.exitCode)
+        yield* gh
+          .cli("pr", "checkout", pull.number.toString())
+          .pipe(Command.exitCode)
         yield* git.run(_ => _.rebase([`${prefix}-major`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),

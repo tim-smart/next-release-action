@@ -82061,8 +82061,8 @@ var run9 = Effect_exports.gen(function* () {
     Stream_exports.runForEach(
       (pull) => Effect_exports.gen(function* (_) {
         yield* Effect_exports.log(`rebasing #${pull.number} on ${prefix2}-minor`);
-        const output = yield* gh.cli("pr", "checkout", pull.number.toString()).pipe(Command_exports.string());
-        yield* Effect_exports.log(output);
+        yield* gh.cli("pr", "checkout", pull.number.toString()).pipe(Command_exports.exitCode);
+        yield* git.run((_2) => _2.rebase([`${prefix2}-minor`]).push(["--force"]));
       }).pipe(Effect_exports.catchAllCause(Effect_exports.log))
     )
   );
@@ -82070,12 +82070,7 @@ var run9 = Effect_exports.gen(function* () {
     Stream_exports.runForEach(
       (pull) => Effect_exports.gen(function* (_) {
         yield* Effect_exports.log(`rebasing #${pull.number} on ${prefix2}-major`);
-        yield* Command_exports.make(
-          "gh",
-          "pr",
-          "checkout",
-          pull.number.toString()
-        ).pipe(Command_exports.exitCode);
+        yield* gh.cli("pr", "checkout", pull.number.toString()).pipe(Command_exports.exitCode);
         yield* git.run((_2) => _2.rebase([`${prefix2}-major`]).push(["--force"]));
       }).pipe(Effect_exports.catchAllCause(Effect_exports.log))
     )
