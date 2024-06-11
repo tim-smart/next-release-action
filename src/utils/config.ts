@@ -1,4 +1,4 @@
-import { Config, ConfigError, Secret, Either } from "effect"
+import { Config, ConfigError, Either, Redacted } from "effect"
 
 export const nonEmptyString = (name: string) =>
   Config.string(name).pipe(
@@ -11,10 +11,10 @@ export const nonEmptyString = (name: string) =>
   )
 
 export const nonEmptySecret = (name: string) =>
-  Config.secret(name).pipe(
+  Config.redacted(name).pipe(
     Config.mapOrFail(_ => {
-      const trimmed = Secret.fromString(Secret.value(_).trim())
-      return Secret.value(trimmed) !== ""
+      const trimmed = Redacted.make(Redacted.value(_).trim())
+      return Redacted.value(trimmed) !== ""
         ? Either.right(trimmed)
         : Either.left(ConfigError.MissingData([], "must not be empty"))
     }),

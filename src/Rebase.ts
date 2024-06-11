@@ -2,9 +2,11 @@ import { Effect, Stream } from "effect"
 import { Git } from "./Git"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
-import * as CP from "node:child_process"
+import { Command } from "@effect/platform"
+import { Github } from "./Github"
 
 export const run = Effect.gen(function* () {
+  const gh = yield* Github
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
   const prefix = yield* Config.prefix
   const base = yield* Config.baseBranch
@@ -45,8 +47,10 @@ export const run = Effect.gen(function* () {
     Stream.runForEach(pull =>
       Effect.gen(function* (_) {
         yield* Effect.log(`rebasing #${pull.number} on ${prefix}-minor`)
-        const output = CP.execSync(`gh pr checkout ${pull.number}`)
-        console.log(output.toString())
+        const output = yield* gh
+          .cli("pr", "checkout", pull.number.toString())
+          .pipe(Command.string())
+        yield* Effect.log(output)
         // yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),

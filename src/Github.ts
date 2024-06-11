@@ -1,19 +1,20 @@
 import { getOctokit } from "@actions/github"
+import { Command } from "@effect/platform"
 import type { OctokitResponse, RequestError } from "@octokit/types"
 import {
   Chunk,
   Config,
-  Secret,
   Context,
   Effect,
   Layer,
   Option,
   Stream,
   Schedule,
+  Redacted,
 } from "effect"
 
 export interface GithubOptions {
-  readonly token: Secret.Secret
+  readonly token: Redacted.Redacted
 }
 
 export class GithubError {
@@ -22,7 +23,7 @@ export class GithubError {
 }
 
 const make = ({ token }: GithubOptions) => {
-  const api = getOctokit(Secret.value(token))
+  const api = getOctokit(Redacted.value(token))
 
   const rest = api.rest
   type Endpoints = typeof rest
@@ -71,7 +72,15 @@ const make = ({ token }: GithubOptions) => {
     f: (_: Endpoints, page: number) => Promise<OctokitResponse<A[]>>,
   ) => streamWith(f, _ => _)
 
-  return { api, token, request, wrap, stream, streamWith } as const
+  const cli = (...args: ReadonlyArray<string>) =>
+    Command.make("gh", ...args).pipe(
+      Command.runInShell(true),
+      Command.env({
+        GH_TOKEN: Redacted.value(token),
+      }),
+    )
+
+  return { api, token, request, wrap, stream, streamWith, cli } as const
 }
 
 export class Github extends Context.Tag("app/Github")<
