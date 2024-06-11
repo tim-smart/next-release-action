@@ -82050,12 +82050,13 @@ var run9 = Effect_exports.gen(function* () {
     Stream_exports.runForEach(
       (pull) => Effect_exports.gen(function* (_) {
         yield* Effect_exports.log(`rebasing #${pull.number} on ${prefix2}-minor`);
-        yield* Command_exports.make(
+        const stdout3 = yield* Command_exports.make(
           "gh",
           "pr",
           "checkout",
           pull.number.toString()
-        ).pipe(Command_exports.exitCode);
+        ).pipe(Command_exports.string());
+        console.log(stdout3);
         yield* git.run((_2) => _2.rebase([`${prefix2}-minor`]).push(["--force"]));
       }).pipe(Effect_exports.catchAllCause(Effect_exports.log))
     )
