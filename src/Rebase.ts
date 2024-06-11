@@ -2,7 +2,7 @@ import { Effect, Stream } from "effect"
 import { Git } from "./Git"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
-import { RunnerEnv } from "./Runner"
+import { Command } from "@effect/platform"
 
 export const run = Effect.gen(function* () {
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
@@ -40,32 +40,33 @@ export const run = Effect.gen(function* () {
     .pipe(Effect.catchAllCause(Effect.log))
 
   const pulls = yield* PullRequests
-  const env = yield* RunnerEnv
 
   yield* pulls.find({ base: `${prefix}-minor` }).pipe(
-    Stream.filter(pull => pull.head.repo!.full_name === env.repo.full_name),
     Stream.runForEach(pull =>
       Effect.gen(function* (_) {
-        yield* Effect.log(`rebasing ${pull.head.ref} on ${prefix}-minor`)
-        yield* git.run(_ =>
-          _.checkout(pull.head.ref)
-            .rebase([`${prefix}-minor`])
-            .push(["--force"]),
-        )
+        yield* Effect.log(`rebasing #${pull.number} on ${prefix}-minor`)
+        yield* Command.make(
+          "gh",
+          "pr",
+          "checkout",
+          pull.number.toString(),
+        ).pipe(Command.exitCode)
+        yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),
   )
 
   yield* pulls.find({ base: `${prefix}-major` }).pipe(
-    Stream.filter(pull => pull.head.repo!.full_name === env.repo.full_name),
     Stream.runForEach(pull =>
       Effect.gen(function* (_) {
-        yield* Effect.log(`rebasing ${pull.head.ref} on ${prefix}-major`)
-        yield* git.run(_ =>
-          _.checkout(pull.head.ref)
-            .rebase([`${prefix}-major`])
-            .push(["--force"]),
-        )
+        yield* Effect.log(`rebasing #${pull.number} on ${prefix}-major`)
+        yield* Command.make(
+          "gh",
+          "pr",
+          "checkout",
+          pull.number.toString(),
+        ).pipe(Command.exitCode)
+        yield* git.run(_ => _.rebase([`${prefix}-major`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),
   )

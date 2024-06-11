@@ -1,4 +1,5 @@
 import { runMain } from "@effect/platform-node/NodeRuntime"
+import * as NodeContext from "@effect/platform-node/NodeContext"
 import { Config, ConfigProvider, Console, Effect, Layer, Option } from "effect"
 import { ChangesetsLive } from "./Changesets"
 import { Github } from "./Github"
@@ -63,6 +64,7 @@ const main = Effect.gen(function* () {
       PullRequests.Live,
       RunnerEnv.Live,
       GitLive,
+      NodeContext.layer,
     ).pipe(Layer.provideMerge(GithubLive), Layer.provide(ConfigLive)),
   ),
 )
