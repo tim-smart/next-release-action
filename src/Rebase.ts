@@ -2,7 +2,7 @@ import { Effect, Stream } from "effect"
 import { Git } from "./Git"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
-import { Command } from "@effect/platform"
+import * as CP from "node:child_process"
 
 export const run = Effect.gen(function* () {
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
@@ -45,14 +45,9 @@ export const run = Effect.gen(function* () {
     Stream.runForEach(pull =>
       Effect.gen(function* (_) {
         yield* Effect.log(`rebasing #${pull.number} on ${prefix}-minor`)
-        const exitCode = yield* Command.make(
-          "gh",
-          "pr",
-          "checkout",
-          pull.number.toString(),
-        ).pipe(Command.exitCode)
-        yield* Effect.log(exitCode)
-        yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
+        const output = CP.execSync(`gh pr checkout ${pull.number}`)
+        console.log(output.toString())
+        // yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),
   )
