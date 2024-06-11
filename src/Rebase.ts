@@ -50,7 +50,9 @@ export const run = Effect.gen(function* () {
         yield* gh
           .cli("pr", "checkout", "--force", pull.number.toString())
           .pipe(Command.exitCode)
-        yield* git.run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
+        yield* git
+          .run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
+          .pipe(Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),
   )
@@ -62,7 +64,9 @@ export const run = Effect.gen(function* () {
         yield* gh
           .cli("pr", "checkout", "--force", pull.number.toString())
           .pipe(Command.exitCode)
-        yield* git.run(_ => _.rebase([`${prefix}-major`]).push(["--force"]))
+        yield* git
+          .run(_ => _.rebase([`${prefix}-major`]).push(["--force"]))
+          .pipe(Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))))
       }).pipe(Effect.catchAllCause(Effect.log)),
     ),
   )
