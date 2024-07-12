@@ -77888,6 +77888,7 @@ var make64 = Effect_exports.gen(function* () {
   const repo = import_github2.context.payload.repository;
   const comment = Option_exports.fromNullable(import_github2.context.payload.comment);
   const pull = Option_exports.fromNullable(import_github2.context.payload.pull_request);
+  const actor = import_github2.context.actor;
   const ref = yield* nonEmptyString("GITHUB_HEAD_REF").pipe(
     Config_exports.orElse(() => nonEmptyString("GITHUB_REF_NAME"))
   );
@@ -77897,6 +77898,7 @@ var make64 = Effect_exports.gen(function* () {
     issue,
     repo,
     comment,
+    actor,
     pull,
     ref
   };
@@ -82757,8 +82759,6 @@ var Git2 = class _Git extends Context_exports.Tag("app/Git")() {
 };
 
 // src/Comments.ts
-(class extends Data_exports.TaggedError("NoPullRequest") {
-});
 var make68 = Effect_exports.gen(function* () {
   const env3 = yield* RunnerEnv;
   const github = yield* Github;
@@ -82779,11 +82779,40 @@ var Comments = class _Comments extends Context_exports.Tag("app/Comments")() {
   static Live = Layer_exports.effect(_Comments, make68).pipe(Layer_exports.provide(RunnerEnv.Live));
 };
 
+// src/Permissions.ts
+var make69 = Effect_exports.gen(function* () {
+  const env3 = yield* RunnerEnv;
+  const github = yield* Github;
+  const check3 = github.wrap((_) => _.repos.checkCollaborator);
+  const actorCheck = check3({
+    owner: env3.repo.owner.login,
+    repo: env3.repo.name,
+    username: env3.actor
+  }).pipe(
+    Effect_exports.match({
+      onFailure: () => false,
+      onSuccess: () => true
+    })
+  );
+  const whenCollaborator = (effect3) => Effect_exports.whenEffect(effect3, actorCheck);
+  return { whenCollaborator };
+});
+var Permissions = class _Permissions extends Context_exports.Tag("app/Permissions")() {
+  static Live = Layer_exports.effect(_Permissions, make69).pipe(
+    Layer_exports.provide(RunnerEnv.Live)
+  );
+};
+
 // src/Rebase.ts
 var runComment = Effect_exports.gen(function* () {
   const comments = yield* Comments;
-  yield* comments.reactCurrent("rocket");
-  yield* run9;
+  const perms = yield* Permissions;
+  yield* perms.whenCollaborator(
+    Effect_exports.gen(function* () {
+      yield* comments.reactCurrent("rocket");
+      yield* run9;
+    })
+  );
 });
 var run9 = Effect_exports.gen(function* () {
   const gh = yield* Github;
@@ -82866,6 +82895,7 @@ var main = Effect_exports.gen(function* () {
     Layer_exports.mergeAll(
       ChangesetsLive,
       Comments.Live,
+      Permissions.Live,
       PullRequests.Live,
       RunnerEnv.Live,
       GitLive,

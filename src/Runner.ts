@@ -29,6 +29,7 @@ export const make = Effect.gen(function* () {
   const repo = context.payload.repository!
   const comment = Option.fromNullable(context.payload.comment)
   const pull = Option.fromNullable(context.payload.pull_request)
+  const actor = context.actor
 
   const ref = yield* nonEmptyString("GITHUB_HEAD_REF").pipe(
     Config.orElse(() => nonEmptyString("GITHUB_REF_NAME")),
@@ -40,6 +41,7 @@ export const make = Effect.gen(function* () {
     issue,
     repo,
     comment,
+    actor,
     pull,
     ref,
   } as const

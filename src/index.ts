@@ -12,6 +12,7 @@ import * as ActionConfig from "./Config"
 import { Git } from "./Git"
 import * as Rebase from "./Rebase"
 import { Comments } from "./Comments"
+import { Permissions } from "./Permissions"
 
 const GithubLive = Github.layer({
   token: inputSecret("github_token"),
@@ -68,6 +69,7 @@ const main = Effect.gen(function* () {
     Layer.mergeAll(
       ChangesetsLive,
       Comments.Live,
+      Permissions.Live,
       PullRequests.Live,
       RunnerEnv.Live,
       GitLive,

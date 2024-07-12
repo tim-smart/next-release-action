@@ -1,8 +1,6 @@
-import { Context, Data, Effect, Layer } from "effect"
+import { Context, Effect, Layer } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv } from "./Runner"
-
-export class NoPullRequest extends Data.TaggedError("NoPullRequest") {}
 
 const make = Effect.gen(function* () {
   const env = yield* RunnerEnv
