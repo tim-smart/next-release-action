@@ -4,6 +4,13 @@ import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
 import { Command } from "@effect/platform"
 import { Github } from "./Github"
+import { Comments } from "./Comments"
+
+export const runComment = Effect.gen(function* () {
+  const comments = yield* Comments
+  yield* comments.reactCurrent("rocket")
+  yield* run
+})
 
 export const run = Effect.gen(function* () {
   const gh = yield* Github

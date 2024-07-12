@@ -11,6 +11,7 @@ import * as ReleasePull from "./ReleasePull"
 import * as ActionConfig from "./Config"
 import { Git } from "./Git"
 import * as Rebase from "./Rebase"
+import { Comments } from "./Comments"
 
 const GithubLive = Github.layer({
   token: inputSecret("github_token"),
@@ -49,7 +50,7 @@ const main = Effect.gen(function* () {
     env.comment._tag === "Some" &&
     env.comment.value.body.startsWith("/rebase")
   ) {
-    yield* Rebase.run
+    yield* Rebase.runComment
   } else if (eligibleBranches.includes(env.ref)) {
     yield* Rebase.run
     yield* ReleasePull.run
@@ -66,6 +67,7 @@ const main = Effect.gen(function* () {
   Effect.provide(
     Layer.mergeAll(
       ChangesetsLive,
+      Comments.Live,
       PullRequests.Live,
       RunnerEnv.Live,
       GitLive,

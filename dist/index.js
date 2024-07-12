@@ -82756,7 +82756,35 @@ var Git2 = class _Git extends Context_exports.Tag("app/Git")() {
   static layer = (_) => Config_exports.unwrap(_).pipe(Effect_exports.map(make67), Layer_exports.effect(_Git));
 };
 
+// src/Comments.ts
+(class extends Data_exports.TaggedError("NoPullRequest") {
+});
+var make68 = Effect_exports.gen(function* () {
+  const env3 = yield* RunnerEnv;
+  const github = yield* Github;
+  const react = github.wrap((_) => _.reactions.createForIssueComment);
+  const reactCurrent = (content3) => env3.comment.pipe(
+    Effect_exports.andThen(
+      (comment) => react({
+        owner: env3.repo.owner.login,
+        repo: env3.repo.name,
+        comment_id: comment.id,
+        content: content3
+      })
+    )
+  );
+  return { react, reactCurrent };
+});
+var Comments = class _Comments extends Context_exports.Tag("app/Comments")() {
+  static Live = Layer_exports.effect(_Comments, make68).pipe(Layer_exports.provide(RunnerEnv.Live));
+};
+
 // src/Rebase.ts
+var runComment = Effect_exports.gen(function* () {
+  const comments = yield* Comments;
+  yield* comments.reactCurrent("rocket");
+  yield* run9;
+});
 var run9 = Effect_exports.gen(function* () {
   const gh = yield* Github;
   const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
@@ -82820,7 +82848,7 @@ var main = Effect_exports.gen(function* () {
     })
   );
   if (env3.comment._tag === "Some" && env3.comment.value.body.startsWith("/rebase")) {
-    yield* run9;
+    yield* runComment;
   } else if (eligibleBranches.includes(env3.ref)) {
     yield* run9;
     yield* run8;
@@ -82837,6 +82865,7 @@ var main = Effect_exports.gen(function* () {
   Effect_exports.provide(
     Layer_exports.mergeAll(
       ChangesetsLive,
+      Comments.Live,
       PullRequests.Live,
       RunnerEnv.Live,
       GitLive,
