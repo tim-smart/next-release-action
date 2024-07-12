@@ -34,7 +34,10 @@ export const run = Effect.gen(function* () {
         .rebase([`${prefix}-minor`])
         .push(["--force"]),
     )
-    .pipe(Effect.catchAllCause(Effect.log))
+    .pipe(
+      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+      Effect.catchAllCause(Effect.log),
+    )
 
   yield* Effect.log(`rebasing ${prefix}-minor on ${base}`)
   yield* git
@@ -44,7 +47,10 @@ export const run = Effect.gen(function* () {
         .rebase([base])
         .push(["--force"]),
     )
-    .pipe(Effect.catchAllCause(Effect.log))
+    .pipe(
+      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+      Effect.catchAllCause(Effect.log),
+    )
 
   yield* Effect.log(`rebasing ${prefix}-major on ${prefix}-minor`)
   yield* git
@@ -53,7 +59,10 @@ export const run = Effect.gen(function* () {
         .rebase([`${prefix}-minor`])
         .push(["--force"]),
     )
-    .pipe(Effect.catchAllCause(Effect.log))
+    .pipe(
+      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+      Effect.catchAllCause(Effect.log),
+    )
 
   const pulls = yield* PullRequests
   const current = yield* pulls.current.pipe(

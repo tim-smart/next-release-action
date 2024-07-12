@@ -82822,15 +82822,24 @@ var run9 = Effect_exports.gen(function* () {
   yield* Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
   yield* git.run(
     (_) => _.fetch("origin").checkout(`${prefix2}-minor`).checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
-  ).pipe(Effect_exports.catchAllCause(Effect_exports.log));
+  ).pipe(
+    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
+    Effect_exports.catchAllCause(Effect_exports.log)
+  );
   yield* Effect_exports.log(`rebasing ${prefix2}-minor on ${base}`);
   yield* git.run(
     (_) => _.checkout(base).checkout(`${prefix2}-minor`).rebase([base]).push(["--force"])
-  ).pipe(Effect_exports.catchAllCause(Effect_exports.log));
+  ).pipe(
+    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
+    Effect_exports.catchAllCause(Effect_exports.log)
+  );
   yield* Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
   yield* git.run(
     (_) => _.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
-  ).pipe(Effect_exports.catchAllCause(Effect_exports.log));
+  ).pipe(
+    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
+    Effect_exports.catchAllCause(Effect_exports.log)
+  );
   const pulls = yield* PullRequests;
   const current2 = yield* pulls.current.pipe(
     Effect_exports.filterOrFail(
