@@ -1,4 +1,4 @@
-import { Effect, Stream } from "effect"
+import { Effect, Option } from "effect"
 import { Git } from "./Git"
 import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
@@ -42,32 +42,23 @@ export const run = Effect.gen(function* () {
     .pipe(Effect.catchAllCause(Effect.log))
 
   const pulls = yield* PullRequests
-
-  yield* pulls.find({ base: `${prefix}-minor` }).pipe(
-    Stream.runForEach(pull =>
-      Effect.gen(function* (_) {
-        yield* Effect.log(`rebasing #${pull.number} on ${prefix}-minor`)
-        yield* gh
-          .cli("pr", "checkout", "--force", pull.number.toString())
-          .pipe(Command.exitCode)
-        yield* git
-          .run(_ => _.rebase([`${prefix}-minor`]).push(["--force"]))
-          .pipe(Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))))
-      }).pipe(Effect.catchAllCause(Effect.log)),
+  const current = yield* pulls.current.pipe(
+    Effect.filterOrFail(
+      pull =>
+        pull.base.ref === `${prefix}-major` ||
+        pull.base.ref === `${prefix}-minor`,
     ),
+    Effect.option,
   )
-
-  yield* pulls.find({ base: `${prefix}-major` }).pipe(
-    Stream.runForEach(pull =>
-      Effect.gen(function* (_) {
-        yield* Effect.log(`rebasing #${pull.number} on ${prefix}-major`)
-        yield* gh
-          .cli("pr", "checkout", "--force", pull.number.toString())
-          .pipe(Command.exitCode)
-        yield* git
-          .run(_ => _.rebase([`${prefix}-major`]).push(["--force"]))
-          .pipe(Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))))
-      }).pipe(Effect.catchAllCause(Effect.log)),
-    ),
-  )
+  if (Option.isNone(current)) {
+    return
+  }
+  const pull = current.value
+  yield* Effect.log(`rebasing #${pull.number} on ${pull.base.ref}`)
+  yield* gh
+    .cli("pr", "checkout", "--force", pull.number.toString())
+    .pipe(Command.exitCode)
+  yield* git
+    .run(_ => _.rebase([pull.base.ref]).push(["--force"]))
+    .pipe(Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))))
 })

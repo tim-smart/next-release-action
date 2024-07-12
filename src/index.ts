@@ -40,11 +40,17 @@ const main = Effect.gen(function* () {
       baseBranch,
       ref: env.ref,
       isPR: Option.isSome(env.pull),
+      isComment: Option.isSome(env.comment),
       eligibleBranches,
     }),
   )
 
-  if (eligibleBranches.includes(env.ref)) {
+  if (
+    env.comment._tag === "Some" &&
+    env.comment.value.body.startsWith("/rebase")
+  ) {
+    yield* Rebase.run
+  } else if (eligibleBranches.includes(env.ref)) {
     yield* Rebase.run
     yield* ReleasePull.run
   } else if (Option.isSome(env.pull)) {
@@ -57,7 +63,6 @@ const main = Effect.gen(function* () {
     yield* Rebase.run
   }
 }).pipe(
-  Effect.tapErrorTag("GithubError", error => Console.error(error.reason)),
   Effect.provide(
     Layer.mergeAll(
       ChangesetsLive,
