@@ -82794,8 +82794,13 @@ var make69 = Effect_exports.gen(function* () {
       onSuccess: () => true
     })
   );
+  const isPullAuthor = env3.pull.pipe(
+    Option_exports.map((pull) => pull.user.login === env3.actor),
+    Option_exports.getOrElse(() => false)
+  );
   const whenCollaborator = (effect3) => Effect_exports.whenEffect(effect3, actorCheck);
-  return { whenCollaborator };
+  const whenCollaboratorOrAuthor = (effect3) => Effect_exports.whenEffect(effect3, isPullAuthor ? Effect_exports.succeed(true) : actorCheck);
+  return { whenCollaborator, whenCollaboratorOrAuthor };
 });
 var Permissions = class _Permissions extends Context_exports.Tag("app/Permissions")() {
   static Live = Layer_exports.effect(_Permissions, make69).pipe(
@@ -82807,7 +82812,7 @@ var Permissions = class _Permissions extends Context_exports.Tag("app/Permission
 var runComment = Effect_exports.gen(function* () {
   const comments = yield* Comments;
   const perms = yield* Permissions;
-  yield* perms.whenCollaborator(
+  yield* perms.whenCollaboratorOrAuthor(
     Effect_exports.gen(function* () {
       yield* comments.reactCurrent("rocket");
       yield* run9;

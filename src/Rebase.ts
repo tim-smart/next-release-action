@@ -11,7 +11,7 @@ export const runComment = Effect.gen(function* () {
   const comments = yield* Comments
   const perms = yield* Permissions
 
-  yield* perms.whenCollaborator(
+  yield* perms.whenCollaboratorOrAuthor(
     Effect.gen(function* () {
       yield* comments.reactCurrent("rocket")
       yield* run

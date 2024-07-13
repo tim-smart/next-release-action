@@ -1,4 +1,4 @@
-import { Context, Effect, Layer } from "effect"
+import { Context, Effect, Layer, Option } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv } from "./Runner"
 
@@ -18,10 +18,18 @@ const make = Effect.gen(function* () {
     }),
   )
 
+  const isPullAuthor = env.pull.pipe(
+    Option.map(pull => pull.user.login === env.actor),
+    Option.getOrElse(() => false),
+  )
+
   const whenCollaborator = <A, E, R>(effect: Effect.Effect<A, E, R>) =>
     Effect.whenEffect(effect, actorCheck)
 
-  return { whenCollaborator } as const
+  const whenCollaboratorOrAuthor = <A, E, R>(effect: Effect.Effect<A, E, R>) =>
+    Effect.whenEffect(effect, isPullAuthor ? Effect.succeed(true) : actorCheck)
+
+  return { whenCollaborator, whenCollaboratorOrAuthor } as const
 })
 
 export class Permissions extends Context.Tag("app/Permissions")<
