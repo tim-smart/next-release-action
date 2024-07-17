@@ -93,6 +93,7 @@ export const runCurrent = Effect.gen(function* () {
   yield* gh
     .cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString())
     .pipe(Command.exitCode)
+  console.log(yield* git.run(_ => _.remote(["-vv"])))
   yield* git
     .run(_ =>
       _.rebase([pull.base.ref]).push([
