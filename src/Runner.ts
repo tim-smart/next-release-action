@@ -35,6 +35,10 @@ export const make = Effect.gen(function* () {
     Config.orElse(() => nonEmptyString("GITHUB_REF_NAME")),
   )
 
+  const isOrigin =
+    Option.isNone(pull) ||
+    pull.value.head.repo.owner.login === pull.value.base.repo.owner.login
+
   return {
     tmpDir,
     mkTmpDir,
@@ -44,6 +48,7 @@ export const make = Effect.gen(function* () {
     actor,
     pull,
     ref,
+    isOrigin,
   } as const
 })
 

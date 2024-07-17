@@ -78080,6 +78080,7 @@ var make65 = Effect_exports.gen(function* () {
   const ref = yield* nonEmptyString("GITHUB_HEAD_REF").pipe(
     Config_exports.orElse(() => nonEmptyString("GITHUB_REF_NAME"))
   );
+  const isOrigin = Option_exports.isNone(pull) || pull.value.head.repo.owner.login === pull.value.base.repo.owner.login;
   return {
     tmpDir,
     mkTmpDir,
@@ -78088,7 +78089,8 @@ var make65 = Effect_exports.gen(function* () {
     comment,
     actor,
     pull,
-    ref
+    ref,
+    isOrigin
   };
 });
 var RunnerEnv = class _RunnerEnv extends Context_exports.Tag("app/RunnerEnv")() {
@@ -78236,8 +78238,7 @@ var make66 = Effect_exports.gen(function* () {
     setCurrentBase,
     addCurrentLabels,
     currentComment,
-    forCommit,
-    isOrigin: Option_exports.isNone(env3.pull) || env3.pull.value.head.repo.owner.login === env3.repo.owner.login
+    forCommit
   };
 });
 var PullRequests = class _PullRequests extends Context_exports.Tag("app/PullRequests")() {
@@ -83039,6 +83040,7 @@ var runCurrent = Effect_exports.gen(function* () {
   const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
   const prefix2 = yield* prefix;
   const pulls = yield* PullRequests;
+  const env3 = yield* RunnerEnv;
   const current2 = yield* pulls.current.pipe(
     Effect_exports.filterOrFail(
       (pull2) => pull2.base.ref === `${prefix2}-major` || pull2.base.ref === `${prefix2}-minor`
@@ -83051,18 +83053,13 @@ var runCurrent = Effect_exports.gen(function* () {
   const pull = current2.value;
   yield* git.run((_) => _.fetch("origin").checkout(pull.base.ref));
   yield* Effect_exports.log(`rebasing #${pull.number} on ${pull.base.ref}`);
-  const remote = pulls.isOrigin ? "origin" : `https://github.com/${pull.head.repo.full_name}.git`;
+  const remote = env3.isOrigin ? "origin" : `https://github.com/${pull.head.repo.full_name}.git`;
   yield* gh.cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString()).pipe(Command_exports.exitCode);
-  yield* git.run(
-    (_) => _.rebase([pull.base.ref]).push([
-      remote,
-      `pr-branch:${pull.head.ref}`,
-      "--force"
-    ])
-  ).pipe(
-    Effect_exports.tapErrorCause(Effect_exports.log),
-    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"])))
-  );
+  console.log({
+    remote,
+    base: pull.base,
+    head: pull.head
+  });
 });
 
 // src/index.ts
@@ -83085,19 +83082,19 @@ var main = Effect_exports.gen(function* () {
   const baseBranch2 = yield* baseBranch;
   const prefix2 = yield* prefix;
   const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
-  const isOrigin = Option_exports.isNone(env3.pull) || env3.pull.value.head.repo.owner.login === env3.pull.value.base.repo.owner.login;
   yield* Effect_exports.log("Running").pipe(
     Effect_exports.annotateLogs({
       baseBranch: baseBranch2,
       ref: env3.ref,
       isPR: Option_exports.isSome(env3.pull),
       isComment: Option_exports.isSome(env3.comment),
-      eligibleBranches
+      eligibleBranches,
+      isOrigin: env3.isOrigin
     })
   );
   if (env3.comment._tag === "Some" && env3.comment.value.body.startsWith("/rebase")) {
     yield* runComment;
-  } else if (eligibleBranches.includes(env3.ref) && isOrigin) {
+  } else if (eligibleBranches.includes(env3.ref) && env3.isOrigin) {
     yield* run9;
     yield* run8;
   } else if (Option_exports.isSome(env3.pull)) {

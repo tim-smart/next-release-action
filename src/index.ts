@@ -36,10 +36,6 @@ const main = Effect.gen(function* () {
   const baseBranch = yield* ActionConfig.baseBranch
   const prefix = yield* ActionConfig.prefix
   const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
-  const isOrigin =
-    Option.isNone(env.pull) ||
-    env.pull.value.head.repo.owner.login ===
-      env.pull.value.base.repo.owner.login
 
   yield* Effect.log("Running").pipe(
     Effect.annotateLogs({
@@ -48,6 +44,7 @@ const main = Effect.gen(function* () {
       isPR: Option.isSome(env.pull),
       isComment: Option.isSome(env.comment),
       eligibleBranches,
+      isOrigin: env.isOrigin,
     }),
   )
 
@@ -56,7 +53,7 @@ const main = Effect.gen(function* () {
     env.comment.value.body.startsWith("/rebase")
   ) {
     yield* Rebase.runComment
-  } else if (eligibleBranches.includes(env.ref) && isOrigin) {
+  } else if (eligibleBranches.includes(env.ref) && env.isOrigin) {
     yield* Rebase.run
     yield* ReleasePull.run
   } else if (Option.isSome(env.pull)) {

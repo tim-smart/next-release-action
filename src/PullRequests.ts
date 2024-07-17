@@ -177,9 +177,6 @@ const make = Effect.gen(function* () {
     addCurrentLabels,
     currentComment,
     forCommit,
-    isOrigin:
-      Option.isNone(env.pull) ||
-      env.pull.value.head.repo.owner.login === env.repo.owner.login,
   } as const
 })
 

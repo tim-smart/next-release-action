@@ -6,6 +6,7 @@ import { Command } from "@effect/platform"
 import { Github } from "./Github"
 import { Comments } from "./Comments"
 import { Permissions } from "./Permissions"
+import { RunnerEnv } from "./Runner"
 
 export const runComment = Effect.gen(function* () {
   const comments = yield* Comments
@@ -69,6 +70,7 @@ export const runCurrent = Effect.gen(function* () {
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
   const prefix = yield* Config.prefix
   const pulls = yield* PullRequests
+  const env = yield* RunnerEnv
 
   const current = yield* pulls.current.pipe(
     Effect.filterOrFail(
@@ -86,22 +88,28 @@ export const runCurrent = Effect.gen(function* () {
   yield* git.run(_ => _.fetch("origin").checkout(pull.base.ref))
 
   yield* Effect.log(`rebasing #${pull.number} on ${pull.base.ref}`)
-  const remote = pulls.isOrigin
+  const remote = env.isOrigin
     ? "origin"
     : `https://github.com/${pull.head.repo!.full_name}.git`
   yield* gh
     .cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString())
     .pipe(Command.exitCode)
-  yield* git
-    .run(_ =>
-      _.rebase([pull.base.ref]).push([
-        remote,
-        `pr-branch:${pull.head.ref}`,
-        "--force",
-      ]),
-    )
-    .pipe(
-      Effect.tapErrorCause(Effect.log),
-      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
-    )
+
+  console.log({
+    remote,
+    base: pull.base,
+    head: pull.head,
+  })
+  // yield* git
+  //   .run(_ =>
+  //     _.rebase([pull.base.ref]).push([
+  //       remote,
+  //       `pr-branch:${pull.head.ref}`,
+  //       "--force",
+  //     ]),
+  //   )
+  //   .pipe(
+  //     Effect.tapErrorCause(Effect.log),
+  //     Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+  //   )
 })
