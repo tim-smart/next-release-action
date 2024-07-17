@@ -83050,10 +83050,11 @@ var runCurrent = Effect_exports.gen(function* () {
   const pull = current2.value;
   yield* git.run((_) => _.fetch("origin").checkout(pull.base.ref));
   yield* Effect_exports.log(`rebasing #${pull.number} on ${pull.base.ref}`);
+  const remote = pull.head.repo.owner.login === pull.base.repo.owner.login ? "origin" : pull.head.repo.owner.login;
   yield* gh.cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString()).pipe(Command_exports.exitCode);
   yield* git.run(
     (_) => _.rebase([pull.base.ref]).push([
-      pull.head.repo?.owner.login,
+      remote,
       `pr-branch:${pull.head.ref}`,
       "--force"
     ])
