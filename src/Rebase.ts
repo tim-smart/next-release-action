@@ -86,14 +86,12 @@ export const runCurrent = Effect.gen(function* () {
   yield* git.run(_ => _.fetch("origin").checkout(pull.base.ref))
 
   yield* Effect.log(`rebasing #${pull.number} on ${pull.base.ref}`)
-  const remote =
-    pull.head.repo!.owner.login === pull.base.repo.owner.login
-      ? "origin"
-      : pull.head.repo!.owner.login
+  const remote = pulls.isOrigin
+    ? "origin"
+    : `https://github.com/${pull.head.repo!.full_name}.git`
   yield* gh
     .cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString())
     .pipe(Command.exitCode)
-  console.log(yield* git.run(_ => _.remote(["-vv"])))
   yield* git
     .run(_ =>
       _.rebase([pull.base.ref]).push([

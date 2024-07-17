@@ -78236,7 +78236,8 @@ var make66 = Effect_exports.gen(function* () {
     setCurrentBase,
     addCurrentLabels,
     currentComment,
-    forCommit
+    forCommit,
+    isOrigin: Option_exports.isNone(env3.pull) || env3.pull.value.head.repo.owner.login === env3.repo.owner.login
   };
 });
 var PullRequests = class _PullRequests extends Context_exports.Tag("app/PullRequests")() {
@@ -83050,9 +83051,8 @@ var runCurrent = Effect_exports.gen(function* () {
   const pull = current2.value;
   yield* git.run((_) => _.fetch("origin").checkout(pull.base.ref));
   yield* Effect_exports.log(`rebasing #${pull.number} on ${pull.base.ref}`);
-  const remote = pull.head.repo.owner.login === pull.base.repo.owner.login ? "origin" : pull.head.repo.owner.login;
+  const remote = pulls.isOrigin ? "origin" : `https://github.com/${pull.head.repo.full_name}.git`;
   yield* gh.cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString()).pipe(Command_exports.exitCode);
-  console.log(yield* git.run((_) => _.remote(["-vv"])));
   yield* git.run(
     (_) => _.rebase([pull.base.ref]).push([
       remote,

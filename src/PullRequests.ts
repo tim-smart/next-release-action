@@ -1,4 +1,4 @@
-import { Context, Data, Effect, Layer, Sink, Stream } from "effect"
+import { Context, Data, Effect, Layer, Option, Sink, Stream } from "effect"
 import { Github } from "./Github"
 import { RunnerEnv } from "./Runner"
 
@@ -177,6 +177,9 @@ const make = Effect.gen(function* () {
     addCurrentLabels,
     currentComment,
     forCommit,
+    isOrigin:
+      Option.isNone(env.pull) ||
+      env.pull.value.head.repo.owner.login === env.repo.owner.login,
   } as const
 })
 
