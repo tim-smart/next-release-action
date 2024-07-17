@@ -13,9 +13,10 @@ export const runComment = Effect.gen(function* () {
 
   yield* perms.whenCollaboratorOrAuthor(
     Effect.gen(function* () {
-      yield* comments.reactCurrent("rocket")
+      yield* comments.reactCurrent("eyes")
       yield* runCurrent
-    }),
+      yield* comments.reactCurrent("rocket")
+    }).pipe(Effect.tapErrorCause(() => comments.reactCurrent("-1"))),
   )
 })
 
@@ -90,16 +91,11 @@ export const runCurrent = Effect.gen(function* () {
     .cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString())
     .pipe(Command.exitCode)
 
-  yield* git
-    .run(_ =>
-      _.rebase([pull.base.ref]).push([
-        pull.head.repo!.clone_url,
-        `pr-branch:${pull.head.ref}`,
-        "--force",
-      ]),
-    )
-    .pipe(
-      Effect.tapErrorCause(Effect.log),
-      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
-    )
+  yield* git.run(_ =>
+    _.rebase([pull.base.ref]).push([
+      pull.head.repo!.clone_url,
+      `pr-branch:${pull.head.ref}`,
+      "--force",
+    ]),
+  )
 })
