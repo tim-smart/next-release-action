@@ -14,13 +14,12 @@ export const runComment = Effect.gen(function* () {
   yield* perms.whenCollaboratorOrAuthor(
     Effect.gen(function* () {
       yield* comments.reactCurrent("rocket")
-      yield* run
+      yield* runCurrent
     }),
   )
 })
 
 export const run = Effect.gen(function* () {
-  const gh = yield* Github
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
   const prefix = yield* Config.prefix
   const base = yield* Config.baseBranch
@@ -63,8 +62,14 @@ export const run = Effect.gen(function* () {
       Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
       Effect.catchAllCause(Effect.log),
     )
+})
 
+export const runCurrent = Effect.gen(function* () {
+  const gh = yield* Github
+  const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
+  const prefix = yield* Config.prefix
   const pulls = yield* PullRequests
+
   const current = yield* pulls.current.pipe(
     Effect.filterOrFail(
       pull =>
@@ -76,12 +81,21 @@ export const run = Effect.gen(function* () {
   if (Option.isNone(current)) {
     return
   }
+
   const pull = current.value
+  yield* git.run(_ => _.fetch("origin").checkout(pull.base.ref))
+
   yield* Effect.log(`rebasing #${pull.number} on ${pull.base.ref}`)
   yield* gh
-    .cli("pr", "checkout", "--force", pull.number.toString())
+    .cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString())
     .pipe(Command.exitCode)
   yield* git
-    .run(_ => _.rebase([pull.base.ref]).push(["--force"]))
+    .run(_ =>
+      _.rebase([pull.base.ref]).push([
+        pull.head.repo?.owner.login!,
+        `pr-branch:${pull.head.ref}`,
+        "--force",
+      ]),
+    )
     .pipe(Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))))
 })
