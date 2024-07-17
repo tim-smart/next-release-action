@@ -83081,6 +83081,7 @@ var main = Effect_exports.gen(function* () {
   const baseBranch2 = yield* baseBranch;
   const prefix2 = yield* prefix;
   const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
+  const isOrigin = Option_exports.isNone(env3.pull) || env3.pull.value.head.repo.owner.login === env3.pull.value.base.repo.owner.login;
   yield* Effect_exports.log("Running").pipe(
     Effect_exports.annotateLogs({
       baseBranch: baseBranch2,
@@ -83092,7 +83093,7 @@ var main = Effect_exports.gen(function* () {
   );
   if (env3.comment._tag === "Some" && env3.comment.value.body.startsWith("/rebase")) {
     yield* runComment;
-  } else if (eligibleBranches.includes(env3.ref)) {
+  } else if (eligibleBranches.includes(env3.ref) && isOrigin) {
     yield* run9;
     yield* run8;
   } else if (Option_exports.isSome(env3.pull)) {
