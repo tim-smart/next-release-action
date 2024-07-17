@@ -101,5 +101,8 @@ export const runCurrent = Effect.gen(function* () {
         "--force",
       ]),
     )
-    .pipe(Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))))
+    .pipe(
+      Effect.tapErrorCause(Effect.log),
+      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+    )
 })

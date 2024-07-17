@@ -83058,7 +83058,10 @@ var runCurrent = Effect_exports.gen(function* () {
       `pr-branch:${pull.head.ref}`,
       "--force"
     ])
-  ).pipe(Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))));
+  ).pipe(
+    Effect_exports.tapErrorCause(Effect_exports.log),
+    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"])))
+  );
 });
 
 // src/index.ts
