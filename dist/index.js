@@ -78227,6 +78227,7 @@ var make66 = Effect_exports.gen(function* () {
     ),
     Effect_exports.map(([, pulls]) => pulls)
   );
+  const isOrigin = (pull) => pull.head.repo?.owner.login === env3.repo.owner.login;
   return {
     find: find4,
     findFirst: findFirst8,
@@ -78238,7 +78239,8 @@ var make66 = Effect_exports.gen(function* () {
     setCurrentBase,
     addCurrentLabels,
     currentComment,
-    forCommit
+    forCommit,
+    isOrigin
   };
 });
 var PullRequests = class _PullRequests extends Context_exports.Tag("app/PullRequests")() {
@@ -83040,7 +83042,6 @@ var runCurrent = Effect_exports.gen(function* () {
   const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
   const prefix2 = yield* prefix;
   const pulls = yield* PullRequests;
-  const env3 = yield* RunnerEnv;
   const current2 = yield* pulls.current.pipe(
     Effect_exports.filterOrFail(
       (pull2) => pull2.base.ref === `${prefix2}-major` || pull2.base.ref === `${prefix2}-minor`
@@ -83053,7 +83054,7 @@ var runCurrent = Effect_exports.gen(function* () {
   const pull = current2.value;
   yield* git.run((_) => _.fetch("origin").checkout(pull.base.ref));
   yield* Effect_exports.log(`rebasing #${pull.number} on ${pull.base.ref}`);
-  const remote = env3.isOrigin ? "origin" : `https://github.com/${pull.head.repo.full_name}.git`;
+  const remote = pulls.isOrigin(pull) ? "origin" : `https://github.com/${pull.head.repo.full_name}.git`;
   yield* gh.cli("pr", "checkout", "-b", "pr-branch", "--force", pull.number.toString()).pipe(Command_exports.exitCode);
   console.log({
     remote,

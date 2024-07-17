@@ -70,7 +70,6 @@ export const runCurrent = Effect.gen(function* () {
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
   const prefix = yield* Config.prefix
   const pulls = yield* PullRequests
-  const env = yield* RunnerEnv
 
   const current = yield* pulls.current.pipe(
     Effect.filterOrFail(
@@ -88,7 +87,7 @@ export const runCurrent = Effect.gen(function* () {
   yield* git.run(_ => _.fetch("origin").checkout(pull.base.ref))
 
   yield* Effect.log(`rebasing #${pull.number} on ${pull.base.ref}`)
-  const remote = env.isOrigin
+  const remote = pulls.isOrigin(pull)
     ? "origin"
     : `https://github.com/${pull.head.repo!.full_name}.git`
   yield* gh
