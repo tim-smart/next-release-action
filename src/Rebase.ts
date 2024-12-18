@@ -24,45 +24,50 @@ export const run = Effect.gen(function* () {
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
   const prefix = yield* Config.prefix
   const base = yield* Config.baseBranch
+  const fetchOrigin = git.run(_ => _.fetch("origin"))
 
-  // yield* Effect.log(`rebasing ${prefix}-major on ${prefix}-minor`)
-  // yield* git
-  //   .run(_ =>
-  //     _.fetch("origin")
-  //       .checkout(`${prefix}-minor`)
-  //       .checkout(`${prefix}-major`)
-  //       .rebase([`${prefix}-minor`])
-  //       .push(["--force"]),
-  //   )
-  //   .pipe(
-  //     Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
-  //     Effect.catchAllCause(Effect.log),
-  //   )
-  //
-  // yield* Effect.log(`rebasing ${prefix}-minor on ${base}`)
-  // yield* git
-  //   .run(_ =>
-  //     _.checkout(base)
-  //       .checkout(`${prefix}-minor`)
-  //       .rebase([base])
-  //       .push(["--force"]),
-  //   )
-  //   .pipe(
-  //     Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
-  //     Effect.catchAllCause(Effect.log),
-  //   )
-  //
-  // yield* Effect.log(`rebasing ${prefix}-major on ${prefix}-minor`)
-  // yield* git
-  //   .run(_ =>
-  //     _.checkout(`${prefix}-major`)
-  //       .rebase([`${prefix}-minor`])
-  //       .push(["--force"]),
-  //   )
-  //   .pipe(
-  //     Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
-  //     Effect.catchAllCause(Effect.log),
-  //   )
+  yield* fetchOrigin
+
+  yield* Effect.log(`rebasing ${prefix}-major on ${prefix}-minor`)
+  yield* git
+    .run(_ =>
+      _.checkout(`${prefix}-major`)
+        .rebase([`origin/${prefix}-minor`])
+        .push(["--force"]),
+    )
+    .pipe(
+      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+      Effect.catchAllCause(Effect.log),
+    )
+
+  yield* fetchOrigin
+
+  yield* Effect.log(`rebasing ${prefix}-minor on ${base}`)
+  yield* git
+    .run(_ =>
+      _.checkout(`${prefix}-minor`)
+        .rebase([`origin/${base}`])
+        .push(["--force"]),
+    )
+    .pipe(
+      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+      Effect.catchAllCause(Effect.log),
+    )
+
+  yield* fetchOrigin
+
+  yield* Effect.log(`rebasing ${prefix}-major on ${prefix}-minor`)
+  yield* git
+    .run(_ =>
+      _.checkout(`${prefix}-major`)
+        .reset(["--hard", `origin/${prefix}-major`])
+        .rebase([`origin/${prefix}-minor`])
+        .push(["--force"]),
+    )
+    .pipe(
+      Effect.tapError(_ => git.run(_ => _.rebase(["--abort"]))),
+      Effect.catchAllCause(Effect.log),
+    )
 })
 
 export const runCurrent = Effect.gen(function* () {

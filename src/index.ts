@@ -20,8 +20,10 @@ const githubActorEmail = githubActor.pipe(
   Config.map(_ => `${_}@users.noreply.github.com`),
 )
 
+const gitUser = input("git_user").pipe(Config.orElse(() => githubActor))
+
 const GitLive = Git.layer({
-  userName: input("git_user").pipe(Config.orElse(() => githubActor)),
+  userName: gitUser,
   userEmail: input("git_email").pipe(Config.orElse(() => githubActorEmail)),
   simpleGit: Config.succeed({}),
 })
@@ -36,11 +38,13 @@ const main = Effect.gen(function* () {
   const baseBranch = yield* ActionConfig.baseBranch
   const prefix = yield* ActionConfig.prefix
   const eligibleBranches = [`${prefix}-major`, `${prefix}-minor`]
+  const gitUsername = yield* gitUser
 
   yield* Effect.log("Running").pipe(
     Effect.annotateLogs({
       baseBranch,
       ref: env.ref,
+      actor: env.actor,
       isPR: Option.isSome(env.pull),
       isComment: Option.isSome(env.comment),
       eligibleBranches,
@@ -54,7 +58,9 @@ const main = Effect.gen(function* () {
   ) {
     yield* Rebase.runComment
   } else if (eligibleBranches.includes(env.ref) && env.isOrigin) {
-    yield* Rebase.run
+    if (env.actor !== gitUsername) {
+      yield* Rebase.run
+    }
     yield* ReleasePull.run
   } else if (Option.isSome(env.pull)) {
     yield* UpdateBase.run.pipe(

@@ -87155,9 +87155,34 @@ var runComment = Effect_exports.gen(function* () {
   );
 });
 var run8 = Effect_exports.gen(function* () {
-  yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
-  yield* prefix;
-  yield* baseBranch;
+  const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
+  const prefix2 = yield* prefix;
+  const base = yield* baseBranch;
+  const fetchOrigin = git.run((_) => _.fetch("origin"));
+  yield* fetchOrigin;
+  yield* Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
+  yield* git.run(
+    (_) => _.checkout(`${prefix2}-major`).rebase([`origin/${prefix2}-minor`]).push(["--force"])
+  ).pipe(
+    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
+    Effect_exports.catchAllCause(Effect_exports.log)
+  );
+  yield* fetchOrigin;
+  yield* Effect_exports.log(`rebasing ${prefix2}-minor on ${base}`);
+  yield* git.run(
+    (_) => _.checkout(`${prefix2}-minor`).rebase([`origin/${base}`]).push(["--force"])
+  ).pipe(
+    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
+    Effect_exports.catchAllCause(Effect_exports.log)
+  );
+  yield* fetchOrigin;
+  yield* Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
+  yield* git.run(
+    (_) => _.checkout(`${prefix2}-major`).reset(["--hard", `origin/${prefix2}-major`]).rebase([`origin/${prefix2}-minor`]).push(["--force"])
+  ).pipe(
+    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
+    Effect_exports.catchAllCause(Effect_exports.log)
+  );
 });
 var runCurrent = Effect_exports.gen(function* () {
   const gh = yield* Github;
@@ -87191,8 +87216,9 @@ var githubActor = Config_exports.nonEmptyString("github_actor");
 var githubActorEmail = githubActor.pipe(
   Config_exports.map((_) => `${_}@users.noreply.github.com`)
 );
+var gitUser = input("git_user").pipe(Config_exports.orElse(() => githubActor));
 var GitLive = Git2.layer({
-  userName: input("git_user").pipe(Config_exports.orElse(() => githubActor)),
+  userName: gitUser,
   userEmail: input("git_email").pipe(Config_exports.orElse(() => githubActorEmail)),
   simpleGit: Config_exports.succeed({})
 });
@@ -87205,10 +87231,12 @@ var main = Effect_exports.gen(function* () {
   const baseBranch2 = yield* baseBranch;
   const prefix2 = yield* prefix;
   const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
+  const gitUsername = yield* gitUser;
   yield* Effect_exports.log("Running").pipe(
     Effect_exports.annotateLogs({
       baseBranch: baseBranch2,
       ref: env3.ref,
+      actor: env3.actor,
       isPR: Option_exports.isSome(env3.pull),
       isComment: Option_exports.isSome(env3.comment),
       eligibleBranches,
@@ -87218,7 +87246,9 @@ var main = Effect_exports.gen(function* () {
   if (env3.comment._tag === "Some" && env3.comment.value.body.startsWith("/rebase")) {
     yield* runComment;
   } else if (eligibleBranches.includes(env3.ref) && env3.isOrigin) {
-    yield* run8;
+    if (env3.actor !== gitUsername) {
+      yield* run8;
+    }
     yield* run7;
   } else if (Option_exports.isSome(env3.pull)) {
     yield* run6.pipe(
