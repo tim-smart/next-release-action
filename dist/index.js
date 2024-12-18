@@ -87148,9 +87148,10 @@ var runComment = Effect_exports.gen(function* () {
   const perms = yield* Permissions;
   yield* perms.whenCollaboratorOrAuthor(
     Effect_exports.gen(function* () {
-      yield* comments.reactCurrent("rocket");
+      yield* comments.reactCurrent("eyes");
       yield* runCurrent;
-    })
+      yield* comments.reactCurrent("rocket");
+    }).pipe(Effect_exports.tapErrorCause(() => comments.reactCurrent("-1")))
   );
 });
 var run8 = Effect_exports.gen(function* () {
@@ -87203,9 +87204,6 @@ var runCurrent = Effect_exports.gen(function* () {
       `pr-branch:${pull.head.ref}`,
       "--force"
     ])
-  ).pipe(
-    Effect_exports.tapErrorCause(Effect_exports.log),
-    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"])))
   );
 });
 
