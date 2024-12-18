@@ -17,6 +17,12 @@ inputs:
   base_branch:
     required: false
     description: Branch to merge release branch into, defaults to the default branch
+  git_user:
+    required: false
+    description: Git user to use for commits
+  git_email:
+    required: false
+    description: Git email to use for commits
 runs:
   using: "node20"
   main: "dist/index.js"
