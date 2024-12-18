@@ -12,18 +12,17 @@ import { Git } from "./Git"
 import * as Rebase from "./Rebase"
 import { Comments } from "./Comments"
 import { Permissions } from "./Permissions"
+import { input } from "./utils/config"
 
-const githubActorEmail = Config.nonEmptyString("github_actor").pipe(
+const githubActor = Config.nonEmptyString("github_actor")
+
+const githubActorEmail = githubActor.pipe(
   Config.map(_ => `${_}@users.noreply.github.com`),
 )
 
 const GitLive = Git.layer({
-  userName: Config.nonEmptyString("git_user").pipe(
-    Config.orElse(() => Config.nonEmptyString("github_actor")),
-  ),
-  userEmail: Config.nonEmptyString("git_email").pipe(
-    Config.orElse(() => githubActorEmail),
-  ),
+  userName: input("git_user").pipe(Config.orElse(() => githubActor)),
+  userEmail: input("git_email").pipe(Config.orElse(() => githubActorEmail)),
   simpleGit: Config.succeed({}),
 })
 

@@ -87210,16 +87210,13 @@ var runCurrent = Effect_exports.gen(function* () {
 });
 
 // src/index.ts
-var githubActorEmail = Config_exports.nonEmptyString("github_actor").pipe(
+var githubActor = Config_exports.nonEmptyString("github_actor");
+var githubActorEmail = githubActor.pipe(
   Config_exports.map((_) => `${_}@users.noreply.github.com`)
 );
 var GitLive = Git2.layer({
-  userName: Config_exports.nonEmptyString("git_user").pipe(
-    Config_exports.orElse(() => Config_exports.nonEmptyString("github_actor"))
-  ),
-  userEmail: Config_exports.nonEmptyString("git_email").pipe(
-    Config_exports.orElse(() => githubActorEmail)
-  ),
+  userName: input("git_user").pipe(Config_exports.orElse(() => githubActor)),
+  userEmail: input("git_email").pipe(Config_exports.orElse(() => githubActorEmail)),
   simpleGit: Config_exports.succeed({})
 });
 var ConfigLive = ConfigProvider_exports.fromEnv().pipe(
