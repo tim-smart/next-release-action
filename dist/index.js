@@ -87155,30 +87155,9 @@ var runComment = Effect_exports.gen(function* () {
   );
 });
 var run8 = Effect_exports.gen(function* () {
-  const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
-  const prefix2 = yield* prefix;
-  const base = yield* baseBranch;
-  yield* Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
-  yield* git.run(
-    (_) => _.fetch("origin").checkout(`${prefix2}-minor`).checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
-  ).pipe(
-    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
-    Effect_exports.catchAllCause(Effect_exports.log)
-  );
-  yield* Effect_exports.log(`rebasing ${prefix2}-minor on ${base}`);
-  yield* git.run(
-    (_) => _.checkout(base).checkout(`${prefix2}-minor`).rebase([base]).push(["--force"])
-  ).pipe(
-    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
-    Effect_exports.catchAllCause(Effect_exports.log)
-  );
-  yield* Effect_exports.log(`rebasing ${prefix2}-major on ${prefix2}-minor`);
-  yield* git.run(
-    (_) => _.checkout(`${prefix2}-major`).rebase([`${prefix2}-minor`]).push(["--force"])
-  ).pipe(
-    Effect_exports.tapError((_) => git.run((_2) => _2.rebase(["--abort"]))),
-    Effect_exports.catchAllCause(Effect_exports.log)
-  );
+  yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
+  yield* prefix;
+  yield* baseBranch;
 });
 var runCurrent = Effect_exports.gen(function* () {
   const gh = yield* Github;
