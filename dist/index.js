@@ -87216,9 +87216,8 @@ var githubActor = Config_exports.nonEmptyString("github_actor");
 var githubActorEmail = githubActor.pipe(
   Config_exports.map((_) => `${_}@users.noreply.github.com`)
 );
-var gitUser = input("git_user").pipe(Config_exports.orElse(() => githubActor));
 var GitLive = Git2.layer({
-  userName: gitUser,
+  userName: input("git_user").pipe(Config_exports.orElse(() => githubActor)),
   userEmail: input("git_email").pipe(Config_exports.orElse(() => githubActorEmail)),
   simpleGit: Config_exports.succeed({})
 });
@@ -87227,16 +87226,18 @@ var ConfigLive = ConfigProvider_exports.fromEnv().pipe(
   Layer_exports.setConfigProvider
 );
 var main = Effect_exports.gen(function* () {
+  const gh = yield* Github;
   const env3 = yield* RunnerEnv;
   const baseBranch2 = yield* baseBranch;
   const prefix2 = yield* prefix;
   const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
-  const gitUsername = yield* gitUser;
+  const currentUser = (yield* gh.request((_) => _.users.getAuthenticated())).data.login;
   yield* Effect_exports.log("Running").pipe(
     Effect_exports.annotateLogs({
       baseBranch: baseBranch2,
       ref: env3.ref,
       actor: env3.actor,
+      currentUser,
       isPR: Option_exports.isSome(env3.pull),
       isComment: Option_exports.isSome(env3.comment),
       eligibleBranches,
@@ -87246,7 +87247,7 @@ var main = Effect_exports.gen(function* () {
   if (env3.comment._tag === "Some" && env3.comment.value.body.startsWith("/rebase")) {
     yield* runComment;
   } else if (eligibleBranches.includes(env3.ref) && env3.isOrigin) {
-    if (env3.actor !== gitUsername) {
+    if (env3.actor !== currentUser) {
       yield* run8;
     }
     yield* run7;
