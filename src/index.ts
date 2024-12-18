@@ -1,12 +1,11 @@
 import { runMain } from "@effect/platform-node/NodeRuntime"
 import * as NodeContext from "@effect/platform-node/NodeContext"
 import { Config, ConfigProvider, Console, Effect, Layer, Option } from "effect"
-import { ChangesetsLive } from "./Changesets"
+import { Changesets } from "./Changesets"
 import { Github } from "./Github"
 import { PullRequests } from "./PullRequests"
 import { RunnerEnv } from "./Runner"
 import * as UpdateBase from "./UpdateBase"
-import { inputSecret, nonEmptyString } from "./utils/config"
 import * as ReleasePull from "./ReleasePull"
 import * as ActionConfig from "./Config"
 import { Git } from "./Git"
@@ -14,14 +13,16 @@ import * as Rebase from "./Rebase"
 import { Comments } from "./Comments"
 import { Permissions } from "./Permissions"
 
-const GithubLive = Github.layer({
-  token: inputSecret("github_token"),
-})
+const githubActorEmail = Config.nonEmptyString("github_actor").pipe(
+  Config.map(_ => `${_}@users.noreply.github.com`),
+)
 
 const GitLive = Git.layer({
-  userName: nonEmptyString("github_actor"),
-  userEmail: nonEmptyString("github_actor").pipe(
-    Config.map(_ => `${_}@users.noreply.github.com`),
+  userName: Config.nonEmptyString("git_user").pipe(
+    Config.orElse(() => Config.nonEmptyString("github_actor")),
+  ),
+  userEmail: Config.nonEmptyString("git_email").pipe(
+    Config.orElse(() => githubActorEmail),
   ),
   simpleGit: Config.succeed({}),
 })
@@ -68,14 +69,15 @@ const main = Effect.gen(function* () {
 }).pipe(
   Effect.provide(
     Layer.mergeAll(
-      ChangesetsLive,
-      Comments.Live,
-      Permissions.Live,
-      PullRequests.Live,
-      RunnerEnv.Live,
+      Changesets.Default,
+      Comments.Default,
+      Permissions.Default,
+      PullRequests.Default,
+      RunnerEnv.Default,
+      Github.Default,
       GitLive,
       NodeContext.layer,
-    ).pipe(Layer.provideMerge(GithubLive), Layer.provide(ConfigLive)),
+    ).pipe(Layer.provide(ConfigLive)),
   ),
 )
 
