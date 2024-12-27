@@ -82532,30 +82532,30 @@ var run7 = Effect_exports.gen(function* () {
   const base = head7.endsWith("-major") ? `${prefix2}-minor` : yield* baseBranch;
   const changeType = head7.endsWith("-major") ? "major" : "minor";
   const pulls = yield* PullRequests;
-  const body = yield* pullBody(base, head7);
-  yield* pulls.upsert({
-    head: head7,
-    base,
-    title: `Release queue: ${changeType}`,
-    body
-  });
-});
-var pullBody = (base, head7) => Effect_exports.gen(function* () {
-  const related = yield* diffPulls(base, head7).pipe(
-    Stream_exports.runCollect,
-    Effect_exports.map(
-      (pulls) => pipe(
-        pulls,
-        Array_exports.dedupeWith((a, b) => a.number === b.number),
-        Array_exports.sort(Order_exports.struct({ number: Order_exports.number }))
-      )
-    )
-  );
-  const listItems = related.map((pull) => `- #${pull.number}`).join("\n");
-  return `Contains the following pull requests:
+  const related = yield* getRelatedPulls(base, head7);
+  if (related.length > 0) {
+    const listItems = related.map((pull) => `- #${pull.number}`).join("\n");
+    const body = `Contains the following pull requests:
 
 ${listItems}`;
+    yield* pulls.upsert({
+      head: head7,
+      base,
+      title: `Release queue: ${changeType}`,
+      body
+    });
+  }
 });
+var getRelatedPulls = (base, head7) => diffPulls(base, head7).pipe(
+  Stream_exports.runCollect,
+  Effect_exports.map(
+    (pulls) => pipe(
+      pulls,
+      Array_exports.dedupeWith((a, b) => a.number === b.number),
+      Array_exports.sort(Order_exports.struct({ number: Order_exports.number }))
+    )
+  )
+);
 var diffPulls = (base, head7) => Effect_exports.gen(function* () {
   const pulls = yield* PullRequests;
   const currentNumber = yield* pulls.current.pipe(

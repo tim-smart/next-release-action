@@ -19,32 +19,30 @@ export const run = Effect.gen(function* () {
     : yield* Config.baseBranch
   const changeType = head.endsWith("-major") ? "major" : "minor"
   const pulls = yield* PullRequests
-  const body = yield* pullBody(base, head)
-  yield* pulls.upsert({
-    head,
-    base,
-    title: `Release queue: ${changeType}`,
-    body,
-  })
+  const related = yield* getRelatedPulls(base, head)
+  if (related.length > 0) {
+    const listItems = related.map(pull => `- #${pull.number}`).join("\n")
+    const body = `Contains the following pull requests:\n\n${listItems}`
+    yield* pulls.upsert({
+      head,
+      base,
+      title: `Release queue: ${changeType}`,
+      body,
+    })
+  }
 })
 
-const pullBody = (base: string, head: string) =>
-  Effect.gen(function* () {
-    const related = yield* diffPulls(base, head).pipe(
-      Stream.runCollect,
-      Effect.map(pulls =>
-        pipe(
-          pulls,
-          Array.dedupeWith((a, b) => a.number === b.number),
-          Array.sort(Order.struct({ number: Order.number })),
-        ),
+const getRelatedPulls = (base: string, head: string) =>
+  diffPulls(base, head).pipe(
+    Stream.runCollect,
+    Effect.map(pulls =>
+      pipe(
+        pulls,
+        Array.dedupeWith((a, b) => a.number === b.number),
+        Array.sort(Order.struct({ number: Order.number })),
       ),
-    )
-
-    const listItems = related.map(pull => `- #${pull.number}`).join("\n")
-
-    return `Contains the following pull requests:\n\n${listItems}`
-  })
+    ),
+  )
 
 const diffPulls = (base: string, head: string) =>
   Effect.gen(function* () {
