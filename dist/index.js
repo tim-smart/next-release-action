@@ -82520,69 +82520,6 @@ var ensureBranchFor = (changeType) => Effect_exports.gen(function* (_) {
   );
 });
 
-// src/ReleasePull.ts
-var run7 = Effect_exports.gen(function* () {
-  const env3 = yield* RunnerEnv;
-  const prefix2 = yield* prefix;
-  const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
-  if (!eligibleBranches.includes(env3.ref)) {
-    return;
-  }
-  const head7 = env3.ref;
-  const base = head7.endsWith("-major") ? `${prefix2}-minor` : yield* baseBranch;
-  const changeType = head7.endsWith("-major") ? "major" : "minor";
-  const pulls = yield* PullRequests;
-  const body = yield* pullBody(base, head7);
-  yield* pulls.upsert({
-    head: head7,
-    base,
-    title: `Release queue: ${changeType}`,
-    body
-  });
-});
-var pullBody = (base, head7) => Effect_exports.gen(function* () {
-  const related = yield* diffPulls(base, head7).pipe(
-    Stream_exports.runCollect,
-    Effect_exports.map(
-      (pulls) => pipe(
-        pulls,
-        Array_exports.dedupeWith((a, b) => a.number === b.number),
-        Array_exports.sort(Order_exports.struct({ number: Order_exports.number }))
-      )
-    )
-  );
-  const listItems = related.map((pull) => `- #${pull.number}`).join("\n");
-  return `Contains the following pull requests:
-
-${listItems}`;
-});
-var diffPulls = (base, head7) => Effect_exports.gen(function* () {
-  const pulls = yield* PullRequests;
-  const currentNumber = yield* pulls.current.pipe(
-    Effect_exports.map((_) => _.number),
-    Effect_exports.orElseSucceed(() => 0)
-  );
-  return diffCommits(base, head7).pipe(
-    Stream_exports.mapEffect((commit3) => pulls.forCommit(commit3.sha)),
-    Stream_exports.flattenIterables,
-    Stream_exports.filter((_) => _.number !== currentNumber)
-  );
-}).pipe(Stream_exports.unwrap);
-var diffCommits = (base, head7) => Effect_exports.gen(function* () {
-  const env3 = yield* RunnerEnv;
-  const github = yield* Github;
-  return github.streamWith(
-    (_, page) => _.repos.compareCommits({
-      owner: env3.repo.owner.login,
-      repo: env3.repo.name,
-      base,
-      head: head7,
-      page
-    }),
-    (_) => _.commits
-  );
-}).pipe(Stream_exports.unwrap);
-
 // node_modules/.pnpm/simple-git@3.27.0/node_modules/simple-git/dist/esm/index.js
 var import_file_exists = __toESM(require_dist(), 1);
 var import_debug = __toESM(require_src(), 1);
@@ -87085,6 +87022,73 @@ var make70 = ({ simpleGit: opts = {}, userName, userEmail }) => {
 var Git2 = class _Git extends Context_exports.Tag("app/Git")() {
   static layer = (_) => Config_exports.unwrap(_).pipe(Effect_exports.map(make70), Layer_exports.effect(_Git));
 };
+
+// src/ReleasePull.ts
+var run7 = Effect_exports.gen(function* () {
+  const env3 = yield* RunnerEnv;
+  const prefix2 = yield* prefix;
+  const eligibleBranches = [`${prefix2}-major`, `${prefix2}-minor`];
+  if (!eligibleBranches.includes(env3.ref)) {
+    return;
+  }
+  const head7 = env3.ref;
+  const base = head7.endsWith("-major") ? `${prefix2}-minor` : yield* baseBranch;
+  const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
+  const headSha = yield* git.run((_) => _.fetch("origin").revparse([head7]));
+  const baseSha = yield* git.run((_) => _.revparse([base]));
+  if (headSha === baseSha) return;
+  const changeType = head7.endsWith("-major") ? "major" : "minor";
+  const pulls = yield* PullRequests;
+  const body = yield* pullBody(base, head7);
+  yield* pulls.upsert({
+    head: head7,
+    base,
+    title: `Release queue: ${changeType}`,
+    body
+  });
+});
+var pullBody = (base, head7) => Effect_exports.gen(function* () {
+  const related = yield* diffPulls(base, head7).pipe(
+    Stream_exports.runCollect,
+    Effect_exports.map(
+      (pulls) => pipe(
+        pulls,
+        Array_exports.dedupeWith((a, b) => a.number === b.number),
+        Array_exports.sort(Order_exports.struct({ number: Order_exports.number }))
+      )
+    )
+  );
+  const listItems = related.map((pull) => `- #${pull.number}`).join("\n");
+  return `Contains the following pull requests:
+
+${listItems}`;
+});
+var diffPulls = (base, head7) => Effect_exports.gen(function* () {
+  const pulls = yield* PullRequests;
+  const currentNumber = yield* pulls.current.pipe(
+    Effect_exports.map((_) => _.number),
+    Effect_exports.orElseSucceed(() => 0)
+  );
+  return diffCommits(base, head7).pipe(
+    Stream_exports.mapEffect((commit3) => pulls.forCommit(commit3.sha)),
+    Stream_exports.flattenIterables,
+    Stream_exports.filter((_) => _.number !== currentNumber)
+  );
+}).pipe(Stream_exports.unwrap);
+var diffCommits = (base, head7) => Effect_exports.gen(function* () {
+  const env3 = yield* RunnerEnv;
+  const github = yield* Github;
+  return github.streamWith(
+    (_, page) => _.repos.compareCommits({
+      owner: env3.repo.owner.login,
+      repo: env3.repo.name,
+      base,
+      head: head7,
+      page
+    }),
+    (_) => _.commits
+  );
+}).pipe(Stream_exports.unwrap);
 
 // src/Comments.ts
 var Comments = class extends Effect_exports.Service()("app/Comments", {

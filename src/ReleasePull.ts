@@ -3,6 +3,7 @@ import * as Config from "./Config"
 import { PullRequests } from "./PullRequests"
 import { RunnerEnv } from "./Runner"
 import { Github } from "./Github"
+import { Git } from "./Git"
 
 export const run = Effect.gen(function* () {
   const env = yield* RunnerEnv
@@ -17,6 +18,12 @@ export const run = Effect.gen(function* () {
   const base = head.endsWith("-major")
     ? `${prefix}-minor`
     : yield* Config.baseBranch
+
+  const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
+  const headSha = yield* git.run(_ => _.fetch("origin").revparse([head]))
+  const baseSha = yield* git.run(_ => _.revparse([base]))
+  if (headSha === baseSha) return
+
   const changeType = head.endsWith("-major") ? "major" : "minor"
   const pulls = yield* PullRequests
   const body = yield* pullBody(base, head)
