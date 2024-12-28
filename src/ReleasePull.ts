@@ -20,8 +20,10 @@ export const run = Effect.gen(function* () {
     : yield* Config.baseBranch
 
   const git = yield* Git.pipe(Effect.flatMap(_ => _.open(".")))
-  const headSha = yield* git.run(_ => _.fetch("origin").revparse([head]))
-  const baseSha = yield* git.run(_ => _.revparse([base]))
+  const headSha = yield* git.run(_ =>
+    _.fetch("origin").revparse(`origin/${head}`),
+  )
+  const baseSha = yield* git.run(_ => _.revparse(`origin/${base}`))
   if (headSha === baseSha) return
 
   const changeType = head.endsWith("-major") ? "major" : "minor"

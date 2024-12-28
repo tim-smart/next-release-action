@@ -87034,8 +87034,10 @@ var run7 = Effect_exports.gen(function* () {
   const head7 = env3.ref;
   const base = head7.endsWith("-major") ? `${prefix2}-minor` : yield* baseBranch;
   const git = yield* Git2.pipe(Effect_exports.flatMap((_) => _.open(".")));
-  const headSha = yield* git.run((_) => _.fetch("origin").revparse([head7]));
-  const baseSha = yield* git.run((_) => _.revparse([base]));
+  const headSha = yield* git.run(
+    (_) => _.fetch("origin").revparse(`origin/${head7}`)
+  );
+  const baseSha = yield* git.run((_) => _.revparse(`origin/${base}`));
   if (headSha === baseSha) return;
   const changeType = head7.endsWith("-major") ? "major" : "minor";
   const pulls = yield* PullRequests;
